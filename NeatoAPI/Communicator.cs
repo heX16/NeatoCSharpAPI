@@ -1,20 +1,69 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
+using System.Collections.Generic;
+using System.IO.Ports;
+using System.Threading;
 
 namespace Neato
 {
     class Communicator
     {
-        private SerialComPort _port;
+        private SerialPort _port;
+        private Thread _readThread;
 
         public Communicator(string ComPort)
         {
-            _port = new SerialComPort(ComPort);
-
-            
+            _readThread = new Thread(Read);
+            ConnectToNeato(ComPort);
+            _readThread.Start();
         }
+
+        #region Serial port functions
+
+        /// <summary>
+        /// Setup connection to Neato robot.
+        /// </summary>
+        /// <param name="ComPort"></param>
+        /// <returns>True if connection successful, otherwise False.</returns>
+        public bool ConnectToNeato(string ComPort)
+        {
+            // Values are inconsequential, quote from Programmers guide:
+            // "The communication parameters (Baud, start/stop bits,parity, etc.) are unimportant. They apply only to a real com port."
+            _port = new SerialPort(ComPort, 0, Parity.None, 0, StopBits.None);
+            
+            // Set other values for port.
+            _port.ReadTimeout = 500;
+            _port.WriteTimeout = 500;
+
+            try
+            {
+                _port.Open();
+            }
+            catch(Exception e)
+            {
+                // TODO: Perform some kind of exception handling!
+                return false;
+            }
+
+
+            return true;
+        }
+
+        public void Disconnect()
+        {
+            _readThread.Abort();
+            _port.Close();
+        }
+
+        private static void Read()
+        {
+            // TODO: Implement.
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region Neato Robotics defined methods
 
         /// <summary>
         /// Starts a cleaning by simulating press of start button.
@@ -23,6 +72,7 @@ namespace Neato
         /// <param name="flag">Clean action to be activated.</param>
         public void Clean(CleanFlag flag)
         {
+            // TODO: Implement.
             throw new NotImplementedException();
         }
         public enum CleanFlag
@@ -38,6 +88,7 @@ namespace Neato
         /// </summary>
         public void GetAccel()
         {
+            // TODO: Implement.
             throw new NotImplementedException();
         }
 
@@ -47,6 +98,7 @@ namespace Neato
         /// </summary>
         public void GetAnalogSensors(AnalogSensorFlag flag)
         {
+            // TODO: Implement.
             throw new NotImplementedException();
         }
         public enum AnalogSensorFlag
@@ -61,6 +113,7 @@ namespace Neato
         /// </summary>
         public void GetButtons()
         {
+            // TODO: Implement.
             throw new NotImplementedException();
         }
 
@@ -70,6 +123,7 @@ namespace Neato
         /// </summary>
         public void GetCalInfo()
         {
+            // TODO: Implement.
             throw new NotImplementedException();
         }
 
@@ -79,6 +133,7 @@ namespace Neato
         /// </summary>
         public void GetCharger()
         {
+            // TODO: Implement.
             throw new NotImplementedException();
         }
 
@@ -88,6 +143,7 @@ namespace Neato
         /// </summary>
         public void GetDigitalSensors()
         {
+            // TODO: Implement.
             throw new NotImplementedException();
         }
 
@@ -97,6 +153,7 @@ namespace Neato
         /// </summary>
         public void GetErr()
         {
+            // TODO: Implement.
             throw new NotImplementedException();
         }
 
@@ -107,6 +164,7 @@ namespace Neato
         /// <param name="flag">Use Clear flag dismiss the reported error.</param>
         public void GetErr(ErrorFlag flag)
         {
+            // TODO: Implement.
             throw new NotImplementedException();
         }
         public enum ErrorFlag
@@ -120,6 +178,7 @@ namespace Neato
         /// </summary>
         public void GetLDSScan()
         {
+            // TODO: Implement.
             throw new NotImplementedException();
         }
 
@@ -129,6 +188,7 @@ namespace Neato
         /// </summary>
         public void GetMotors()
         {
+            // TODO: Implement.
             throw new NotImplementedException();
         }
 
@@ -138,6 +198,7 @@ namespace Neato
         /// </summary>
         public void GetSchedule()
         {
+            // TODO: Implement.
             throw new NotImplementedException();
         }
 
@@ -148,6 +209,7 @@ namespace Neato
         /// <param name="flag">Day of the week to get schedule for.</param>
         public void GetSchedule(ScheduleDayFlag flag)
         {
+            // TODO: Implement.
             throw new NotImplementedException();
         }
         public enum ScheduleDayFlag
@@ -167,6 +229,7 @@ namespace Neato
         /// </summary>
         public void GetTime()
         {
+            // TODO: Implement.
             throw new NotImplementedException();
         }
 
@@ -176,6 +239,7 @@ namespace Neato
         /// </summary>
         public void GetVersion()
         {
+            // TODO: Implement.
             throw new NotImplementedException();
         }
 
@@ -185,6 +249,7 @@ namespace Neato
         /// </summary>
         public void GetWarranty()
         {
+            // TODO: Implement.
             throw new NotImplementedException();
         }
 
@@ -194,6 +259,7 @@ namespace Neato
         /// </summary>
         public void PlaySound(PlaySoundFlag flag)
         {
+            // TODO: Implement.
             throw new NotImplementedException();
         }
         public enum PlaySoundFlag
@@ -228,6 +294,7 @@ namespace Neato
         /// </summary>
         public void RestoreDefaults()
         {
+            // TODO: Implement.
             throw new NotImplementedException();
         }
 
@@ -242,6 +309,7 @@ namespace Neato
         /// <param name="Enable">Enable or disable scheduled cleanings.</param>
         public void SetSchedule(ScheduleDayFlag day, int hour, int minute, ScheduleTypeFlag cleanType, bool Enable)
         {
+            // TODO: Implement.
             throw new NotImplementedException();
         }
         public enum ScheduleTypeFlag
@@ -260,9 +328,13 @@ namespace Neato
         /// <param name="Sec">Seconds value 0..59</param>
         public void SetTime(ScheduleDayFlag Day, int Hour, int Minute, int Sec)
         {
+            // TODO: Implement.
             throw new NotImplementedException();
         }
 
+        // TODO: Continue adding API methods.
+
+        #endregion
 
     }
 }
