@@ -2,68 +2,33 @@
 using System.Text;
 using System.Collections.Generic;
 using System.IO.Ports;
-using System.Threading;
 
 namespace Neato
 {
-    class Communicator
+    public class Communicator
     {
-        private SerialPort _port;
-        private Thread _readThread;
+        private Connection _connection;
 
         public Communicator(string ComPort)
         {
-            _readThread = new Thread(Read);
-            ConnectToNeato(ComPort);
-            _readThread.Start();
-        }
-
-        #region Serial port functions
-
-        /// <summary>
-        /// Setup connection to Neato robot.
-        /// </summary>
-        /// <param name="ComPort"></param>
-        /// <returns>True if connection successful, otherwise False.</returns>
-        public bool ConnectToNeato(string ComPort)
-        {
-            // Values are inconsequential, quote from Programmers guide:
-            // "The communication parameters (Baud, start/stop bits,parity, etc.) are unimportant. They apply only to a real com port."
-            _port = new SerialPort(ComPort, 0, Parity.None, 0, StopBits.None);
-            
-            // Set other values for port.
-            _port.ReadTimeout = 500;
-            _port.WriteTimeout = 500;
-
-            try
-            {
-                _port.Open();
-            }
-            catch(Exception e)
-            {
-                // TODO: Perform some kind of exception handling!
-                return false;
-            }
-
-
-            return true;
+            _connection = new Connection(ComPort);
         }
 
         public void Disconnect()
         {
-            _readThread.Abort();
-            _port.Close();
+            _connection.Disconnect();
         }
-
-        private static void Read()
-        {
-            // TODO: Implement.
-            throw new NotImplementedException();
-        }
-
-        #endregion
 
         #region Neato Robotics defined methods
+
+        /// <summary>
+        /// Starts a cleaning by simulating press of start button.
+        /// See http://www.neatorobotics.com/programmers-manual#Clean for more info.
+        /// </summary>
+        public void Clean()
+        {
+            _connection.SendCommand("CLEAN");
+        }
 
         /// <summary>
         /// Starts a cleaning by simulating press of start button.
@@ -72,8 +37,7 @@ namespace Neato
         /// <param name="flag">Clean action to be activated.</param>
         public void Clean(CleanFlag flag)
         {
-            // TODO: Implement.
-            throw new NotImplementedException();
+            _connection.SendCommand("CLEAN " + flag.ToString());
         }
         public enum CleanFlag
         { 
@@ -279,8 +243,14 @@ namespace Neato
         /// </summary>
         public void PlaySound(PlaySoundFlag flag)
         {
-            // TODO: Implement.
-            throw new NotImplementedException();
+            if(flag.Equals(PlaySoundFlag.Stop))
+            {
+                _connection.SendCommand("PLAYSOUND STOP");
+            }
+            else
+            {
+                _connection.SendCommand("PLAYSOUND " + (int)flag);
+            }
         }
         public enum PlaySoundFlag
         {
