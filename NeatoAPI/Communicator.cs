@@ -181,6 +181,16 @@ namespace Neato
             // TODO: Implement.
             throw new NotImplementedException();
         }
+        
+        /// <summary>
+        /// Get All Life Stat Logs.
+        /// See http://www.neatorobotics.com/programmers-manual#GetLifeStatLog for more info.
+        /// </summary>
+        public void GetLifeStatLog()
+        {
+            // TODO: Implement.
+            throw new NotImplementedException();
+        }
 
         /// <summary>
         /// Get the diagnostic data for the motors.
@@ -221,6 +231,16 @@ namespace Neato
             Thursday = 4,
             Friday = 5,
             Saturday = 6
+        }
+
+        /// <summary>
+        /// Get System Log data.
+        /// See http://www.neatorobotics.com/programmers-manual#GetSysLog for more info.
+        /// </summary>
+        public void GetSysLog()
+        {
+            // TODO: Implement.
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -297,6 +317,17 @@ namespace Neato
             // TODO: Implement.
             throw new NotImplementedException();
         }
+        
+        /// <summary>
+        /// Set Fuel Gauge Level.
+        /// See http://www.neatorobotics.com/programmers-manual#SetFuelGauge for more info.
+        /// </summary>
+        /// <param name="Percent">Fuel Gauge percent from 0 to 100.</param>
+        public void SetFuelGauge(int Percent)
+        {
+            // TODO: Implement.
+            throw new NotImplementedException();
+        }
 
         /// <summary>
         /// Modify Cleaning Schedule.
@@ -331,10 +362,119 @@ namespace Neato
             // TODO: Implement.
             throw new NotImplementedException();
         }
-
-        // TODO: Continue adding API methods.
+        
+        /// <summary>
+        /// Enables/Disables wall follower.
+        /// See http://www.neatorobotics.com/programmers-manual#SetWallFollower for more info.
+        /// </summary>
+        public void SetWallFollower(WallFollowerFlag flag)
+        {
+            // TODO: Implement.
+            throw new NotImplementedException();
+        }
+        public enum WallFollowerFlag
+        {
+            Enable,
+            Disable
+        }
 
         #endregion
+        
+        #region Neato Robotics defined test methods
+        
+        /// <summary>
+        /// Sets TestMode on or off. Some commands can only be run in TestMode.
+        /// See http://www.neatorobotics.com/programmers-manual#TestMode for more info.
+        /// </summary>
+        /// <param name="flag">Turns Testmode on/off.</param>
+        public void TestMode(TestModeFlag flag)
+        {
+            // TODO: Implement.
+            throw new NotImplementedException();
+        }
+        public enum TestModeFlag
+        {
+            On,
+            Off
+        }
+        
+        /// <summary>
+        /// Executes different test modes. Once set, press Start button to engage. (Test modes are mutually exclusive.)
+        /// See http://www.neatorobotics.com/programmers-manual#DiagTest for more info.
+        /// </summary>
+        public void DiagTest()
+        {
+            // TODO: Implement. NOTE: Has a million flags in funny combinations, read up!
+            throw new NotImplementedException();
+        }
+        
+        /// <summary>
+        /// Sets LDS rotation on or off. Can only be run in TestMode.
+        /// See http://www.neatorobotics.com/programmers-manual#SetLDSRotation for more info.
+        /// </summary>
+        /// <param name=flag></param>
+        public void SetLDSRotation(LDSRotationFlag flag)
+        {
+            // TODO: Implement.
+            throw new NotImplementedException();
+        }
+        public enum LDSRotationFlag
+        {
+            On,
+            Off 
+        }
+        
+        /// <summary>
+        /// Sets the specified LED to on,off,blink, or dim. (TestMode Only)
+        /// See http://www.neatorobotics.com/programmers-manual#SetLED for more info.
+        /// </summary>
+        public void SetLED()
+        {
+            // TODO: Implement.
+            throw new NotImplementedException();
+        }
+        
+        /// <summary>
+        /// Sets the specified motor to run in a direction at a requested speed. (TestMode Only)
+        /// See http://www.neatorobotics.com/programmers-manual#SetLED for more info.
+        /// </summary>
+        public void SetMotor()
+        {
+            // TODO: Implement. Note: Also millions of flags.
+            throw new NotImplementedException();
+        }
+        
+        /// <summary>
+        /// Set the operation mode of the robot. (TestMode Only)
+        /// See http://www.neatorobotics.com/programmers-manual#SetSystemMode for more info.
+        /// </summary>
+        /// <param name=flag></param>
+        public void SetSystemMode(SystemModeFlag flag)
+        {
+            // TODO: Implement.
+            throw new NotImplementedException();
+        }
+        public enum SystemModeFlag
+        {
+            Shutdown,
+            Hibernate,
+            Standby
+        }
+        
+        #endregion
 
+        #region Neato Robotics defined methods, won't implement.
+        
+        /// <summary>
+        /// Uploads new program to the robot.
+        /// See http://www.neatorobotics.com/programmers-manual#Upload for more info.
+        /// </summary>
+        public void Upload()
+        {
+            // TODO: Implement.
+            throw new NotImplementedException("Won't implement (yet) because this is scary stuff!");
+        }
+        
+        #endregion
     }
 }
