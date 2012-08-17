@@ -50,20 +50,37 @@ namespace Neato
         /// Get the Accelerometer readings.
         /// See http://www.neatorobotics.com/programmers-manual#GetAccel for more info.
         /// </summary>
-        public void GetAccel()
+        /// <return>Label,Value</return>
+        public Response GetAccel()
         {
             // TODO: Implement.
             throw new NotImplementedException();
+            return null;
         }
 
         /// <summary>
         /// Get the A2D readings for the analog sensors.
         /// See http://www.neatorobotics.com/programmers-manual#GetAnalogSensors for more info.
         /// </summary>
-        public void GetAnalogSensors(AnalogSensorFlag flag)
+        /// <return>SensorName,Value</return>
+        public Response GetAnalogSensors()
         {
             // TODO: Implement.
             throw new NotImplementedException();
+            return null;
+        }
+
+        /// <summary>
+        /// Get the A2D readings for the analog sensors.
+        /// See http://www.neatorobotics.com/programmers-manual#GetAnalogSensors for more info.
+        /// </summary>
+        /// <param name="flag"></param>
+        /// <return>Raw: "SensorName,SignalVoltageInmV"; Stats: "SensorName,Mean,Max,Min,Cnt,Dev".</return>
+        public Response GetAnalogSensors(AnalogSensorFlag flag)
+        {
+            // TODO: Implement.
+            throw new NotImplementedException();
+            return null;
         }
         public enum AnalogSensorFlag
         {
@@ -75,54 +92,63 @@ namespace Neato
         /// Get the state of the UI Buttons.
         /// See http://www.neatorobotics.com/programmers-manual#GetButtons for more info.
         /// </summary>
-        public void GetButtons()
+        /// <return>Button Name,Pressed</return>
+        public Response GetButtons()
         {
             // TODO: Implement.
             throw new NotImplementedException();
+            return null;
         }
 
         /// <summary>
         /// Prints out the cal info from the System Control Block.
         /// See http://www.neatorobotics.com/programmers-manual#GetCalInfo for more info.
         /// </summary>
-        public void GetCalInfo()
+        /// <return>Parameter,Value</return>
+        public Response GetCalInfo()
         {
             // TODO: Implement.
             throw new NotImplementedException();
+            return null;
         }
 
         /// <summary>
         /// Get the diagnostic data for the charging system.
         /// See http://www.neatorobotics.com/programmers-manual#GetCharger for more info.
         /// </summary>
-        public void GetCharger()
+        /// <return>Charger Variable Name, Value</return>
+        public Response GetCharger()
         {
             // TODO: Implement.
             throw new NotImplementedException();
+            return null;
         }
 
         /// <summary>
         /// Get the state of the digital sensors.
         /// See http://www.neatorobotics.com/programmers-manual#GetDigitalSensors for more info.
         /// </summary>
-        public void GetDigitalSensors()
+        /// <return>Digital Sensor Name, Value</return>
+        public Response GetDigitalSensors()
         {
             // TODO: Implement.
             throw new NotImplementedException();
+            return null;
         }
 
         /// <summary>
         /// Get Error Message.
         /// See http://www.neatorobotics.com/programmers-manual#GetErr for more info.
         /// </summary>
-        public void GetErr()
+        /// <return>If error exists, returns error code (int). If no error exists, nothing is returned.
+        public Response GetErr()
         {
             // TODO: Implement.
             throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Get Error Message.
+        /// Clear reported error(s).
         /// See http://www.neatorobotics.com/programmers-manual#GetErr for more info.
         /// </summary>
         /// <param name="flag">Use Clear flag dismiss the reported error.</param>
@@ -140,40 +166,71 @@ namespace Neato
         /// Get scan packet from LDS.
         /// See http://www.neatorobotics.com/programmers-manual#GetLDSScan for more info.
         /// </summary>
-        public void GetLDSScan()
+        /// <return>360 output lines of LDS Scan Angle, Distance code in MM, normalized spot intensity, and error code. Followed by 2 status variable pairs. (Format: AngleInDegrees,DistInMM,Intensity,ErrorCodeHEX)</return>
+        public Response GetLDSScan()
         {
             // TODO: Implement.
             throw new NotImplementedException();
+            return null;
         }
         
         /// <summary>
         /// Get All Life Stat Logs.
         /// See http://www.neatorobotics.com/programmers-manual#GetLifeStatLog for more info.
         /// </summary>
-        public void GetLifeStatLog()
+        /// <return>Multiple LifeStat logs are output, from the oldest to the newest. Note that only the non-zero entries are printed. (Format: runID,statID,count,Min,Max,Sum,SumV*2)</return>
+        public Response GetLifeStatLog()
         {
             // TODO: Implement.
             throw new NotImplementedException();
+            return null;
         }
 
         /// <summary>
         /// Get the diagnostic data for the motors.
         /// See http://www.neatorobotics.com/programmers-manual#GetMotors for more info.
         /// </summary>
-        public void GetMotors()
+        /// <return>Reports data for all motors. (Format: Parameter,Value)</return>
+        public Response GetMotors()
         {
             // TODO: Implement.
             throw new NotImplementedException();
+            return null;
         }
+        
+        /// <summary>
+        /// Get the diagnostic data for the motors.
+        /// See http://www.neatorobotics.com/programmers-manual#GetMotors for more info.
+        /// </summary>
+        /// <param name="flag">Motor to retrieve data for.</param>
+        /// <return>Reports data for specified motor. (Format: Parameter,Value)</return>
+        public Response GetMotors(GetMotorFlag flag)
+        {
+            // TODO: Implement.
+            throw new NotImplementedException();
+            return null;
+        }
+        public enum GetMotorFlag
+        {
+            Brush,
+            Vacuum,
+            LeftWheel,
+            RightWheel,
+            Laser,
+            Charger
+        }
+        
 
         /// <summary>
         /// Get the Cleaning Schedule. (24 hour clock format)
         /// See http://www.neatorobotics.com/programmers-manual#GetSchedule for more info.
         /// </summary>
-        public void GetSchedule()
+        /// <return>Cleaning schedule for all weekdays.</return>
+        public Response GetSchedule()
         {
             // TODO: Implement.
             throw new NotImplementedException();
+            return null;
         }
 
         /// <summary>
@@ -181,10 +238,12 @@ namespace Neato
         /// See http://www.neatorobotics.com/programmers-manual#GetSchedule for more info.
         /// </summary>
         /// <param name="flag">Day of the week to get schedule for.</param>
-        public void GetSchedule(ScheduleDayFlag flag)
+        /// <return>Cleaning schedule for specified day.</return>
+        public Response GetSchedule(ScheduleDayFlag flag)
         {
-            // TODO: Implement.
+            // TODO: Implement. "GetSchedule Day 0" or "GetSchedule 0" ?
             throw new NotImplementedException();
+            return null;
         }
         public enum ScheduleDayFlag
         {
@@ -201,40 +260,49 @@ namespace Neato
         /// Get System Log data.
         /// See http://www.neatorobotics.com/programmers-manual#GetSysLog for more info.
         /// </summary>
-        public void GetSysLog()
+        /// <return>(Unimplemented) Sys Log Entries: Run, Stat, Min, Max, Sum, Count, Time(ms)</return>
+        public Response GetSysLog()
         {
             // TODO: Implement.
             throw new NotImplementedException();
+            return null;
         }
 
         /// <summary>
         /// Get Current Scheduler Time.
         /// See http://www.neatorobotics.com/programmers-manual#GetTime for more info.
         /// </summary>
-        public void GetTime()
+        /// <return>Current Neato time. (Format: DayOfWeek HourOf24:Min:Sec)</return>
+        public Response GetTime()
         {
             // TODO: Implement.
             throw new NotImplementedException();
+            return null;
         }
 
         /// <summary>
         /// Get the version information for the system software and hardware.
         /// See http://www.neatorobotics.com/programmers-manual#GetVersion for more info.
         /// </summary>
-        public void GetVersion()
+        /// <return>Version numbers (Format: Component,Major,Minor,Build)</return>
+        public Response GetVersion()
         {
             // TODO: Implement.
             throw new NotImplementedException();
+            return null;
         }
 
         /// <summary>
         /// Get the warranty validation codes.
         /// See http://www.neatorobotics.com/programmers-manual#GetWarranty for more info.
         /// </summary>
-        public void GetWarranty()
+        /// <return>(Format: 00000000 \n 0000 \n 962d3a58 )</return>
+        public Response GetWarranty()
         {
             // TODO: Implement.
             throw new NotImplementedException();
+            return null;
+            
         }
 
         /// <summary>
@@ -308,10 +376,12 @@ namespace Neato
         /// <param name="minute">Minutes value 0..59</param>
         /// <param name="cleanType">"Schedule to Clean whole house" or "Remove Scheduled Cleaning for specified day.".</param>
         /// <param name="Enable">Enable or disable scheduled cleanings.</param>
-        public void SetSchedule(ScheduleDayFlag day, int hour, int minute, ScheduleTypeFlag cleanType, bool Enable)
+        /// <return></return>
+        public Response SetSchedule(ScheduleDayFlag day, int hour, int minute, ScheduleTypeFlag cleanType, bool Enable)
         {
             // TODO: Implement.
             throw new NotImplementedException();
+            return null;
         }
         public enum ScheduleTypeFlag
         {
@@ -379,6 +449,16 @@ namespace Neato
         }
         
         /// <summary>
+        /// Sets the LCD to the specified display. (TestMode Only)
+        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#SetLCD for more info.
+        /// </summary>
+        public void SetLCD()
+        {
+            // TODO: Implement. Note: Has a million flags, read up!
+            throw new NotImplementedException();
+        }
+        
+        /// <summary>
         /// Sets LDS rotation on or off. Can only be run in TestMode.
         /// See http://www.neatorobotics.com/programmers-manual#SetLDSRotation for more info.
         /// </summary>
@@ -436,13 +516,26 @@ namespace Neato
         #region Neato Robotics defined methods, won't implement.
         
         /// <summary>
+        /// Set distance sensor calibration values for min and max distances.
+        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#SetDistanceCal for more info.
+        /// </summary>
+        /// <return>()Format: Label,Value)</return>
+        [Obsolete("Won't implement until I know what it does, could break stuff?")]
+        public Response SetDistanceCal()
+        {
+            throw new NotImplementedException("Won't implement until I know what it does, could break stuff?");
+            return null;
+        }
+        
+        /// <summary>
         /// Uploads new program to the robot.
         /// See http://www.neatorobotics.com/programmers-manual#Upload for more info.
         /// </summary>
+        [Obsolete("Won't implement until I know what it does, could break stuff?")]
         public void Upload()
         {
-            // TODO: Implement.
-            throw new NotImplementedException("Won't implement (yet) because this is scary stuff!");
+            // TODO: Read up and decide.
+            throw new NotImplementedException("Won't implement until I know what it does, could break stuff?");
         }
         
         #endregion
