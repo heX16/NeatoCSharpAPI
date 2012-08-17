@@ -27,6 +27,7 @@ namespace Neato
             {
                 // TODO: Perform some kind of exception handling!
                 _port = null;
+                throw new Exception("Neato Connection Error!");
             }
         }
 

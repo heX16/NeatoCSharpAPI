@@ -8,22 +8,33 @@ namespace Neato
     public class Communicator
     {
         private Connection _connection;
+        public bool IsTestModeActive { get; private set; }
+        public bool IsConnected { get; private set; }
 
         public Communicator(string ComPort)
         {
             _connection = new Connection(ComPort);
+            if(_connection != null)
+            {
+                if(_connection.IsConnected())
+                {
+                    IsConnected = true;
+                }
+            }
+            IsTestModeActive = false;
         }
 
         public void Disconnect()
         {
             _connection.Disconnect();
+            IsConnected = false;
         }
 
         #region Neato Robotics defined methods
 
         /// <summary>
         /// Starts a cleaning by simulating press of start button.
-        /// See http://www.neatorobotics.com/programmers-manual#Clean for more info.
+        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#Clean for more info.
         /// </summary>
         public void Clean()
         {
@@ -32,7 +43,7 @@ namespace Neato
 
         /// <summary>
         /// Starts a cleaning by simulating press of start button.
-        /// See http://www.neatorobotics.com/programmers-manual#Clean for more info.
+        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#Clean for more info.
         /// </summary>
         /// <param name="flag">Clean action to be activated.</param>
         public void Clean(CleanFlag flag)
@@ -48,7 +59,7 @@ namespace Neato
 
         /// <summary>
         /// Get the Accelerometer readings.
-        /// See http://www.neatorobotics.com/programmers-manual#GetAccel for more info.
+        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#GetAccel for more info.
         /// </summary>
         /// <return>Label,Value</return>
         public Response GetAccel()
@@ -60,7 +71,7 @@ namespace Neato
 
         /// <summary>
         /// Get the A2D readings for the analog sensors.
-        /// See http://www.neatorobotics.com/programmers-manual#GetAnalogSensors for more info.
+        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#GetAnalogSensors for more info.
         /// </summary>
         /// <return>SensorName,Value</return>
         public Response GetAnalogSensors()
@@ -72,7 +83,7 @@ namespace Neato
 
         /// <summary>
         /// Get the A2D readings for the analog sensors.
-        /// See http://www.neatorobotics.com/programmers-manual#GetAnalogSensors for more info.
+        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#GetAnalogSensors for more info.
         /// </summary>
         /// <param name="flag"></param>
         /// <return>Raw: "SensorName,SignalVoltageInmV"; Stats: "SensorName,Mean,Max,Min,Cnt,Dev".</return>
@@ -90,7 +101,7 @@ namespace Neato
 
         /// <summary>
         /// Get the state of the UI Buttons.
-        /// See http://www.neatorobotics.com/programmers-manual#GetButtons for more info.
+        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#GetButtons for more info.
         /// </summary>
         /// <return>Button Name,Pressed</return>
         public Response GetButtons()
@@ -102,7 +113,7 @@ namespace Neato
 
         /// <summary>
         /// Prints out the cal info from the System Control Block.
-        /// See http://www.neatorobotics.com/programmers-manual#GetCalInfo for more info.
+        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#GetCalInfo for more info.
         /// </summary>
         /// <return>Parameter,Value</return>
         public Response GetCalInfo()
@@ -114,7 +125,7 @@ namespace Neato
 
         /// <summary>
         /// Get the diagnostic data for the charging system.
-        /// See http://www.neatorobotics.com/programmers-manual#GetCharger for more info.
+        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#GetCharger for more info.
         /// </summary>
         /// <return>Charger Variable Name, Value</return>
         public Response GetCharger()
@@ -126,7 +137,7 @@ namespace Neato
 
         /// <summary>
         /// Get the state of the digital sensors.
-        /// See http://www.neatorobotics.com/programmers-manual#GetDigitalSensors for more info.
+        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#GetDigitalSensors for more info.
         /// </summary>
         /// <return>Digital Sensor Name, Value</return>
         public Response GetDigitalSensors()
@@ -138,7 +149,7 @@ namespace Neato
 
         /// <summary>
         /// Get Error Message.
-        /// See http://www.neatorobotics.com/programmers-manual#GetErr for more info.
+        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#GetErr for more info.
         /// </summary>
         /// <return>If error exists, returns error code (int). If no error exists, nothing is returned.
         public Response GetErr()
@@ -149,13 +160,12 @@ namespace Neato
 
         /// <summary>
         /// Clear reported error(s).
-        /// See http://www.neatorobotics.com/programmers-manual#GetErr for more info.
+        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#GetErr for more info.
         /// </summary>
         /// <param name="flag">Use Clear flag dismiss the reported error.</param>
         public void GetErr(ErrorFlag flag)
         {
-            // TODO: Implement.
-            throw new NotImplementedException();
+            _connection.SendCommand("GETERR " + flag.ToString());
         }
         public enum ErrorFlag
         {
@@ -164,7 +174,7 @@ namespace Neato
 
         /// <summary>
         /// Get scan packet from LDS.
-        /// See http://www.neatorobotics.com/programmers-manual#GetLDSScan for more info.
+        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#GetLDSScan for more info.
         /// </summary>
         /// <return>360 output lines of LDS Scan Angle, Distance code in MM, normalized spot intensity, and error code. Followed by 2 status variable pairs. (Format: AngleInDegrees,DistInMM,Intensity,ErrorCodeHEX)</return>
         public Response GetLDSScan()
@@ -176,7 +186,7 @@ namespace Neato
         
         /// <summary>
         /// Get All Life Stat Logs.
-        /// See http://www.neatorobotics.com/programmers-manual#GetLifeStatLog for more info.
+        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#GetLifeStatLog for more info.
         /// </summary>
         /// <return>Multiple LifeStat logs are output, from the oldest to the newest. Note that only the non-zero entries are printed. (Format: runID,statID,count,Min,Max,Sum,SumV*2)</return>
         public Response GetLifeStatLog()
@@ -188,7 +198,7 @@ namespace Neato
 
         /// <summary>
         /// Get the diagnostic data for the motors.
-        /// See http://www.neatorobotics.com/programmers-manual#GetMotors for more info.
+        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#GetMotors for more info.
         /// </summary>
         /// <return>Reports data for all motors. (Format: Parameter,Value)</return>
         public Response GetMotors()
@@ -200,7 +210,7 @@ namespace Neato
         
         /// <summary>
         /// Get the diagnostic data for the motors.
-        /// See http://www.neatorobotics.com/programmers-manual#GetMotors for more info.
+        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#GetMotors for more info.
         /// </summary>
         /// <param name="flag">Motor to retrieve data for.</param>
         /// <return>Reports data for specified motor. (Format: Parameter,Value)</return>
@@ -223,7 +233,7 @@ namespace Neato
 
         /// <summary>
         /// Get the Cleaning Schedule. (24 hour clock format)
-        /// See http://www.neatorobotics.com/programmers-manual#GetSchedule for more info.
+        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#GetSchedule for more info.
         /// </summary>
         /// <return>Cleaning schedule for all weekdays.</return>
         public Response GetSchedule()
@@ -235,7 +245,7 @@ namespace Neato
 
         /// <summary>
         /// Get the Cleaning Schedule. (24 hour clock format)
-        /// See http://www.neatorobotics.com/programmers-manual#GetSchedule for more info.
+        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#GetSchedule for more info.
         /// </summary>
         /// <param name="flag">Day of the week to get schedule for.</param>
         /// <return>Cleaning schedule for specified day.</return>
@@ -258,7 +268,7 @@ namespace Neato
 
         /// <summary>
         /// Get System Log data.
-        /// See http://www.neatorobotics.com/programmers-manual#GetSysLog for more info.
+        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#GetSysLog for more info.
         /// </summary>
         /// <return>(Unimplemented) Sys Log Entries: Run, Stat, Min, Max, Sum, Count, Time(ms)</return>
         public Response GetSysLog()
@@ -270,7 +280,7 @@ namespace Neato
 
         /// <summary>
         /// Get Current Scheduler Time.
-        /// See http://www.neatorobotics.com/programmers-manual#GetTime for more info.
+        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#GetTime for more info.
         /// </summary>
         /// <return>Current Neato time. (Format: DayOfWeek HourOf24:Min:Sec)</return>
         public Response GetTime()
@@ -282,7 +292,7 @@ namespace Neato
 
         /// <summary>
         /// Get the version information for the system software and hardware.
-        /// See http://www.neatorobotics.com/programmers-manual#GetVersion for more info.
+        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#GetVersion for more info.
         /// </summary>
         /// <return>Version numbers (Format: Component,Major,Minor,Build)</return>
         public Response GetVersion()
@@ -294,7 +304,7 @@ namespace Neato
 
         /// <summary>
         /// Get the warranty validation codes.
-        /// See http://www.neatorobotics.com/programmers-manual#GetWarranty for more info.
+        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#GetWarranty for more info.
         /// </summary>
         /// <return>(Format: 00000000 \n 0000 \n 962d3a58 )</return>
         public Response GetWarranty()
@@ -307,7 +317,7 @@ namespace Neato
 
         /// <summary>
         /// Play the specified sound in the robot.
-        /// See http://www.neatorobotics.com/programmers-manual#PlaySound for more info.
+        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#PlaySound for more info.
         /// </summary>
         public void PlaySound(PlaySoundFlag flag)
         {
@@ -348,37 +358,50 @@ namespace Neato
 
         /// <summary>
         /// Restore user settings to default.
-        /// See http://www.neatorobotics.com/programmers-manual#RestoreDefaults for more info.
+        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#RestoreDefaults for more info.
         /// </summary>
         public void RestoreDefaults()
         {
-            // TODO: Implement.
-            throw new NotImplementedException();
+            _connection.SendCommand("RESTOREDEFAULTS");
         }
         
         /// <summary>
         /// Set Fuel Gauge Level.
-        /// See http://www.neatorobotics.com/programmers-manual#SetFuelGauge for more info.
+        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#SetFuelGauge for more info.
         /// </summary>
         /// <param name="Percent">Fuel Gauge percent from 0 to 100.</param>
         public void SetFuelGauge(int Percent)
         {
-            // TODO: Implement.
-            throw new NotImplementedException();
+            if((Percent < 0) || (Percent > 100))
+            {
+                throw new ArgumentOutOfRangeException("Percent", Percent, "Fuel gauge percent must be within range 0..100.");
+            }
+            else
+            {
+                _connection.SendCommand("SETFUELGAUGE " + Percent);
+            }
         }
 
         /// <summary>
         /// Modify Cleaning Schedule.
-        /// See http://www.neatorobotics.com/programmers-manual#SetSchedule for more info.
+        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#SetSchedule for more info.
         /// </summary>
-        /// <param name="day">Day of the week to schedule cleaning for.</param>
-        /// <param name="hour">Hour value 0..23</param>
-        /// <param name="minute">Minutes value 0..59</param>
-        /// <param name="cleanType">"Schedule to Clean whole house" or "Remove Scheduled Cleaning for specified day.".</param>
+        /// <param name="Day">Day of the week to schedule cleaning for.</param>
+        /// <param name="Hour">Hour value 0..23</param>
+        /// <param name="Minute">Minutes value 0..59</param>
+        /// <param name="CleanType">"Schedule to Clean whole house" or "Remove Scheduled Cleaning for specified day.".</param>
         /// <param name="Enable">Enable or disable scheduled cleanings.</param>
         /// <return></return>
-        public Response SetSchedule(ScheduleDayFlag day, int hour, int minute, ScheduleTypeFlag cleanType, bool Enable)
+        public Response SetSchedule(ScheduleDayFlag Day, int Hour, int Minute, ScheduleTypeFlag CleanType, bool Enable)
         {
+            if(Hour < 0 || Hour > 23)
+            {
+                throw new ArgumentOutOfRangeException("Hour", Hour, "Hours set must be within range 0..23.");
+            }
+            if(Minute < 0 || Minute > 59)
+            {
+                throw new ArgumentOutOfRangeException("Minute", Minute, "Minutes set must be within range 0..59.");
+            }
             // TODO: Implement.
             throw new NotImplementedException();
             return null;
@@ -391,7 +414,7 @@ namespace Neato
 
         /// <summary>
         /// Sets the current day, hour and minute for the scheduler clock.
-        /// See http://www.neatorobotics.com/programmers-manual#SetTime for more info.
+        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#SetTime for more info.
         /// </summary>
         /// <param name="Day">Day of week.</param>
         /// <param name="Hour">Hour value 0..23</param>
@@ -399,18 +422,28 @@ namespace Neato
         /// <param name="Sec">Seconds value 0..59</param>
         public void SetTime(ScheduleDayFlag Day, int Hour, int Minute, int Sec)
         {
-            // TODO: Implement.
-            throw new NotImplementedException();
+            if(Hour < 0 || Hour > 23)
+            {
+                throw new ArgumentOutOfRangeException("Hour", Hour, "Hours set must be within range 0..23.");
+            }
+            if(Minute < 0 || Minute > 59)
+            {
+                throw new ArgumentOutOfRangeException("Minute", Minute, "Minutes set must be within range 0..59.");
+            }
+            if(Sec < 0 || Sec > 59)
+            {
+                throw new ArgumentOutOfRangeException("Sec", Sec, "Seconds set must be within range 0..59.");
+            }
+            _connection.SendCommand("SETTIME " + (int)Day + " " + Hour + " " + Minute + " " + Sec);
         }
         
         /// <summary>
         /// Enables/Disables wall follower.
-        /// See http://www.neatorobotics.com/programmers-manual#SetWallFollower for more info.
+        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#SetWallFollower for more info.
         /// </summary>
         public void SetWallFollower(WallFollowerFlag flag)
         {
-            // TODO: Implement.
-            throw new NotImplementedException();
+            _connection.SendCommand("SETWALLFOLLOWER " + flag.ToString());
         }
         public enum WallFollowerFlag
         {
@@ -424,13 +457,22 @@ namespace Neato
         
         /// <summary>
         /// Sets TestMode on or off. Some commands can only be run in TestMode.
-        /// See http://www.neatorobotics.com/programmers-manual#TestMode for more info.
+        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#TestMode for more info.
         /// </summary>
         /// <param name="flag">Turns Testmode on/off.</param>
         public void TestMode(TestModeFlag flag)
         {
-            // TODO: Implement.
-            throw new NotImplementedException();
+            if(flag == TestModeFlag.On)
+            {
+                IsTestModeActive = true;
+            }
+            else
+            {
+
+                IsTestModeActive = false;
+            }
+            
+            _connection.SendCommand("TESTMODE " + flag.ToString());
         }
         public enum TestModeFlag
         {
@@ -440,7 +482,7 @@ namespace Neato
         
         /// <summary>
         /// Executes different test modes. Once set, press Start button to engage. (Test modes are mutually exclusive.)
-        /// See http://www.neatorobotics.com/programmers-manual#DiagTest for more info.
+        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#DiagTest for more info.
         /// </summary>
         public void DiagTest()
         {
@@ -450,7 +492,7 @@ namespace Neato
         
         /// <summary>
         /// Sets the LCD to the specified display. (TestMode Only)
-        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#SetLCD for more info.
+        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions//table-of-robot-application-commands/detailed-command-descriptions/#SetLCD for more info.
         /// </summary>
         public void SetLCD()
         {
@@ -460,13 +502,12 @@ namespace Neato
         
         /// <summary>
         /// Sets LDS rotation on or off. Can only be run in TestMode.
-        /// See http://www.neatorobotics.com/programmers-manual#SetLDSRotation for more info.
+        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#SetLDSRotation for more info.
         /// </summary>
         /// <param name=flag></param>
         public void SetLDSRotation(LDSRotationFlag flag)
         {
-            // TODO: Implement.
-            throw new NotImplementedException();
+            _connection.SendCommand("SETLDSROTATION " + flag.ToString());
         }
         public enum LDSRotationFlag
         {
@@ -476,17 +517,17 @@ namespace Neato
         
         /// <summary>
         /// Sets the specified LED to on,off,blink, or dim. (TestMode Only)
-        /// See http://www.neatorobotics.com/programmers-manual#SetLED for more info.
+        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#SetLED for more info.
         /// </summary>
         public void SetLED()
         {
-            // TODO: Implement.
+            // TODO: Implement. Note: Has a million flags, read up!
             throw new NotImplementedException();
         }
         
         /// <summary>
         /// Sets the specified motor to run in a direction at a requested speed. (TestMode Only)
-        /// See http://www.neatorobotics.com/programmers-manual#SetLED for more info.
+        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#SetLED for more info.
         /// </summary>
         public void SetMotor()
         {
@@ -496,13 +537,12 @@ namespace Neato
         
         /// <summary>
         /// Set the operation mode of the robot. (TestMode Only)
-        /// See http://www.neatorobotics.com/programmers-manual#SetSystemMode for more info.
+        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#SetSystemMode for more info.
         /// </summary>
         /// <param name=flag></param>
         public void SetSystemMode(SystemModeFlag flag)
         {
-            // TODO: Implement.
-            throw new NotImplementedException();
+            _connection.SendCommand("SETSYSTEMMODE " + flag.ToString());
         }
         public enum SystemModeFlag
         {
@@ -517,7 +557,7 @@ namespace Neato
         
         /// <summary>
         /// Set distance sensor calibration values for min and max distances.
-        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#SetDistanceCal for more info.
+        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions//table-of-robot-application-commands/detailed-command-descriptions/#SetDistanceCal for more info.
         /// </summary>
         /// <return>()Format: Label,Value)</return>
         [Obsolete("Won't implement until I know what it does, could break stuff?")]
@@ -529,7 +569,7 @@ namespace Neato
         
         /// <summary>
         /// Uploads new program to the robot.
-        /// See http://www.neatorobotics.com/programmers-manual#Upload for more info.
+        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#Upload for more info.
         /// </summary>
         [Obsolete("Won't implement until I know what it does, could break stuff?")]
         public void Upload()

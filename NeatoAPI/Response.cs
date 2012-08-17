@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Neato
 {
-    class Response
+    public class Response
     {
         private String _info;
         public Response(String response)
