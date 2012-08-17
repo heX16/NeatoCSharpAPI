@@ -50,5 +50,21 @@ namespace NeatoTest
         {
             _com.Clean(Communicator.CleanFlag.Stop);
         }
+
+        private void buttonTestToggle_Click(object sender, EventArgs e)
+        {
+            if(_com.IsTestModeActive)
+            {
+                _com.TestMode(Communicator.TestModeFlag.Off);
+                labelTestStatus.Text = "Inactive";
+                labelTestStatus.BackColor = Color.LightCoral;
+            }
+            else
+            {
+                _com.TestMode(Communicator.TestModeFlag.On);
+                labelTestStatus.Text = "Active";
+                labelTestStatus.BackColor = Color.LawnGreen;
+            }
+        }
     }
 }
