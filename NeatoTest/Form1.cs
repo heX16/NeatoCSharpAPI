@@ -12,28 +12,28 @@ namespace NeatoTest
         public Form1()
         {
             InitializeComponent();
-            comboBox1.DataSource = Enum.GetValues(typeof(Communicator.PlaySoundFlag));
+            comboBoxSound.DataSource = Enum.GetValues(typeof(Communicator.PlaySoundFlag));
+            comboBoxCOM.DataSource = Connection.GetPorts();
+            CheckIfConnected();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            _com = new Communicator("COM3");
-            button1.Enabled = false;
-            button3.Enabled = true;
+            _com = new Communicator(comboBoxCOM.SelectedValue.ToString());
+            CheckIfConnected();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Communicator.PlaySoundFlag flag = (Communicator.PlaySoundFlag)comboBox1.SelectedValue;
-            
+            Communicator.PlaySoundFlag flag = (Communicator.PlaySoundFlag)comboBoxSound.SelectedValue;
+
             _com.PlaySound(flag);
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
             _com.Disconnect();
-            button1.Enabled = true;
-            button3.Enabled = false;
+            CheckIfConnected();
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -60,6 +60,44 @@ namespace NeatoTest
                 labelTestStatus.Text = "Active";
                 labelTestStatus.BackColor = Color.LawnGreen;
             }
+        }
+
+        private void buttonGetAccel_Click(object sender, EventArgs e)
+        {
+            textBoxFromNeato.Text = _com.GetAccel().GetText();
+        }
+
+        private void CheckIfConnected()
+        {
+            if(_com == null)
+            {
+                return;
+            }
+
+            if(_com.IsConnected)
+            {
+                labelNeatoConnected.Text = "Connected";
+                labelNeatoConnected.BackColor = Color.LawnGreen;
+                button1.Enabled = false;
+                button3.Enabled = true;
+            }
+            else
+            {
+                labelNeatoConnected.Text = "Disonnected";
+                labelNeatoConnected.BackColor = Color.LightCoral;
+                button1.Enabled = true;
+                button3.Enabled = false;
+            }
+        }
+
+        private void buttonGetAnalog_Click(object sender, EventArgs e)
+        {
+            textBoxFromNeato.Text = _com.GetAnalogSensors().GetText();
+        }
+
+        private void buttonGetButtons_Click(object sender, EventArgs e)
+        {
+            textBoxFromNeato.Text = _com.GetButtons().GetText();
         }
     }
 }
