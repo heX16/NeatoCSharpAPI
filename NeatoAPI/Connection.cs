@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.IO.Ports;
 
 namespace Neato
@@ -9,15 +7,11 @@ namespace Neato
     {
         private SerialPort _port;
 
-        public Connection(string ComPort)
+        public Connection(string comPort)
         {
             // Values are inconsequential, quote from Programmers guide:
             // "The communication parameters (Baud, start/stop bits,parity, etc.) are unimportant. They apply only to a real com port."
-            _port = new SerialPort(ComPort, 4711, Parity.None, 7, StopBits.One);
-
-            // Set other values for port.
-            _port.ReadTimeout = 500;
-            _port.WriteTimeout = 500;
+            _port = new SerialPort(comPort, 4711, Parity.None, 7, StopBits.One) {ReadTimeout = 500, WriteTimeout = 500};
 
             try
             {

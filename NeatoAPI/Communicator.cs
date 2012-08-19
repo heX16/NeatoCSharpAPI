@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.IO.Ports;
 
 namespace Neato
 {
@@ -11,9 +8,9 @@ namespace Neato
         public bool IsTestModeActive { get; private set; }
         public bool IsConnected { get; private set; }
 
-        public Communicator(string ComPort)
+        public Communicator(string comPort)
         {
-            _connection = new Connection(ComPort);
+            _connection = new Connection(comPort);
             if(_connection != null)
             {
                 if(_connection.IsConnected())
@@ -151,7 +148,7 @@ namespace Neato
         /// Get Error Message.
         /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#GetErr for more info.
         /// </summary>
-        /// <return>If error exists, returns error code (int). If no error exists, nothing is returned.
+        /// <return>If error exists, returns error code (int). If no error exists, nothing is returned.<return>
         public Response GetErr()
         {
             // TODO: Implement.
@@ -369,38 +366,36 @@ namespace Neato
         /// Set Fuel Gauge Level.
         /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#SetFuelGauge for more info.
         /// </summary>
-        /// <param name="Percent">Fuel Gauge percent from 0 to 100.</param>
-        public void SetFuelGauge(int Percent)
+        /// <param name="percent">Fuel Gauge percent from 0 to 100.</param>
+        public void SetFuelGauge(int percent)
         {
-            if((Percent < 0) || (Percent > 100))
+            if((percent < 0) || (percent > 100))
             {
-                throw new ArgumentOutOfRangeException("Percent", Percent, "Fuel gauge percent must be within range 0..100.");
+                throw new ArgumentOutOfRangeException("percent", percent, "Fuel gauge percent must be within range 0..100.");
             }
-            else
-            {
-                _connection.SendCommand("SETFUELGAUGE " + Percent);
-            }
+            
+            _connection.SendCommand("SETFUELGAUGE " + percent);
         }
 
         /// <summary>
         /// Modify Cleaning Schedule.
         /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#SetSchedule for more info.
         /// </summary>
-        /// <param name="Day">Day of the week to schedule cleaning for.</param>
-        /// <param name="Hour">Hour value 0..23</param>
-        /// <param name="Minute">Minutes value 0..59</param>
+        /// <param name="day">Day of the week to schedule cleaning for.</param>
+        /// <param name="hour">Hour value 0..23</param>
+        /// <param name="minute">Minutes value 0..59</param>
         /// <param name="CleanType">"Schedule to Clean whole house" or "Remove Scheduled Cleaning for specified day.".</param>
-        /// <param name="Enable">Enable or disable scheduled cleanings.</param>
+        /// <param name="enable">Enable or disable scheduled cleanings.</param>
         /// <return></return>
-        public Response SetSchedule(ScheduleDayFlag Day, int Hour, int Minute, ScheduleTypeFlag CleanType, bool Enable)
+        public Response SetSchedule(ScheduleDayFlag day, int hour, int minute, ScheduleTypeFlag CleanType, bool enable)
         {
-            if(Hour < 0 || Hour > 23)
+            if(hour < 0 || hour > 23)
             {
-                throw new ArgumentOutOfRangeException("Hour", Hour, "Hours set must be within range 0..23.");
+                throw new ArgumentOutOfRangeException("hour", hour, "Hours set must be within range 0..23.");
             }
-            if(Minute < 0 || Minute > 59)
+            if(minute < 0 || minute > 59)
             {
-                throw new ArgumentOutOfRangeException("Minute", Minute, "Minutes set must be within range 0..59.");
+                throw new ArgumentOutOfRangeException("minute", minute, "Minutes set must be within range 0..59.");
             }
             // TODO: Implement.
             throw new NotImplementedException();
@@ -416,25 +411,25 @@ namespace Neato
         /// Sets the current day, hour and minute for the scheduler clock.
         /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#SetTime for more info.
         /// </summary>
-        /// <param name="Day">Day of week.</param>
-        /// <param name="Hour">Hour value 0..23</param>
-        /// <param name="Minute">Minutes value 0..59</param>
-        /// <param name="Sec">Seconds value 0..59</param>
-        public void SetTime(ScheduleDayFlag Day, int Hour, int Minute, int Sec)
+        /// <param name="day">Day of week.</param>
+        /// <param name="hour">Hour value 0..23</param>
+        /// <param name="minute">Minutes value 0..59</param>
+        /// <param name="sec">Seconds value 0..59</param>
+        public void SetTime(ScheduleDayFlag day, int hour, int minute, int sec)
         {
-            if(Hour < 0 || Hour > 23)
+            if(hour < 0 || hour > 23)
             {
-                throw new ArgumentOutOfRangeException("Hour", Hour, "Hours set must be within range 0..23.");
+                throw new ArgumentOutOfRangeException("hour", hour, "Hours set must be within range 0..23.");
             }
-            if(Minute < 0 || Minute > 59)
+            if(minute < 0 || minute > 59)
             {
-                throw new ArgumentOutOfRangeException("Minute", Minute, "Minutes set must be within range 0..59.");
+                throw new ArgumentOutOfRangeException("minute", minute, "Minutes set must be within range 0..59.");
             }
-            if(Sec < 0 || Sec > 59)
+            if(sec < 0 || sec > 59)
             {
-                throw new ArgumentOutOfRangeException("Sec", Sec, "Seconds set must be within range 0..59.");
+                throw new ArgumentOutOfRangeException("sec", sec, "Seconds set must be within range 0..59.");
             }
-            _connection.SendCommand("SETTIME " + (int)Day + " " + Hour + " " + Minute + " " + Sec);
+            _connection.SendCommand("SETTIME " + (int)day + " " + hour + " " + minute + " " + sec);
         }
         
         /// <summary>
@@ -504,7 +499,7 @@ namespace Neato
         /// Sets LDS rotation on or off. Can only be run in TestMode.
         /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#SetLDSRotation for more info.
         /// </summary>
-        /// <param name=flag></param>
+        /// <param name="flag"></param>
         public void SetLDSRotation(LDSRotationFlag flag)
         {
             _connection.SendCommand("SETLDSROTATION " + flag.ToString());
@@ -539,7 +534,7 @@ namespace Neato
         /// Set the operation mode of the robot. (TestMode Only)
         /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#SetSystemMode for more info.
         /// </summary>
-        /// <param name=flag></param>
+        /// <param name="flag"></param>
         public void SetSystemMode(SystemModeFlag flag)
         {
             _connection.SendCommand("SETSYSTEMMODE " + flag.ToString());
