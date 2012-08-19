@@ -61,9 +61,7 @@ namespace Neato
         /// <return>Label,Value</return>
         public Response GetAccel()
         {
-            // TODO: Implement.
-            throw new NotImplementedException();
-            return null;
+            return _connection.SendCommand("GETACCEL");
         }
 
         /// <summary>
@@ -73,9 +71,7 @@ namespace Neato
         /// <return>SensorName,Value</return>
         public Response GetAnalogSensors()
         {
-            // TODO: Implement.
-            throw new NotImplementedException();
-            return null;
+            return _connection.SendCommand("GETANALOGSENSORS");
         }
 
         /// <summary>
@@ -103,9 +99,7 @@ namespace Neato
         /// <return>Button Name,Pressed</return>
         public Response GetButtons()
         {
-            // TODO: Implement.
-            throw new NotImplementedException();
-            return null;
+            return _connection.SendCommand("GETBUTTONS");
         }
 
         /// <summary>
