@@ -82,9 +82,7 @@ namespace Neato
         /// <return>Raw: "SensorName,SignalVoltageInmV"; Stats: "SensorName,Mean,Max,Min,Cnt,Dev".</return>
         public Response GetAnalogSensors(AnalogSensorFlag flag)
         {
-            // TODO: Implement.
-            throw new NotImplementedException();
-            return null;
+            return _connection.SendCommand("GETANALOGSENSORS " + flag.ToString());
         }
         public enum AnalogSensorFlag
         {
@@ -109,9 +107,7 @@ namespace Neato
         /// <return>Parameter,Value</return>
         public Response GetCalInfo()
         {
-            // TODO: Implement.
-            throw new NotImplementedException();
-            return null;
+            return _connection.SendCommand("GETCALINFO");
         }
 
         /// <summary>
@@ -121,9 +117,7 @@ namespace Neato
         /// <return>Charger Variable Name, Value</return>
         public Response GetCharger()
         {
-            // TODO: Implement.
-            throw new NotImplementedException();
-            return null;
+            return _connection.SendCommand("GETCHARGER");
         }
 
         /// <summary>
@@ -133,9 +127,7 @@ namespace Neato
         /// <return>Digital Sensor Name, Value</return>
         public Response GetDigitalSensors()
         {
-            // TODO: Implement.
-            throw new NotImplementedException();
-            return null;
+            return _connection.SendCommand("GETDIGITALSENSORS");
         }
 
         /// <summary>
@@ -145,8 +137,7 @@ namespace Neato
         /// <return>If error exists, returns error code (int). If no error exists, nothing is returned.<return>
         public Response GetErr()
         {
-            // TODO: Implement.
-            throw new NotImplementedException();
+            return _connection.SendCommand("GETERR");
         }
 
         /// <summary>
@@ -170,9 +161,7 @@ namespace Neato
         /// <return>360 output lines of LDS Scan Angle, Distance code in MM, normalized spot intensity, and error code. Followed by 2 status variable pairs. (Format: AngleInDegrees,DistInMM,Intensity,ErrorCodeHEX)</return>
         public Response GetLDSScan()
         {
-            // TODO: Implement.
-            throw new NotImplementedException();
-            return null;
+            return _connection.SendCommand("GETLDSSCAN");
         }
         
         /// <summary>
@@ -182,9 +171,7 @@ namespace Neato
         /// <return>Multiple LifeStat logs are output, from the oldest to the newest. Note that only the non-zero entries are printed. (Format: runID,statID,count,Min,Max,Sum,SumV*2)</return>
         public Response GetLifeStatLog()
         {
-            // TODO: Implement.
-            throw new NotImplementedException();
-            return null;
+            return _connection.SendCommand("GETLIFESTATLOG");
         }
 
         /// <summary>
@@ -194,9 +181,7 @@ namespace Neato
         /// <return>Reports data for all motors. (Format: Parameter,Value)</return>
         public Response GetMotors()
         {
-            // TODO: Implement.
-            throw new NotImplementedException();
-            return null;
+            return _connection.SendCommand("GETMOTORS");
         }
         
         /// <summary>
@@ -207,9 +192,7 @@ namespace Neato
         /// <return>Reports data for specified motor. (Format: Parameter,Value)</return>
         public Response GetMotors(GetMotorFlag flag)
         {
-            // TODO: Implement.
-            throw new NotImplementedException();
-            return null;
+            return _connection.SendCommand("GETMOTORS " + flag.ToString());
         }
         public enum GetMotorFlag
         {
@@ -229,9 +212,7 @@ namespace Neato
         /// <return>Cleaning schedule for all weekdays.</return>
         public Response GetSchedule()
         {
-            // TODO: Implement.
-            throw new NotImplementedException();
-            return null;
+            return _connection.SendCommand("GETSCHEDULE");
         }
 
         /// <summary>
@@ -243,8 +224,7 @@ namespace Neato
         public Response GetSchedule(ScheduleDayFlag flag)
         {
             // TODO: Implement. "GetSchedule Day 0" or "GetSchedule 0" ?
-            throw new NotImplementedException();
-            return null;
+            return _connection.SendCommand("GETSCHEDULE " + (int)flag);
         }
         public enum ScheduleDayFlag
         {
@@ -264,9 +244,7 @@ namespace Neato
         /// <return>(Unimplemented) Sys Log Entries: Run, Stat, Min, Max, Sum, Count, Time(ms)</return>
         public Response GetSysLog()
         {
-            // TODO: Implement.
-            throw new NotImplementedException();
-            return null;
+            return _connection.SendCommand("GETSYSLOG");
         }
 
         /// <summary>
@@ -276,9 +254,7 @@ namespace Neato
         /// <return>Current Neato time. (Format: DayOfWeek HourOf24:Min:Sec)</return>
         public Response GetTime()
         {
-            // TODO: Implement.
-            throw new NotImplementedException();
-            return null;
+            return _connection.SendCommand("GETTIME");
         }
 
         /// <summary>
@@ -288,9 +264,7 @@ namespace Neato
         /// <return>Version numbers (Format: Component,Major,Minor,Build)</return>
         public Response GetVersion()
         {
-            // TODO: Implement.
-            throw new NotImplementedException();
-            return null;
+            return _connection.SendCommand("GETVERSION");
         }
 
         /// <summary>
@@ -300,9 +274,7 @@ namespace Neato
         /// <return>(Format: 00000000 \n 0000 \n 962d3a58 )</return>
         public Response GetWarranty()
         {
-            // TODO: Implement.
-            throw new NotImplementedException();
-            return null;
+            return _connection.SendCommand("GETWARANTY");
             
         }
 
