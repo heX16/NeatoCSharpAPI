@@ -63,12 +63,24 @@ namespace Neato
         }
 
         /// <summary>
-        /// Sends a command to the Neato.
+        /// Sends a command to the Neato and reads the response.
         /// </summary>
         /// <param name="command">Command (and any flags) to send to Neato.</param>
         /// <returns>Response file with Neato response. Can be empty.</returns>
         /// <exception cref="IOException">Thrown if no connection to Neato has been established.</exception>
         public Response SendCommand(string command)
+        {
+            return SendCommand(command, false);
+        }
+        
+        /// <summary>
+        /// Sends a command to the Neato. Waiting for a response will delay this call by ~150ms.
+        /// </summary>
+        /// <param name="command">Command (and any flags) to send to Neato.</param>
+        /// <param name="quick">True ignores any responses and returns an empty response file.</param>
+        /// <returns>Response file with Neato response. Can be empty.</returns>
+        /// <exception cref="IOException">Thrown if no connection to Neato has been established.</exception>
+        public Response SendCommand(string command, bool quick)
         {
             if(!IsConnected()) throw new IOException("No connection to Neato established.");
 
@@ -77,6 +89,12 @@ namespace Neato
 
             // Send command to Neato.
             _port.WriteLine(command);
+
+            if(quick)
+            {
+                // Save some time by not listening to Neato.
+                return new Response("");
+            }
 
             // Wait a little bit for Neato's response.
             Thread.Sleep(150);
