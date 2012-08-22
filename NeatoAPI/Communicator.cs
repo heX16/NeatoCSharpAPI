@@ -35,7 +35,7 @@ namespace Neato
         /// </summary>
         public void Clean()
         {
-            _connection.SendCommand("CLEAN");
+            _connection.SendCommand("CLEAN",true);
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace Neato
         /// <param name="flag">Clean action to be activated.</param>
         public void Clean(CleanFlag flag)
         {
-            _connection.SendCommand("CLEAN " + flag.ToString());
+            _connection.SendCommand("CLEAN " + flag,true);
         }
         public enum CleanFlag
         { 
@@ -82,12 +82,12 @@ namespace Neato
         /// <return>Raw: "SensorName,SignalVoltageInmV"; Stats: "SensorName,Mean,Max,Min,Cnt,Dev".</return>
         public Response GetAnalogSensors(AnalogSensorFlag flag)
         {
-            return _connection.SendCommand("GETANALOGSENSORS " + flag.ToString());
+            return _connection.SendCommand("GETANALOGSENSORS " + flag);
         }
         public enum AnalogSensorFlag
         {
-            raw,
-            stats
+            Raw,
+            Stats
         }
 
         /// <summary>
@@ -134,7 +134,7 @@ namespace Neato
         /// Get Error Message.
         /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#GetErr for more info.
         /// </summary>
-        /// <return>If error exists, returns error code (int). If no error exists, nothing is returned.<return>
+        /// <return>If error exists, returns error code (int). If no error exists, nothing is returned.</return>
         public Response GetErr()
         {
             return _connection.SendCommand("GETERR");
@@ -147,7 +147,7 @@ namespace Neato
         /// <param name="flag">Use Clear flag dismiss the reported error.</param>
         public void GetErr(ErrorFlag flag)
         {
-            _connection.SendCommand("GETERR " + flag.ToString());
+            _connection.SendCommand("GETERR " + flag, true);
         }
         public enum ErrorFlag
         {
@@ -192,7 +192,7 @@ namespace Neato
         /// <return>Reports data for specified motor. (Format: Parameter,Value)</return>
         public Response GetMotors(GetMotorFlag flag)
         {
-            return _connection.SendCommand("GETMOTORS " + flag.ToString());
+            return _connection.SendCommand("GETMOTORS " + flag);
         }
         public enum GetMotorFlag
         {
@@ -274,7 +274,7 @@ namespace Neato
         /// <return>(Format: 00000000 \n 0000 \n 962d3a58 )</return>
         public Response GetWarranty()
         {
-            return _connection.SendCommand("GETWARANTY");
+            return _connection.SendCommand("GETWARRANTY");
             
         }
 
@@ -286,11 +286,11 @@ namespace Neato
         {
             if(flag.Equals(PlaySoundFlag.Stop))
             {
-                _connection.SendCommand("PLAYSOUND STOP");
+                _connection.SendCommand("PLAYSOUND STOP",true);
             }
             else
             {
-                _connection.SendCommand("PLAYSOUND " + (int)flag);
+                _connection.SendCommand("PLAYSOUND " + (int)flag,true);
             }
         }
         public enum PlaySoundFlag
@@ -325,7 +325,7 @@ namespace Neato
         /// </summary>
         public void RestoreDefaults()
         {
-            _connection.SendCommand("RESTOREDEFAULTS");
+            _connection.SendCommand("RESTOREDEFAULTS",true);
         }
         
         /// <summary>
@@ -340,7 +340,7 @@ namespace Neato
                 throw new ArgumentOutOfRangeException("percent", percent, "Fuel gauge percent must be within range 0..100.");
             }
             
-            _connection.SendCommand("SETFUELGAUGE " + percent);
+            _connection.SendCommand("SETFUELGAUGE " + percent,true);
         }
 
         /// <summary>
@@ -350,10 +350,8 @@ namespace Neato
         /// <param name="day">Day of the week to schedule cleaning for.</param>
         /// <param name="hour">Hour value 0..23</param>
         /// <param name="minute">Minutes value 0..59</param>
-        /// <param name="CleanType">"Schedule to Clean whole house" or "Remove Scheduled Cleaning for specified day.".</param>
-        /// <param name="enable">Enable or disable scheduled cleanings.</param>
         /// <return></return>
-        public Response SetSchedule(ScheduleDayFlag day, int hour, int minute, ScheduleTypeFlag CleanType, bool enable)
+        public Response SetSchedule(ScheduleDayFlag day, int hour, int minute)
         {
             if(hour < 0 || hour > 23)
             {
@@ -363,14 +361,8 @@ namespace Neato
             {
                 throw new ArgumentOutOfRangeException("minute", minute, "Minutes set must be within range 0..59.");
             }
-            // TODO: Implement.
-            throw new NotImplementedException();
-            return null;
-        }
-        public enum ScheduleTypeFlag
-        {
-            House,
-            None
+
+            return _connection.SendCommand("SETSCHEDULE " + day + " " + hour + " " + minute + "HOUSE");
         }
 
         /// <summary>
@@ -395,7 +387,7 @@ namespace Neato
             {
                 throw new ArgumentOutOfRangeException("sec", sec, "Seconds set must be within range 0..59.");
             }
-            _connection.SendCommand("SETTIME " + (int)day + " " + hour + " " + minute + " " + sec);
+            _connection.SendCommand("SETTIME " + (int)day + " " + hour + " " + minute + " " + sec,true);
         }
         
         /// <summary>
@@ -404,7 +396,7 @@ namespace Neato
         /// </summary>
         public void SetWallFollower(WallFollowerFlag flag)
         {
-            _connection.SendCommand("SETWALLFOLLOWER " + flag.ToString());
+            _connection.SendCommand("SETWALLFOLLOWER " + flag, true);
         }
         public enum WallFollowerFlag
         {
@@ -514,8 +506,37 @@ namespace Neato
         
         #endregion
 
+        #region My own defined methods
+
+        /// <summary>
+        /// Enables or disables the Scheduled cleans.
+        /// </summary>
+        /// <param name="activated">True for enabled, false for disabled.</param>
+        public void ToggleSchedule(bool activated)
+        {
+            if (activated)
+            {
+                _connection.SendCommand("SETSCHEDULE ON", true);
+            }
+            else
+            {
+                _connection.SendCommand("SETSCHEDULE OFF", true);
+            }
+        }
+
+        /// <summary>
+        /// Clears the scheduled clean for the specified day.
+        /// </summary>
+        /// <param name="day">Day to clear cleaning from.</param>
+        public void RemoveCleanSchedule(ScheduleDayFlag day)
+        {
+            _connection.SendCommand("SETSCHEDULE " + day + " 0 0 NONE");
+        }
+
+        #endregion
+
         #region Neato Robotics defined methods, won't implement.
-        
+
         /// <summary>
         /// Set distance sensor calibration values for min and max distances.
         /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions//table-of-robot-application-commands/detailed-command-descriptions/#SetDistanceCal for more info.
@@ -525,7 +546,6 @@ namespace Neato
         public Response SetDistanceCal()
         {
             throw new NotImplementedException("Won't implement until I know what it does, could break stuff?");
-            return null;
         }
         
         /// <summary>
