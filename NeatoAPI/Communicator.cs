@@ -23,6 +23,12 @@ namespace Neato
 
         public void Disconnect()
         {
+            if (this._connection == null)
+            {
+                // We don't need to do anything!
+                return;
+            }
+
             _connection.Disconnect();
             IsConnected = false;
         }
@@ -425,7 +431,7 @@ namespace Neato
                 IsTestModeActive = false;
             }
             
-            _connection.SendCommand("TESTMODE " + flag.ToString());
+            _connection.SendCommand("TESTMODE " + flag);
         }
         public enum TestModeFlag
         {
@@ -439,6 +445,10 @@ namespace Neato
         /// </summary>
         public void DiagTest()
         {
+            if (!IsTestModeActive)
+            {
+                throw new NotInTestModeException("DiagTest");
+            }
             // TODO: Implement. NOTE: Has a million flags in funny combinations, read up!
             throw new NotImplementedException();
         }
@@ -449,17 +459,25 @@ namespace Neato
         /// </summary>
         public void SetLCD()
         {
+            if (!IsTestModeActive)
+            {
+                throw new NotInTestModeException("SetLCD");
+            }
             // TODO: Implement. Note: Has a million flags, read up!
             throw new NotImplementedException();
         }
         
         /// <summary>
-        /// Sets LDS rotation on or off. Can only be run in TestMode.
+        /// Sets LDS rotation on or off. (TestMode Only)
         /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#SetLDSRotation for more info.
         /// </summary>
         /// <param name="flag"></param>
         public void SetLDSRotation(LDSRotationFlag flag)
         {
+            if(!IsTestModeActive)
+            {
+                throw new NotInTestModeException("SetLDSRotation");
+            }
             _connection.SendCommand("SETLDSROTATION " + flag.ToString());
         }
         public enum LDSRotationFlag
@@ -474,18 +492,32 @@ namespace Neato
         /// </summary>
         public void SetLED()
         {
+            if (!IsTestModeActive)
+            {
+                throw new NotInTestModeException("SetLED");
+            }
             // TODO: Implement. Note: Has a million flags, read up!
             throw new NotImplementedException();
         }
         
         /// <summary>
         /// Sets the specified motor to run in a direction at a requested speed. (TestMode Only)
-        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#SetLED for more info.
+        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#SetMotor for more info.
         /// </summary>
         public void SetMotor()
         {
+            if (!IsTestModeActive)
+            {
+                throw new NotInTestModeException("SetMotor");
+            }
             // TODO: Implement. Note: Also millions of flags.
             throw new NotImplementedException();
+        }
+        public enum Motors
+        {
+            LeftWheel,
+            RightWheel,
+            Brush
         }
         
         /// <summary>
@@ -493,11 +525,15 @@ namespace Neato
         /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#SetSystemMode for more info.
         /// </summary>
         /// <param name="flag"></param>
-        public void SetSystemMode(SystemModeFlag flag)
+        public void SetSystemMode(SystemMode flag)
         {
-            _connection.SendCommand("SETSYSTEMMODE " + flag.ToString());
+            if (!IsTestModeActive)
+            {
+                throw new NotInTestModeException("SetSystemMode");
+            }
+            _connection.SendCommand("SetSystemMode " + flag);
         }
-        public enum SystemModeFlag
+        public enum SystemMode
         {
             Shutdown,
             Hibernate,
@@ -514,14 +550,7 @@ namespace Neato
         /// <param name="activated">True for enabled, false for disabled.</param>
         public void ToggleSchedule(bool activated)
         {
-            if (activated)
-            {
-                _connection.SendCommand("SETSCHEDULE ON", true);
-            }
-            else
-            {
-                _connection.SendCommand("SETSCHEDULE OFF", true);
-            }
+            _connection.SendCommand(activated ? "SETSCHEDULE ON" : "SETSCHEDULE OFF", true);
         }
 
         /// <summary>
@@ -532,6 +561,107 @@ namespace Neato
         {
             _connection.SendCommand("SETSCHEDULE " + day + " 0 0 NONE");
         }
+
+        /// <summary>
+        /// Enables or disables the specified motor. (TestMode Only)
+        /// </summary>
+        /// <param name="motor">Motor to toggle.</param>
+        /// <param name="enable">True to enable, false to disable specified motor.</param>
+        public void ToggleMotor(Motors motor, bool enable)
+        {
+            if (!IsTestModeActive)
+            {
+                throw new NotInTestModeException("ToggleMotor : SetMotor");
+            }
+
+            string parameters = null;
+            switch(motor)
+            {
+                case Motors.Brush:
+                    parameters = enable ? "BrushEnable" : "BrushDisable";
+                    break;
+                case Motors.LeftWheel:
+                    parameters = enable ? "LWheelEnable" : "LWheelDisable";
+                    break;
+                case Motors.RightWheel:
+                    parameters = enable ? "RWheelEnable" : "RWheelDisable";
+                    break;
+            }
+
+            this._connection.SendCommand("SetMotor " + parameters,true);
+        }
+
+        public void ToggleVacuum(bool enable, int powerlevel)
+        {
+            if (enable)
+            {
+                this._connection.SendCommand("SetMotor VacuumOn VacuumSpeed " + powerlevel, true);
+            }
+            else
+            {
+                this._connection.SendCommand("SetMotor VacuumOff", true);
+            }
+        }
+
+        /// <summary>
+        /// Sets the Neato system clock to the same value as current Windows time.
+        /// </summary>
+        public void SyncTime()
+        {
+            DateTime now = DateTime.Now;
+
+            ScheduleDayFlag day = (ScheduleDayFlag)now.DayOfWeek;
+            this.SetTime(day, now.Hour, now.Minute, now.Second);
+        }
+
+        #region Movement
+
+        public void LeftRotation(int speed, bool reverse)
+        {
+            int distance = 190;
+            if (reverse) distance *= -1;
+            _connection.SendCommand("SetMotor RWheelDist "+distance+" LWheelDist "+ -distance +" Speed " + speed, true);
+        }
+
+        public void RightRotation(int speed, bool reverse)
+        {
+            int distance = 190;
+            if (reverse) distance *= -1;
+            _connection.SendCommand("SetMotor LWheelDist "+ distance +" RWheelDist "+ -distance +" Speed " + speed, true);
+        }
+
+        public void TurnAround(int speed, bool reverse)
+        {
+            int distance = 380;
+            if (reverse) distance *= -1;
+            _connection.SendCommand("SetMotor RWheelDist "+ distance +" LWheelDist "+ -distance +" Speed " + speed, true);
+        }
+
+        public void Stop()
+        {
+            TestMode(TestModeFlag.Off);
+            TestMode(TestModeFlag.On);
+        }
+
+        public void BothWheels(int distance, int speed, bool reverse)
+        {
+            if (reverse) distance *= -1;
+            _connection.SendCommand("SetMotor LWheelDist " + distance + " RWheelDist " + distance + " Speed " + speed, true);
+        }
+
+        public void LeftWheel(int distance, int speed, bool reverse)
+        {
+            if (reverse) distance *= -1;
+            _connection.SendCommand("SetMotor LWheelDist " + distance + " Speed " + speed, true);
+        }
+
+        public void RightWheel(int distance, int speed, bool reverse)
+        {
+            if (reverse) distance *= -1;
+            _connection.SendCommand("SetMotor RWheelDist " + distance + " Speed " + speed, true);
+        }
+
+        #endregion
 
         #endregion
 

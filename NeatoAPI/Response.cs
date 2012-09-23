@@ -9,16 +9,17 @@ namespace Neato
     public class Response
     {
         private Dictionary<string, string> _csv;
-        private String _info;
+        private readonly String _raw;
         public Response(String response)
         {
+            _raw = response;
+
             // TODO: Parse into Dictionary<x,y> form.
-            _info = response;
         }
 
-        public String GetText()
+        public String GetRaw()
         {
-            return _info;
+            return _raw;
         }
     }
 }
