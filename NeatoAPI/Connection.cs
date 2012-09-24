@@ -1,58 +1,65 @@
-﻿using System;
-using System.IO;
-using System.IO.Ports;
-using System.Threading;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Connection.cs" company="N/A">
+// TODO: Update copyright text.
+// </copyright>
+// <summary>
+//   Represents the Serial Port connection to the Neato device.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Neato
 {
+    using System;
+    using System.IO;
+    using System.IO.Ports;
+    using System.Threading;
+
+    using global::Neato.Exceptions;
+
     /// <summary>
     /// Represents the Serial Port connection to the Neato device.
     /// </summary>
     public class Connection
     {
-        #region Definitions and static methods.
-
-        private SerialPort _port;
-        public String Port { get; private set; }
-
-        #endregion
-
         /// <summary>
-        /// Creates a Connection object and attempts to connect to specified COM port.
+        /// The SerialPort object used to communicate with the Neato.
         /// </summary>
-        /// <param name="comPort">Name of port to connect to (eg. "COM3").</param>
+        private readonly SerialPort neatoPort;
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Connection"/> class.
+        /// </summary>
+        /// <param name="comPort">Name of port to connect to.</param>
         /// <exception cref="NotANeatoException">If device does not respond to the GetVersion command, it's probably not a Neato.</exception>
         public Connection(string comPort)
         {
             // Values are irrelevant, quote from Programmers guide:
             // "The communication parameters (Baud, start/stop bits,parity, etc.) are unimportant. They apply only to a real com port."
-            _port = new SerialPort(comPort, 4711, Parity.None, 7, StopBits.One) {ReadTimeout = 500, WriteTimeout = 500};
-            Port = comPort;
+            this.neatoPort = new SerialPort(comPort, 4711, Parity.None, 7, StopBits.One) { ReadTimeout = 500, WriteTimeout = 500 };
+            this.Port = comPort;
 
-            try
-            {
-                // Connect to the COM-port.
-                _port.Open();
+            // Connect to the COM-port.
+            this.neatoPort.Open();
 
-                // Let's find out if we're connected to a Neato...
-                if (! SendCommand("GetVersion").GetRaw().Contains("Component,Major,Minor,Build"))
-                {
-                    throw new NotANeatoException("Response to GetVersion does not contain headers \"Component,Major,Minor,Build\".");
-                }
-            }
-            catch(Exception e)
+            // Let's find out if we're connected to a Neato...
+            if (!this.SendCommand("GetVersion").GetRaw().Contains("Component,Major,Minor,Build"))
             {
-                // TODO: Perform some kind of exception handling!
-                throw;
+                throw new NotANeatoException("Response to GetVersion does not contain headers \"Component,Major,Minor,Build\".");
             }
         }
 
         /// <summary>
+        /// Gets the COM port used to connect to this Neato.
+        /// </summary>
+        public string Port { get; private set; }
+
+        /// <summary>
         /// Checks if connection to Neato is open.
         /// </summary>
+        /// <returns>True if connected to the Neato, false if not.</returns>
         public bool IsConnected()
         {
-            return _port.IsOpen;
+            return this.neatoPort.IsOpen;
         }
         
         /// <summary>
@@ -60,7 +67,7 @@ namespace Neato
         /// </summary>
         public void Disconnect()
         {
-            _port.Close();
+            this.neatoPort.Close();
         }
 
         /// <summary>
@@ -71,11 +78,11 @@ namespace Neato
         /// <exception cref="IOException">Thrown if no connection to Neato has been established.</exception>
         public Response SendCommand(string command)
         {
-            return SendCommand(command, false);
+            return this.SendCommand(command, false);
         }
         
         /// <summary>
-        /// Sends a command to the Neato. Waiting for a response will delay this call by ~150ms.
+        /// Sends a command to the Neato. Waiting for a response will delay this call by roughly 150 milliseconds.
         /// </summary>
         /// <param name="command">Command (and any flags) to send to Neato.</param>
         /// <param name="quick">True ignores any responses and returns an empty response file.</param>
@@ -84,39 +91,44 @@ namespace Neato
         /// <exception cref="ArgumentException">Thrown if command sent is unknown to Neato.</exception>
         public Response SendCommand(string command, bool quick)
         {
-            if(!IsConnected()) throw new IOException("No connection to Neato established.");
+            if (!this.IsConnected())
+            {
+                throw new IOException("No connection to Neato established.");
+            }
 
             // Empty anything lingering in the buffer.
-            _port.DiscardInBuffer();
+            this.neatoPort.DiscardInBuffer();
 
             // Send command to Neato.
-            _port.WriteLine(command);
+            this.neatoPort.WriteLine(command);
 
-            if(quick)
+            if (quick)
             {
                 // Save some time by not listening to Neato.
-                return new Response("");
+                return new Response(string.Empty);
             }
 
             // Wait a little bit for Neato's response.
             Thread.Sleep(150);
-            string tmp = _port.ReadExisting();
+            string tmp = this.neatoPort.ReadExisting();
             
-            if(tmp.Length == 0)
+            if (tmp.Length == 0)
             {
                 // No response received from command.
-                return new Response("");
+                return new Response(string.Empty);
             }
             
             // Cut off first line, contains command sent.
             tmp = tmp.Substring(tmp.IndexOf('\n'));
-            
-            if(tmp.Contains("\n")) // Checks if there are any new lines.
+
+            // Check if there are any new lines.
+            if (tmp.Contains("\n"))
             {
                 // Cut off last line, it will only contain Ctrl+Z control character.
                 tmp = tmp.Substring(0, tmp.LastIndexOf('\n'));
             }
-            if(tmp.Contains("Unknown Cmd:"))
+
+            if (tmp.Contains("Unknown Cmd:"))
             {
                 throw new ArgumentException(tmp);
             }

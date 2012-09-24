@@ -1,8 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Response.cs" company="N/A">
+// TODO: Update copyright text.
+// </copyright>
+// <summary>
+//   Represents a response from the Neato. Parsed .csv format, ish.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Neato
 {
+    using System;
+    using System.Collections.Generic;
+
     /// <summary>
     /// Represents a response from the Neato. Parsed .csv format, ish.
     /// </summary>

@@ -1,10 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Neato.cs" company="N/A">
+// TODO: Update copyright text.
+// </copyright>
+// <summary>
+//   This object holds the current state of the connected Neato.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Neato
 {
+    using System.Text;
+
     /// <summary>
     /// This object holds the current state of the connected Neato.
     /// </summary>
@@ -66,9 +72,9 @@ namespace Neato
         /// <returns>A sizeable String containing all state variables and their values.</returns>
         public override string ToString()
         {
-            StringBuilder res = new StringBuilder("Neato State - Connected on \"" + Connection.Port + "\".");
+            var res = new StringBuilder("Neato State - Connected on \"" + Connection.Port + "\".");
             //// TODO: Implement a proper ToString() for this class.
-            return base.ToString();
+            return res.ToString();
         }
 
         /// <summary>

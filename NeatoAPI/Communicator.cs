@@ -1,7 +1,16 @@
-﻿using System;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Communicator.cs" company="N/A">
+// TODO: Update copyright text.
+// </copyright>
+// <summary>
+//   Defines the Communicator type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace Neato
 {
+    using System;
+
     public class Communicator
     {
         private Connection _connection;
@@ -53,12 +62,6 @@ namespace Neato
         {
             _connection.SendCommand("CLEAN " + flag,true);
         }
-        public enum CleanFlag
-        { 
-            House,
-            Spot,
-            Stop
-        }
 
         /// <summary>
         /// Get the Accelerometer readings.
@@ -89,11 +92,6 @@ namespace Neato
         public Response GetAnalogSensors(AnalogSensorFlag flag)
         {
             return _connection.SendCommand("GETANALOGSENSORS " + flag);
-        }
-        public enum AnalogSensorFlag
-        {
-            Raw,
-            Stats
         }
 
         /// <summary>
@@ -155,10 +153,6 @@ namespace Neato
         {
             _connection.SendCommand("GETERR " + flag, true);
         }
-        public enum ErrorFlag
-        {
-            Clear
-        }
 
         /// <summary>
         /// Get scan packet from LDS.
@@ -200,16 +194,6 @@ namespace Neato
         {
             return _connection.SendCommand("GETMOTORS " + flag);
         }
-        public enum GetMotorFlag
-        {
-            Brush,
-            Vacuum,
-            LeftWheel,
-            RightWheel,
-            Laser,
-            Charger
-        }
-        
 
         /// <summary>
         /// Get the Cleaning Schedule. (24 hour clock format)
@@ -231,16 +215,6 @@ namespace Neato
         {
             // TODO: Implement. "GetSchedule Day 0" or "GetSchedule 0" ?
             return _connection.SendCommand("GETSCHEDULE " + (int)flag);
-        }
-        public enum ScheduleDayFlag
-        {
-            Sunday = 0,
-            Monday = 1,
-            Tuesday = 2,
-            Wednesday = 3,
-            Thursday = 4,
-            Friday = 5,
-            Saturday = 6
         }
 
         /// <summary>
@@ -298,31 +272,6 @@ namespace Neato
             {
                 _connection.SendCommand("PLAYSOUND " + (int)flag,true);
             }
-        }
-        public enum PlaySoundFlag
-        {
-            WakingUp = 0,
-            StartingCleaning = 1,
-            CleaningCompleted = 2,
-            AttentionNeeded = 3,
-            BackingUpIntoBaseStation = 4,
-            BaseStationDockingCompleted = 5,
-            TestSound1 = 6,
-            TestSound2 = 7,
-            TestSound3 = 8,
-            TestSound4 = 9,
-            TestSound5 = 10,
-            Exploring = 11,
-            ShutDown = 12,
-            PickedUp = 13,
-            GoingToSleep = 14,
-            ReturningHome = 15,
-            UserCanceledCleaning = 16,
-            UserTerminatedCleaning = 17,
-            SlippedOffBaseWhileCharging = 18,
-            Alert = 19,
-            ThankYou = 20,
-            Stop
         }
 
         /// <summary>
@@ -404,11 +353,6 @@ namespace Neato
         {
             _connection.SendCommand("SETWALLFOLLOWER " + flag, true);
         }
-        public enum WallFollowerFlag
-        {
-            Enable,
-            Disable
-        }
 
         #endregion
         
@@ -432,11 +376,6 @@ namespace Neato
             }
             
             _connection.SendCommand("TESTMODE " + flag);
-        }
-        public enum TestModeFlag
-        {
-            On,
-            Off
         }
         
         /// <summary>
@@ -478,12 +417,7 @@ namespace Neato
             {
                 throw new NotInTestModeException("SetLDSRotation");
             }
-            _connection.SendCommand("SETLDSROTATION " + flag.ToString());
-        }
-        public enum LDSRotationFlag
-        {
-            On,
-            Off 
+            this._connection.SendCommand("SETLDSROTATION " + flag.ToString());
         }
         
         /// <summary>
@@ -513,12 +447,6 @@ namespace Neato
             // TODO: Implement. Note: Also millions of flags.
             throw new NotImplementedException();
         }
-        public enum Motors
-        {
-            LeftWheel,
-            RightWheel,
-            Brush
-        }
         
         /// <summary>
         /// Set the operation mode of the robot. (TestMode Only)
@@ -532,12 +460,6 @@ namespace Neato
                 throw new NotInTestModeException("SetSystemMode");
             }
             _connection.SendCommand("SetSystemMode " + flag);
-        }
-        public enum SystemMode
-        {
-            Shutdown,
-            Hibernate,
-            Standby
         }
         
         #endregion

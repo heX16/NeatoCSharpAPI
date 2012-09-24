@@ -6,6 +6,10 @@ using Neato;
 
 namespace NeatoTest
 {
+    using System.IO;
+
+    using Neato.Exceptions;
+
     public partial class Form1 : Form
     {
         private Communicator _com;
@@ -21,6 +25,10 @@ namespace NeatoTest
 
         private void Button1Click(object sender, EventArgs e)
         {
+            if(comboBoxCOM.Items.Count == 0)
+            {
+                throw new IOException("No COM ports available on the system!");
+            }
             _com = new Communicator(comboBoxCOM.SelectedValue.ToString());
             CheckIfConnected();
             CheckTestModeGUI();
