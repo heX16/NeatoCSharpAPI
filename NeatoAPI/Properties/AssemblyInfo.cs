@@ -16,7 +16,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("NeatoAPI")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Squid-Studios")]
 [assembly: AssemblyProduct("NeatoAPI")]
 [assembly: AssemblyCopyright("Copyright © Joel Ahlgren 2012")]
 [assembly: AssemblyTrademark("")]

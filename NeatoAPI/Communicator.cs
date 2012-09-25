@@ -178,7 +178,7 @@ namespace Neato
         /// Get the diagnostic data for the motors.
         /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#GetMotors for more info.
         /// </summary>
-        /// <return>Reports data for all motors. (Format: Parameter,Value)</return>
+        /// <returns>Reports data for all motors. (Format: Parameter,Value)</returns>
         public Response GetMotors()
         {
             return _connection.SendCommand("GETMOTORS");
@@ -535,55 +535,6 @@ namespace Neato
             ScheduleDayFlag day = (ScheduleDayFlag)now.DayOfWeek;
             this.SetTime(day, now.Hour, now.Minute, now.Second);
         }
-
-        #region Movement
-
-        public void LeftRotation(int speed, bool reverse)
-        {
-            int distance = 190;
-            if (reverse) distance *= -1;
-            _connection.SendCommand("SetMotor RWheelDist "+distance+" LWheelDist "+ -distance +" Speed " + speed, true);
-        }
-
-        public void RightRotation(int speed, bool reverse)
-        {
-            int distance = 190;
-            if (reverse) distance *= -1;
-            _connection.SendCommand("SetMotor LWheelDist "+ distance +" RWheelDist "+ -distance +" Speed " + speed, true);
-        }
-
-        public void TurnAround(int speed, bool reverse)
-        {
-            int distance = 380;
-            if (reverse) distance *= -1;
-            _connection.SendCommand("SetMotor RWheelDist "+ distance +" LWheelDist "+ -distance +" Speed " + speed, true);
-        }
-
-        public void Stop()
-        {
-            TestMode(TestModeFlag.Off);
-            TestMode(TestModeFlag.On);
-        }
-
-        public void BothWheels(int distance, int speed, bool reverse)
-        {
-            if (reverse) distance *= -1;
-            _connection.SendCommand("SetMotor LWheelDist " + distance + " RWheelDist " + distance + " Speed " + speed, true);
-        }
-
-        public void LeftWheel(int distance, int speed, bool reverse)
-        {
-            if (reverse) distance *= -1;
-            _connection.SendCommand("SetMotor LWheelDist " + distance + " Speed " + speed, true);
-        }
-
-        public void RightWheel(int distance, int speed, bool reverse)
-        {
-            if (reverse) distance *= -1;
-            _connection.SendCommand("SetMotor RWheelDist " + distance + " Speed " + speed, true);
-        }
-
-        #endregion
 
         #endregion
 
