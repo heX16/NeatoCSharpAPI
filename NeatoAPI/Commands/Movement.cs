@@ -7,9 +7,6 @@
 namespace Neato.Commands
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
 
     /// <summary>
     /// TODO: Update summary.
@@ -29,7 +26,7 @@ namespace Neato.Commands
         /// <summary>
         /// Connection to the Neato.
         /// </summary>
-        private Connection connection;
+        private readonly Connection connection;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Movement"/> class.

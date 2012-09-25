@@ -64,37 +64,6 @@ namespace Neato
         }
 
         /// <summary>
-        /// Get the Accelerometer readings.
-        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#GetAccel for more info.
-        /// </summary>
-        /// <return>Label,Value</return>
-        public Response GetAccel()
-        {
-            return _connection.SendCommand("GETACCEL");
-        }
-
-        /// <summary>
-        /// Get the A2D readings for the analog sensors.
-        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#GetAnalogSensors for more info.
-        /// </summary>
-        /// <return>SensorName,Value</return>
-        public Response GetAnalogSensors()
-        {
-            return _connection.SendCommand("GETANALOGSENSORS");
-        }
-
-        /// <summary>
-        /// Get the A2D readings for the analog sensors.
-        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#GetAnalogSensors for more info.
-        /// </summary>
-        /// <param name="flag"></param>
-        /// <return>Raw: "SensorName,SignalVoltageInmV"; Stats: "SensorName,Mean,Max,Min,Cnt,Dev".</return>
-        public Response GetAnalogSensors(AnalogSensorFlag flag)
-        {
-            return _connection.SendCommand("GETANALOGSENSORS " + flag);
-        }
-
-        /// <summary>
         /// Get the state of the UI Buttons.
         /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#GetButtons for more info.
         /// </summary>
@@ -102,66 +71,6 @@ namespace Neato
         public Response GetButtons()
         {
             return _connection.SendCommand("GETBUTTONS");
-        }
-
-        /// <summary>
-        /// Prints out the cal info from the System Control Block.
-        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#GetCalInfo for more info.
-        /// </summary>
-        /// <return>Parameter,Value</return>
-        public Response GetCalInfo()
-        {
-            return _connection.SendCommand("GETCALINFO");
-        }
-
-        /// <summary>
-        /// Get the diagnostic data for the charging system.
-        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#GetCharger for more info.
-        /// </summary>
-        /// <return>Charger Variable Name, Value</return>
-        public Response GetCharger()
-        {
-            return _connection.SendCommand("GETCHARGER");
-        }
-
-        /// <summary>
-        /// Get the state of the digital sensors.
-        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#GetDigitalSensors for more info.
-        /// </summary>
-        /// <return>Digital Sensor Name, Value</return>
-        public Response GetDigitalSensors()
-        {
-            return _connection.SendCommand("GETDIGITALSENSORS");
-        }
-
-        /// <summary>
-        /// Get Error Message.
-        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#GetErr for more info.
-        /// </summary>
-        /// <return>If error exists, returns error code (int). If no error exists, nothing is returned.</return>
-        public Response GetErr()
-        {
-            return _connection.SendCommand("GETERR");
-        }
-
-        /// <summary>
-        /// Clear reported error(s).
-        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#GetErr for more info.
-        /// </summary>
-        /// <param name="flag">Use Clear flag dismiss the reported error.</param>
-        public void GetErr(ErrorFlag flag)
-        {
-            _connection.SendCommand("GETERR " + flag, true);
-        }
-
-        /// <summary>
-        /// Get scan packet from LDS.
-        /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#GetLDSScan for more info.
-        /// </summary>
-        /// <return>360 output lines of LDS Scan Angle, Distance code in MM, normalized spot intensity, and error code. Followed by 2 status variable pairs. (Format: AngleInDegrees,DistInMM,Intensity,ErrorCodeHEX)</return>
-        public Response GetLDSScan()
-        {
-            return _connection.SendCommand("GETLDSSCAN");
         }
         
         /// <summary>
