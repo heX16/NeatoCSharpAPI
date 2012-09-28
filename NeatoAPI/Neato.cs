@@ -7,9 +7,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Neato
+namespace NeatoAPI
 {
+    using System.IO;
     using System.Text;
+
+    using global::NeatoAPI.Commands;
 
     /// <summary>
     /// This object holds the current state of the connected Neato.
@@ -22,7 +25,8 @@ namespace Neato
         /// <param name="neatoPort">COM port used to connect to Neato.</param>
         public Neato(string neatoPort)
         {
-            Connection = new Connection(neatoPort);
+            this.Connection = new Connection(neatoPort);
+            this.Command = new Command(this);
             this.SetDefaults();
         }
 
@@ -31,6 +35,11 @@ namespace Neato
         /// Gets the Connection object for this Neato.
         /// </summary>
         public Connection Connection { get; private set; }
+
+        /// <summary>
+        /// Gets the Command object, which allows access to Neato commands.
+        /// </summary>
+        public Command Command { get; private set; }
         
         #region Motors
 
@@ -58,13 +67,64 @@ namespace Neato
         #region Misc
 
         /// <summary>
-        /// Gets a value indicating whether or not this Neato is in TestMode or not.
+        /// Gets or sets a value indicating whether or not this Neato is in TestMode or not.
+        /// TODO: Preferably keep this setter private.
         /// </summary>
-        public bool TestMode { get; private set; }
+        public bool TestMode { get; set; }
+
+        /// <summary>
+        /// Gets a value indicating whether connection to this Neato is active or not.
+        /// </summary>
+        public bool IsConnected
+        {
+            get
+            {
+                return Connection.IsConnected();
+            }
+        }
         
         #endregion
 
         #endregion
+
+        /// <summary>
+        /// The connect to neato.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="Connection"/>.
+        /// </returns>
+        public Connection ConnectToNeato()
+        {
+            // Loop through every available port on the system.
+            foreach (var port in System.IO.Ports.SerialPort.GetPortNames())
+            {
+                Connection result = null;
+
+                try
+                {
+                    // Make a connection
+                    result = new Connection(port);
+                }
+                catch (IOException)
+                {
+                    // Something horribly wrong with port.
+                    result = null;
+                }
+                catch (NotANeatoException)
+                {
+                    // Something answered, but it's not Neato...
+                    result = null;
+                }
+
+                if (result != null)
+                {
+                    return result;
+                }
+            }
+
+            // If no Neato was found, return null.
+            return null;
+        }
 
         /// <summary>
         /// A String representing the current state.

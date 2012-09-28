@@ -4,7 +4,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Neato
+namespace NeatoAPI
 {
     using System;
     using System.Collections.Generic;

@@ -7,14 +7,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Neato
+namespace NeatoAPI
 {
     using System;
     using System.IO;
     using System.IO.Ports;
     using System.Threading;
-
-    using global::Neato.Exceptions;
 
     /// <summary>
     /// Represents the Serial Port connection to the Neato device.

@@ -4,7 +4,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Neato
+namespace NeatoAPI
 {
     /// <summary>
     /// Parameters available together with the GetAnalogSensors command.

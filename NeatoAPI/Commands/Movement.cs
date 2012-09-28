@@ -4,7 +4,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Neato.Commands
+namespace NeatoAPI.Commands
 {
     using System;
 
@@ -26,17 +26,17 @@ namespace Neato.Commands
         /// <summary>
         /// Connection to the Neato.
         /// </summary>
-        private readonly Connection connection;
+        private readonly Neato neato;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Movement"/> class.
         /// </summary>
-        /// <param name="connection">
-        /// Connection to the Neato to be moved.
+        /// <param name="parent">
+        /// Connection to the Neato to be moved. TODO:
         /// </param>
-        public Movement(Connection connection)
+        public Movement(Neato parent)
         {
-            this.connection = connection;
+            this.neato = parent;
         }
 
         #region Commands
@@ -80,7 +80,7 @@ namespace Neato.Commands
                 distance *= -1;
             }
 
-            this.connection.SendCommand("SetMotor RWheelDist " + distance + " LWheelDist " + -distance + " Speed " + speed, true);
+            this.neato.Connection.SendCommand("SetMotor RWheelDist " + distance + " LWheelDist " + -distance + " Speed " + speed, true);
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace Neato.Commands
                 distance *= -1;
             }
 
-            this.connection.SendCommand("SetMotor LWheelDist " + distance + " RWheelDist " + distance + " Speed " + speed, true);
+            this.neato.Connection.SendCommand("SetMotor LWheelDist " + distance + " RWheelDist " + distance + " Speed " + speed, true);
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace Neato.Commands
                 distance *= -1;
             }
 
-            this.connection.SendCommand("SetMotor LWheelDist " + distance + " Speed " + speed, true);
+            this.neato.Connection.SendCommand("SetMotor LWheelDist " + distance + " Speed " + speed, true);
         }
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace Neato.Commands
                 distance *= -1;
             }
 
-            this.connection.SendCommand("SetMotor RWheelDist " + distance + " Speed " + speed, true);
+            this.neato.Connection.SendCommand("SetMotor RWheelDist " + distance + " Speed " + speed, true);
         }
 
         #endregion
@@ -176,7 +176,7 @@ namespace Neato.Commands
                 distance *= -1;
             }
 
-            this.connection.SendCommand("SetMotor RWheelDist " + distance + " LWheelDist " + -distance + " Speed " + speed, true);
+            this.neato.Connection.SendCommand("SetMotor RWheelDist " + distance + " LWheelDist " + -distance + " Speed " + speed, true);
         }
 
         #endregion
