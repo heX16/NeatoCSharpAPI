@@ -1,10 +1,4 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="Misc.cs" company="N/A">
-// TODO: Update copyright text.
-// </copyright>
-// -----------------------------------------------------------------------
-
-namespace NeatoAPI.Commands
+﻿namespace NeatoAPI.Commands
 {
     /// <summary>
     /// TODO: Update summary.

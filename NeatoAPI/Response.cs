@@ -1,34 +1,51 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Response.cs" company="N/A">
-// TODO: Update copyright text.
-// </copyright>
-// <summary>
-//   Represents a response from the Neato. Parsed .csv format, ish.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace NeatoAPI
+﻿namespace NeatoAPI
 {
-    using System;
     using System.Collections.Generic;
 
     /// <summary>
-    /// Represents a response from the Neato. Parsed .csv format, ish.
+    /// Represents a response from the Neato. 
     /// </summary>
     public class Response
     {
-        private Dictionary<string, string> _csv;
-        private readonly String _raw;
-        public Response(String response)
-        {
-            _raw = response;
+        /// <summary>
+        /// The unmodified response data.
+        /// </summary>
+        private readonly string raw;
 
-            // TODO: Parse into Dictionary<x,y> form.
+        /// <summary>
+        /// The parsed form of the response.
+        /// </summary>
+        public Dictionary<string, List<string>> data;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Response"/> class.
+        /// </summary>
+        /// <param name="response">
+        /// Response text received from the Neato.
+        /// </param>
+        public Response(string response)
+        {
+            this.raw = response;
+
+            this.data = new Dictionary<string, List<string>>();
+
+            foreach (var line in response.Split('\n'))
+            {
+                string cut = line.Trim();
+                var tmp = new List<string>(cut.Split(','));
+                this.data.Add(tmp[0], new List<string>(tmp.GetRange(1, tmp.Count - 1)));
+            }
         }
 
-        public String GetRaw()
+        /// <summary>
+        /// Retrieves the unmodified response text.
+        /// </summary>
+        /// <returns>
+        /// String containing response text, possibly with newlines (\n).
+        /// </returns>
+        public string GetRaw()
         {
-            return _raw;
+            return this.raw;
         }
     }
 }

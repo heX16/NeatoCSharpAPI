@@ -1,10 +1,4 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="Movement.cs" company="N/A">
-// TODO: Update copyright text.
-// </copyright>
-// -----------------------------------------------------------------------
-
-namespace NeatoAPI.Commands
+﻿namespace NeatoAPI.Commands
 {
     using System;
 
@@ -89,10 +83,8 @@ namespace NeatoAPI.Commands
         public void Stop()
         {
             // A somewhat ugly solution. TODO: Investigate if there is a better way.
-            throw new NotImplementedException("Waiting for TestMode command.");
-            
-            // TestMode(TestModeFlag.Off);
-            // TestMode(TestModeFlag.On);
+            this.neato.Command.Test.TestMode(TestModeFlag.Off);
+            this.neato.Command.Test.TestMode(TestModeFlag.On);
         }
 
         /// <summary>

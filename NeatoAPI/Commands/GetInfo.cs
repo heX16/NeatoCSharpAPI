@@ -1,16 +1,5 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="GetInfo.cs" company="N/A">
-// TODO: Update copyright text.
-// </copyright>
-// -----------------------------------------------------------------------
-
-namespace NeatoAPI.Commands
+﻿namespace NeatoAPI.Commands
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-
     /// <summary>
     /// TODO: Update summary.
     /// </summary>
@@ -24,8 +13,8 @@ namespace NeatoAPI.Commands
         /// <summary>
         /// Initializes a new instance of the <see cref="GetInfo"/> class.
         /// </summary>
-        /// <param name="neato">
-        /// Connection to the Neato to be moved. TODO
+        /// <param name="parent">
+        /// Connection to the Neato to be moved. TODO:
         /// </param>
         public GetInfo(Neato parent)
         {
@@ -120,7 +109,7 @@ namespace NeatoAPI.Commands
         /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#GetErr for more info.
         /// </summary>
         /// <returns>
-        /// If error exists, returns error code (int). If no error exists, nothing is returned.
+        /// If error exists, returns error code (integer). If no error exists, nothing is returned.
         /// </returns>
         public Response GetErr()
         {
@@ -259,7 +248,6 @@ namespace NeatoAPI.Commands
         public Response GetWarranty()
         {
             return this.neato.Connection.SendCommand("GetWarranty");
-
         }
     }
 }

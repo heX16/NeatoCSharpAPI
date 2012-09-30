@@ -1,13 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Connection.cs" company="N/A">
-// TODO: Update copyright text.
-// </copyright>
-// <summary>
-//   Represents the Serial Port connection to the Neato device.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace NeatoAPI
+﻿namespace NeatoAPI
 {
     using System;
     using System.IO;
@@ -57,6 +48,11 @@ namespace NeatoAPI
         /// <returns>True if connected to the Neato, false if not.</returns>
         public bool IsConnected()
         {
+            if (this.neatoPort == null)
+            {
+                return false;
+            }
+
             return this.neatoPort.IsOpen;
         }
         
@@ -65,6 +61,12 @@ namespace NeatoAPI
         /// </summary>
         public void Disconnect()
         {
+            if (this.neatoPort == null)
+            {
+                // Don't have to close something that doesn't exist...
+                return;
+            }
+            
             this.neatoPort.Close();
         }
 
@@ -126,7 +128,8 @@ namespace NeatoAPI
                 tmp = tmp.Substring(0, tmp.LastIndexOf('\n'));
             }
 
-            if (tmp.Contains("Unknown Cmd:"))
+            // Look for errors reported by Neato.
+            if (tmp.Contains("Unknown Cmd:") || tmp.Contains("Unrecognized Option"))
             {
                 throw new ArgumentException(tmp);
             }

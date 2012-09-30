@@ -1,10 +1,4 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="Command.cs" company="">
-// TODO: Update copyright text.
-// </copyright>
-// -----------------------------------------------------------------------
-
-namespace NeatoAPI.Commands
+﻿namespace NeatoAPI.Commands
 {
     /// <summary>
     /// This object simply provides access to Neato commands via Properties.
@@ -53,7 +47,7 @@ namespace NeatoAPI.Commands
         public Sys System { get; private set; }
 
         /// <summary>
-        /// Gets object with access to miscelaneous commands...
+        /// Gets object with access to miscellaneous commands...
         /// </summary>
         public Misc Misc { get; private set; }
     }

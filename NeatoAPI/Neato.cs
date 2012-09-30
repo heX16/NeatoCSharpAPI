@@ -1,13 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Neato.cs" company="N/A">
-// TODO: Update copyright text.
-// </copyright>
-// <summary>
-//   This object holds the current state of the connected Neato.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace NeatoAPI
+﻿namespace NeatoAPI
 {
     using System.IO;
     using System.Text;
@@ -19,6 +10,14 @@ namespace NeatoAPI
     /// </summary>
     public class Neato
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Neato"/> class.
+        /// Will require a call to <see cref="ConnectToNeato"/> to setup connection and initialize other values.
+        /// </summary>
+        public Neato()
+        {
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Neato"/> class. 
         /// </summary>
@@ -93,12 +92,12 @@ namespace NeatoAPI
         /// <returns>
         /// The <see cref="Connection"/>.
         /// </returns>
-        public Connection ConnectToNeato()
+        public bool ConnectToNeato()
         {
             // Loop through every available port on the system.
             foreach (var port in System.IO.Ports.SerialPort.GetPortNames())
             {
-                Connection result = null;
+                Connection result;
 
                 try
                 {
@@ -118,12 +117,15 @@ namespace NeatoAPI
 
                 if (result != null)
                 {
-                    return result;
+                    this.Connection = result;
+                    this.SetDefaults();
+                    this.Command = new Command(this);
+                    return true;
                 }
             }
 
             // If no Neato was found, return null.
-            return null;
+            return false;
         }
 
         /// <summary>

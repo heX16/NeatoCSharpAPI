@@ -1,10 +1,4 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="Enumerators.cs" company="N/A">
-// TODO: Update copyright text.
-// </copyright>
-// -----------------------------------------------------------------------
-
-namespace NeatoAPI
+﻿namespace NeatoAPI
 {
     /// <summary>
     /// Parameters available together with the GetAnalogSensors command.
@@ -133,107 +127,107 @@ namespace NeatoAPI
     public enum PlaySoundFlag
     {
         /// <summary>
-        /// TODO: The waking up.
+        /// The sound played when Neato power button is first pressed.
         /// </summary>
         WakingUp = 0,
 
         /// <summary>
-        /// TODO: The starting cleaning.
+        /// Sound played when starting a cleaning.
         /// </summary>
         StartingCleaning = 1,
 
         /// <summary>
-        /// TODO: The cleaning completed.
+        /// Sound played when a cleaning has been completed.
         /// </summary>
         CleaningCompleted = 2,
 
         /// <summary>
-        /// TODO: The attention needed.
+        /// Sound played when Neato requires users attention.
         /// </summary>
         AttentionNeeded = 3,
 
         /// <summary>
-        /// TODO: The backing up into base station.
+        /// DOES NOT PLAY ANY SOUNDS
         /// </summary>
         BackingUpIntoBaseStation = 4,
 
         /// <summary>
-        /// TODO: The base station docking completed.
+        /// DOES NOT PLAY ANY SOUNDS
         /// </summary>
         BaseStationDockingCompleted = 5,
 
         /// <summary>
-        /// TODO: The test sound 1.
+        /// Test sound #1.
         /// </summary>
         TestSound1 = 6,
 
         /// <summary>
-        /// TODO: The test sound 2.
+        /// Test sound #2.
         /// </summary>
         TestSound2 = 7,
 
         /// <summary>
-        /// TODO: The test sound 3.
+        /// Test sound #3.
         /// </summary>
         TestSound3 = 8,
 
         /// <summary>
-        /// TODO: The test sound 4.
+        /// Test sound #4.
         /// </summary>
         TestSound4 = 9,
 
         /// <summary>
-        /// TODO: The test sound 5.
+        /// Test sound #5.
         /// </summary>
         TestSound5 = 10,
 
         /// <summary>
-        /// TODO: The exploring.
+        /// DOES NOT PLAY ANY SOUNDS
         /// </summary>
         Exploring = 11,
 
         /// <summary>
-        /// TODO: The shut down.
+        /// DOES NOT PLAY ANY SOUNDS
         /// </summary>
         ShutDown = 12,
 
         /// <summary>
-        /// TODO: The picked up.
+        /// DOES NOT PLAY ANY SOUNDS
         /// </summary>
         PickedUp = 13,
 
         /// <summary>
-        /// TODO: The going to sleep.
+        /// DOES NOT PLAY ANY SOUNDS
         /// </summary>
         GoingToSleep = 14,
 
         /// <summary>
-        /// TODO: The returning home.
+        /// DOES NOT PLAY ANY SOUNDS
         /// </summary>
         ReturningHome = 15,
 
         /// <summary>
-        /// TODO: The user canceled cleaning.
+        /// DOES NOT PLAY ANY SOUNDS
         /// </summary>
         UserCanceledCleaning = 16,
 
         /// <summary>
-        /// TODO: The user terminated cleaning.
+        /// DOES NOT PLAY ANY SOUNDS
         /// </summary>
         UserTerminatedCleaning = 17,
 
         /// <summary>
-        /// TODO: The slipped off base while charging.
+        /// DOES NOT PLAY ANY SOUNDS
         /// </summary>
         SlippedOffBaseWhileCharging = 18,
 
         /// <summary>
-        /// TODO: The alert.
+        /// Same sound as <see cref="AttentionNeeded"/>.
         /// </summary>
         Alert = 19,
 
         /// <summary>
-        /// TODO: The thank you.
+        /// DOES NOT PLAY ANY SOUNDS
         /// </summary>
         ThankYou = 20,
 

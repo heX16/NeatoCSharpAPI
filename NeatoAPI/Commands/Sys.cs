@@ -1,10 +1,4 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="System.cs" company="">
-// TODO: Update copyright text.
-// </copyright>
-// -----------------------------------------------------------------------
-
-namespace NeatoAPI.Commands
+﻿namespace NeatoAPI.Commands
 {
     using System;
 
@@ -28,7 +22,6 @@ namespace NeatoAPI.Commands
         {
             this.neato = parent;
         }
-
 
         #region Commands
 
@@ -70,10 +63,12 @@ namespace NeatoAPI.Commands
             {
                 throw new ArgumentOutOfRangeException("hour", hour, "Hours set must be within range 0..23.");
             }
+
             if (minute < 0 || minute > 59)
             {
                 throw new ArgumentOutOfRangeException("minute", minute, "Minutes set must be within range 0..59.");
             }
+
             if (sec < 0 || sec > 59)
             {
                 throw new ArgumentOutOfRangeException("sec", sec, "Seconds set must be within range 0..59.");

@@ -1,10 +1,4 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="Schedule.cs" company="N/A">
-// TODO: Update copyright text.
-// </copyright>
-// -----------------------------------------------------------------------
-
-namespace NeatoAPI.Commands
+﻿namespace NeatoAPI.Commands
 {
     using System;
 

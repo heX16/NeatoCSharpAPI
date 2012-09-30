@@ -13,9 +13,9 @@
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if(disposing && (components != null))
+            if (disposing && (this.components != null))
             {
-                components.Dispose();
+                this.components.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -33,8 +33,6 @@
             this.button3 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.labelNeatoConnected = new System.Windows.Forms.Label();
-            this.comboBoxCOM = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.comboBoxSound = new System.Windows.Forms.ComboBox();
             this.groupBoxPlaySound = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -61,6 +59,12 @@
             this.button15 = new System.Windows.Forms.Button();
             this.groupBoxGetFunctions = new System.Windows.Forms.GroupBox();
             this.groupBoxTestFunctions = new System.Windows.Forms.GroupBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.labelVacuumState = new System.Windows.Forms.Label();
+            this.buttonVacuum = new System.Windows.Forms.Button();
+            this.label9 = new System.Windows.Forms.Label();
+            this.labelVacuumPower = new System.Windows.Forms.Label();
+            this.trackBarVacuum = new System.Windows.Forms.TrackBar();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.textBoxMoveDistance = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -91,27 +95,21 @@
             this.buttonRefresh = new System.Windows.Forms.Button();
             this.progressBarBatteryBar = new System.Windows.Forms.ProgressBar();
             this.label4 = new System.Windows.Forms.Label();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.trackBarVacuum = new System.Windows.Forms.TrackBar();
-            this.labelVacuumPower = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.buttonVacuum = new System.Windows.Forms.Button();
-            this.labelVacuumState = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBoxPlaySound.SuspendLayout();
             this.groupBoxTestMode.SuspendLayout();
             this.groupBoxGetFunctions.SuspendLayout();
             this.groupBoxTestFunctions.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarVacuum)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.groupBoxStatus.SuspendLayout();
-            this.groupBox3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBarVacuum)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(6, 88);
+            this.button1.Location = new System.Drawing.Point(6, 42);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(97, 23);
             this.button1.TabIndex = 0;
@@ -132,7 +130,7 @@
             // button3
             // 
             this.button3.Enabled = false;
-            this.button3.Location = new System.Drawing.Point(6, 117);
+            this.button3.Location = new System.Drawing.Point(6, 71);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(97, 23);
             this.button3.TabIndex = 2;
@@ -143,13 +141,11 @@
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.labelNeatoConnected);
-            this.groupBox1.Controls.Add(this.comboBoxCOM);
-            this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.button3);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(109, 146);
+            this.groupBox1.Size = new System.Drawing.Size(109, 100);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Neato Connection";
@@ -159,28 +155,11 @@
             this.labelNeatoConnected.AutoSize = true;
             this.labelNeatoConnected.BackColor = System.Drawing.Color.LightCoral;
             this.labelNeatoConnected.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.labelNeatoConnected.Location = new System.Drawing.Point(16, 24);
+            this.labelNeatoConnected.Location = new System.Drawing.Point(8, 18);
             this.labelNeatoConnected.Name = "labelNeatoConnected";
             this.labelNeatoConnected.Size = new System.Drawing.Size(75, 15);
             this.labelNeatoConnected.TabIndex = 9;
             this.labelNeatoConnected.Text = "Disconnected";
-            // 
-            // comboBoxCOM
-            // 
-            this.comboBoxCOM.FormattingEnabled = true;
-            this.comboBoxCOM.Location = new System.Drawing.Point(6, 65);
-            this.comboBoxCOM.Name = "comboBoxCOM";
-            this.comboBoxCOM.Size = new System.Drawing.Size(97, 21);
-            this.comboBoxCOM.TabIndex = 8;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 49);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(58, 13);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Serial Port:";
             // 
             // comboBoxSound
             // 
@@ -256,16 +235,16 @@
             // textBoxFromNeato
             // 
             this.textBoxFromNeato.Enabled = false;
-            this.textBoxFromNeato.Location = new System.Drawing.Point(12, 177);
+            this.textBoxFromNeato.Location = new System.Drawing.Point(12, 131);
             this.textBoxFromNeato.Multiline = true;
             this.textBoxFromNeato.Name = "textBoxFromNeato";
-            this.textBoxFromNeato.Size = new System.Drawing.Size(278, 276);
+            this.textBoxFromNeato.Size = new System.Drawing.Size(278, 322);
             this.textBoxFromNeato.TabIndex = 10;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(9, 161);
+            this.label5.Location = new System.Drawing.Point(12, 115);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(83, 13);
             this.label5.TabIndex = 12;
@@ -461,6 +440,70 @@
             this.groupBoxTestFunctions.TabIndex = 30;
             this.groupBoxTestFunctions.TabStop = false;
             this.groupBoxTestFunctions.Text = "Test functions";
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.labelVacuumState);
+            this.groupBox3.Controls.Add(this.buttonVacuum);
+            this.groupBox3.Controls.Add(this.label9);
+            this.groupBox3.Controls.Add(this.labelVacuumPower);
+            this.groupBox3.Controls.Add(this.trackBarVacuum);
+            this.groupBox3.Location = new System.Drawing.Point(7, 110);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(200, 103);
+            this.groupBox3.TabIndex = 12;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Vacuum";
+            // 
+            // labelVacuumState
+            // 
+            this.labelVacuumState.AutoSize = true;
+            this.labelVacuumState.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.labelVacuumState.Location = new System.Drawing.Point(125, 23);
+            this.labelVacuumState.Name = "labelVacuumState";
+            this.labelVacuumState.Size = new System.Drawing.Size(23, 15);
+            this.labelVacuumState.TabIndex = 4;
+            this.labelVacuumState.Text = "Off";
+            // 
+            // buttonVacuum
+            // 
+            this.buttonVacuum.Location = new System.Drawing.Point(6, 19);
+            this.buttonVacuum.Name = "buttonVacuum";
+            this.buttonVacuum.Size = new System.Drawing.Size(97, 23);
+            this.buttonVacuum.TabIndex = 3;
+            this.buttonVacuum.Text = "Toggle vacuum";
+            this.buttonVacuum.UseVisualStyleBackColor = true;
+            this.buttonVacuum.Click += new System.EventHandler(this.buttonVacuum_Click);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(6, 80);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(113, 13);
+            this.label9.TabIndex = 2;
+            this.label9.Text = "Vacuum motor power: ";
+            // 
+            // labelVacuumPower
+            // 
+            this.labelVacuumPower.AutoSize = true;
+            this.labelVacuumPower.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.labelVacuumPower.Location = new System.Drawing.Point(125, 80);
+            this.labelVacuumPower.Name = "labelVacuumPower";
+            this.labelVacuumPower.Size = new System.Drawing.Size(29, 15);
+            this.labelVacuumPower.TabIndex = 1;
+            this.labelVacuumPower.Text = "90%";
+            // 
+            // trackBarVacuum
+            // 
+            this.trackBarVacuum.Location = new System.Drawing.Point(0, 42);
+            this.trackBarVacuum.Maximum = 100;
+            this.trackBarVacuum.Name = "trackBarVacuum";
+            this.trackBarVacuum.Size = new System.Drawing.Size(200, 45);
+            this.trackBarVacuum.TabIndex = 0;
+            this.trackBarVacuum.TickFrequency = 10;
+            this.trackBarVacuum.Value = 90;
+            this.trackBarVacuum.ValueChanged += new System.EventHandler(this.trackBarVacuum_ValueChanged);
             // 
             // groupBox2
             // 
@@ -778,70 +821,6 @@
             this.label4.TabIndex = 0;
             this.label4.Text = "Battery level:";
             // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.labelVacuumState);
-            this.groupBox3.Controls.Add(this.buttonVacuum);
-            this.groupBox3.Controls.Add(this.label9);
-            this.groupBox3.Controls.Add(this.labelVacuumPower);
-            this.groupBox3.Controls.Add(this.trackBarVacuum);
-            this.groupBox3.Location = new System.Drawing.Point(7, 110);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(200, 103);
-            this.groupBox3.TabIndex = 12;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Vacuum";
-            // 
-            // trackBarVacuum
-            // 
-            this.trackBarVacuum.Location = new System.Drawing.Point(0, 42);
-            this.trackBarVacuum.Maximum = 100;
-            this.trackBarVacuum.Name = "trackBarVacuum";
-            this.trackBarVacuum.Size = new System.Drawing.Size(200, 45);
-            this.trackBarVacuum.TabIndex = 0;
-            this.trackBarVacuum.TickFrequency = 10;
-            this.trackBarVacuum.Value = 90;
-            this.trackBarVacuum.ValueChanged += new System.EventHandler(this.trackBarVacuum_ValueChanged);
-            // 
-            // labelVacuumPower
-            // 
-            this.labelVacuumPower.AutoSize = true;
-            this.labelVacuumPower.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.labelVacuumPower.Location = new System.Drawing.Point(125, 80);
-            this.labelVacuumPower.Name = "labelVacuumPower";
-            this.labelVacuumPower.Size = new System.Drawing.Size(29, 15);
-            this.labelVacuumPower.TabIndex = 1;
-            this.labelVacuumPower.Text = "90%";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(6, 80);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(113, 13);
-            this.label9.TabIndex = 2;
-            this.label9.Text = "Vacuum motor power: ";
-            // 
-            // buttonVacuum
-            // 
-            this.buttonVacuum.Location = new System.Drawing.Point(6, 19);
-            this.buttonVacuum.Name = "buttonVacuum";
-            this.buttonVacuum.Size = new System.Drawing.Size(97, 23);
-            this.buttonVacuum.TabIndex = 3;
-            this.buttonVacuum.Text = "Toggle vacuum";
-            this.buttonVacuum.UseVisualStyleBackColor = true;
-            this.buttonVacuum.Click += new System.EventHandler(this.buttonVacuum_Click);
-            // 
-            // labelVacuumState
-            // 
-            this.labelVacuumState.AutoSize = true;
-            this.labelVacuumState.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.labelVacuumState.Location = new System.Drawing.Point(125, 23);
-            this.labelVacuumState.Name = "labelVacuumState";
-            this.labelVacuumState.Size = new System.Drawing.Size(23, 15);
-            this.labelVacuumState.TabIndex = 4;
-            this.labelVacuumState.Text = "Off";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -865,15 +844,15 @@
             this.groupBoxTestMode.PerformLayout();
             this.groupBoxGetFunctions.ResumeLayout(false);
             this.groupBoxTestFunctions.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarVacuum)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
             this.groupBoxStatus.ResumeLayout(false);
             this.groupBoxStatus.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBarVacuum)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -886,7 +865,6 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.ComboBox comboBoxSound;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBoxPlaySound;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.GroupBox groupBoxTestMode;
@@ -895,7 +873,6 @@
         private System.Windows.Forms.Button buttonTestToggle;
         private System.Windows.Forms.TextBox textBoxFromNeato;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.ComboBox comboBoxCOM;
         private System.Windows.Forms.Button buttonGetAccel;
         private System.Windows.Forms.Label labelNeatoConnected;
         private System.Windows.Forms.Button buttonGetAnalog;

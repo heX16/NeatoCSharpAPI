@@ -1,12 +1,9 @@
-﻿using System;
-using System.Drawing;
-using System.IO.Ports;
-using System.Windows.Forms;
-using NeatoAPI;
-
-namespace NeatoTest
+﻿namespace NeatoTest
 {
-    using System.IO;
+    using System;
+    using System.Drawing;
+    using System.Windows.Forms;
+    using NeatoAPI;
 
     public partial class Form1 : Form
     {
@@ -14,23 +11,27 @@ namespace NeatoTest
 
         public Form1()
         {
-            InitializeComponent();
-            comboBoxSound.DataSource = Enum.GetValues(typeof(PlaySoundFlag));
-            comboBoxCOM.DataSource = SerialPort.GetPortNames();
-            comboBoxLDSRotationFlag.DataSource = Enum.GetValues(typeof(LDSRotationFlag));
-            CheckIfConnected();
+            this.InitializeComponent();
+            this.comboBoxSound.DataSource = Enum.GetValues(typeof(PlaySoundFlag));
+            this.comboBoxLDSRotationFlag.DataSource = Enum.GetValues(typeof(LDSRotationFlag));
+            this.robot = new Neato();
+            this.CheckIfConnected();
         }
 
         private void Button1Click(object sender, EventArgs e)
         {
-            if (this.comboBoxCOM.Items.Count == 0)
+            if (!this.robot.ConnectToNeato())
             {
-                throw new IOException("No COM ports available on the system!");
+                MessageBox.Show(
+                    this,
+                    "Could not find any COM ports connected to a Neato.",
+                    "Connection failed",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
-            
-            this.robot = new Neato(this.comboBoxCOM.SelectedValue.ToString());
-            CheckIfConnected();
-            CheckTestModeGUI();
+
+            this.CheckIfConnected();
+            this.CheckTestModeGUI();
         }
 
         private void Button2Click(object sender, EventArgs e)
@@ -161,7 +162,9 @@ namespace NeatoTest
 
         private void Button8Click(object sender, EventArgs e)
         {
-            this.textBoxFromNeato.Text = this.robot.Command.GetInfo.GetLDSScan().GetRaw();
+            Response res = this.robot.Command.GetInfo.GetLDSScan();
+            this.textBoxFromNeato.Text = res.GetRaw();
+            MessageBox.Show(this, res.data.ToString(), "Result from GetLDSScan");
         }
 
         private void Button9Click(object sender, EventArgs e)

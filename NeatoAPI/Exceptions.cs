@@ -1,12 +1,3 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Exceptions.cs" company="N/A">
-// TODO: Update copyright text.
-// </copyright>
-// <summary>
-//   Defines the NotANeatoException type.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
 namespace NeatoAPI
 {
     using System;
