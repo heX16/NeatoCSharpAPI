@@ -128,7 +128,7 @@
                 tmp = tmp.Substring(0, tmp.LastIndexOf('\n'));
             }
 
-            // Look for errors reported by Neato.
+            // Look for errors reported by Neato. TODO: Check if any other replies available.
             if (tmp.Contains("Unknown Cmd:") || tmp.Contains("Unrecognized Option"))
             {
                 throw new ArgumentException(tmp);

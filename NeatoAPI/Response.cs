@@ -1,6 +1,8 @@
 ﻿namespace NeatoAPI
 {
+    using System;
     using System.Collections.Generic;
+    using System.Text;
 
     /// <summary>
     /// Represents a response from the Neato. 
@@ -15,7 +17,7 @@
         /// <summary>
         /// The parsed form of the response.
         /// </summary>
-        public Dictionary<string, List<string>> data;
+        private readonly Dictionary<string, List<string>> data;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Response"/> class.
@@ -25,15 +27,26 @@
         /// </param>
         public Response(string response)
         {
-            this.raw = response;
+            // Find data headers (Assumed to be first line. TODO: Verify this.
+            var headers = response.Split('\n')[0].Trim().Split(',');
 
+            this.raw = response;
             this.data = new Dictionary<string, List<string>>();
+
+            foreach (var header in headers)
+            {
+                this.data.Add(header, new List<string>());
+            }
 
             foreach (var line in response.Split('\n'))
             {
-                string cut = line.Trim();
+                var cut = line.Trim();
                 var tmp = new List<string>(cut.Split(','));
-                this.data.Add(tmp[0], new List<string>(tmp.GetRange(1, tmp.Count - 1)));
+                
+                for (var i = 0; i < headers.Length; i++)
+                {
+                    this.data[headers[i]].Add(tmp[i]);
+                }
             }
         }
 
@@ -46,6 +59,22 @@
         public string GetRaw()
         {
             return this.raw;
+        }
+
+        /// <summary>
+        /// A textual representation of this response object. Can contain multiple lines.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="string"/> representing this response's data.
+        /// </returns>
+        /// <exception cref="NotImplementedException">
+        /// Isn't implemented yet, duh.
+        /// </exception>
+        public override string ToString()
+        {
+            var result = new StringBuilder();
+
+            throw new NotImplementedException("Need to finalize parsed data structure first.");
         }
     }
 }

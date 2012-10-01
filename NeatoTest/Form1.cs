@@ -164,7 +164,6 @@
         {
             Response res = this.robot.Command.GetInfo.GetLDSScan();
             this.textBoxFromNeato.Text = res.GetRaw();
-            MessageBox.Show(this, res.data.ToString(), "Result from GetLDSScan");
         }
 
         private void Button9Click(object sender, EventArgs e)
