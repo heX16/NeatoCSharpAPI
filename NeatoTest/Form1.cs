@@ -216,17 +216,10 @@
 
         private void buttonRefresh_Click(object sender, EventArgs e)
         {
-            string data = this.robot.Command.GetInfo.GetCharger().GetRaw();
-            string[] lines = data.Split('\n');
-
-            foreach (string line in lines)
-            {
-                if (line.Contains("FuelPercent"))
-                {
-                    this.progressBarBatteryBar.Value = int.Parse(line.Split(',')[1]);
-                    this.labelBatteryCharge.Text = this.progressBarBatteryBar.Value + "%";
-                }
-            }
+            this.robot.RefreshInformation();
+            
+            this.progressBarBatteryBar.Value = this.robot.BatteryCharge;
+            this.labelBatteryCharge.Text = this.progressBarBatteryBar.Value + "%";
 
             this.textBoxFromNeato.Text = this.robot.ToString();
         }
