@@ -144,7 +144,7 @@
         /// <param name="enable">True to enable, false to disable specified motor.</param>
         public void ToggleMotor(Motors motor, bool enable)
         {
-            if (this.neato.TestMode)
+            if (!this.neato.TestMode)
             {
                 throw new NotInTestModeException("ToggleMotor : SetMotor");
             }
