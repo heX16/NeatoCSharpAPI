@@ -33,19 +33,23 @@
             this.raw = response;
             this.data = new Dictionary<string, List<string>>();
 
-            foreach (var header in headers)
-            {
-                this.data.Add(header, new List<string>());
-            }
+            bool first = true;
 
             foreach (var line in response.Split('\n'))
             {
-                var cut = line.Trim();
-                var tmp = new List<string>(cut.Split(','));
-                
-                for (var i = 0; i < headers.Length; i++)
+                if (first)
                 {
-                    this.data[headers[i]].Add(tmp[i]);
+                    first = false;
+                    continue;
+                }
+
+                var cut = line.Trim().Split(',');
+
+                this.data.Add(cut[0], new List<string>());
+
+                for (var i = 1; i < cut.Length; i++)
+                {
+                    this.data[cut[0]].Add(cut[i]);
                 }
             }
         }
@@ -59,6 +63,20 @@
         public string GetRaw()
         {
             return this.raw;
+        }
+
+        /// <summary>
+        /// TODO: Write doc.
+        /// </summary>
+        /// <param name="identifier">
+        /// The identifier.
+        /// </param>
+        /// <returns>
+        /// The <see cref="List"/>.
+        /// </returns>
+        public List<string> GetLine(string identifier)
+        {
+            return data[identifier];
         }
 
         /// <summary>
