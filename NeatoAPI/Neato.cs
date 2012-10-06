@@ -2,6 +2,7 @@
 {
     using System.Drawing;
     using System.IO;
+    using System.Net.NetworkInformation;
     using System.Text;
 
     /// <summary>
@@ -123,6 +124,25 @@
 
         #endregion
 
+        #region Battery & Power information
+
+        /// <summary>
+        /// Gets the current battery charge level.
+        /// </summary>
+        public int BatteryCharge { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether Neato is charging or not.
+        /// </summary>
+        public bool IsCharging { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether external power is present or not.
+        /// </summary>
+        public bool ExternalPowerPresent { get; private set; }
+
+        #endregion
+
         #endregion
 
         /// <summary>
@@ -165,6 +185,19 @@
 
             // If no Neato was found, return null.
             return false;
+        }
+
+        /// <summary>
+        /// Refreshes all information about the unit. Requires connection to Neato.
+        /// </summary>
+        public void RefreshInformation()
+        {
+            if (!this.IsConnected)
+            {
+                throw new IOException("Not connected to a Neato!");
+            }
+
+            this.UpdateChargerInfo();
         }
 
         /// <summary>
@@ -215,6 +248,31 @@
             this.PositionalDataIntegrity = true;
             this.Angle = 0;
             this.Position = Point.Empty;
+
+            // Default values for battery & power:
+            this.BatteryCharge = -1;
+            this.IsCharging = false;
+            this.ExternalPowerPresent = false;
+        }
+
+        /// <summary>
+        /// Updates the power information.
+        /// </summary>
+        /// <exception cref="IOException">
+        /// Thrown if not connected to a Neato.
+        /// </exception>
+        private void UpdateChargerInfo()
+        {
+            if (!this.IsConnected)
+            {
+                throw new IOException("Not connected to a Neato!");
+            }
+
+            var info = this.Command.GetInfo.GetCharger();
+
+            this.BatteryCharge = int.Parse(info.GetLine("FuelPercent")[0]);
+            this.IsCharging = info.GetLine("ChargingActive")[0] == "1";
+            this.ExternalPowerPresent = info.GetLine("ExtPwrPresent")[0] == "1";
         }
     }
 }
