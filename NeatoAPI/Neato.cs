@@ -10,6 +10,11 @@
     public class Neato
     {
         /// <summary>
+        /// Internal variable for the angle of this Neato.
+        /// </summary>
+        private int angle;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Neato"/> class.
         /// Will require a call to <see cref="ConnectToNeato"/> to setup connection and initialize other values.
         /// </summary>
@@ -67,7 +72,6 @@
 
         /// <summary>
         /// Gets or sets a value indicating whether or not this Neato is in TestMode or not.
-        /// TODO: Preferably keep this setter private.
         /// </summary>
         public bool TestMode { get; set; }
 
@@ -111,6 +115,11 @@
         /// Gets or sets the position.
         /// </summary>
         public Point Position { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether position and angle are correct.
+        /// </summary>
+        public bool PositionalDataIntegrity { get; set; }
 
         #endregion
 
@@ -164,19 +173,22 @@
         /// <returns>A sizeable String containing all state variables and their values.</returns>
         public override string ToString()
         {
-            var res = new StringBuilder("Neato State - Connected on \"" + Connection.Port + "\".");
+            var res = new StringBuilder();
 
+            res.AppendLine("Neato State - Connected on \"" + Connection.Port + "\".");
+            res.AppendLine();
             res.AppendLine("* Motors *");
             res.AppendLine("Motor - Brush: " + this.MotorBrush);
             res.AppendLine("Motor - Vacuum: " + this.MotorVacuum);
-            res.AppendLine("Motor - LWheel: " + this.MotorLWheel);
-            res.AppendLine("Motor - RWheel: " + this.MotorRWheel);
+            res.AppendLine("Motor - Left Wheel: " + this.MotorLWheel);
+            res.AppendLine("Motor - Right Wheel: " + this.MotorRWheel);
             res.AppendLine();
             res.AppendLine("* Modes *");
             res.AppendLine("Test Mode: " + this.TestMode);
-            res.AppendLine("LDS Rotation: " + this.LDSRotation);
+            res.AppendLine("LDS rotation: " + this.LDSRotation);
             res.AppendLine();
             res.AppendLine("* Positional data *");
+            res.AppendLine("Positional data integrity: " + this.PositionalDataIntegrity);
             res.AppendLine("Position: (" + this.Position.X + "," + this.Position.Y + ")");
             res.AppendLine("Angle: " + this.angle + "°");
             
@@ -190,22 +202,19 @@
         private void SetDefaults()
         {
             // Default values for motors:
-            this.MotorBrush = true;
-            this.MotorVacuum = true;
+            this.MotorBrush = false;
+            this.MotorVacuum = false;
             this.MotorLWheel = true;
             this.MotorRWheel = true;
 
             // Default values for modes:
             this.TestMode = false;
+            this.LDSRotation = false;
 
             // Default values for spatial info:
+            this.PositionalDataIntegrity = true;
             this.Angle = 0;
             this.Position = Point.Empty;
         }
-
-        /// <summary>
-        /// Internal variable for the angle of this Neato.
-        /// </summary>
-        private int angle;
     }
 }

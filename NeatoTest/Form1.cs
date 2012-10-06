@@ -227,6 +227,8 @@
                     this.labelBatteryCharge.Text = this.progressBarBatteryBar.Value + "%";
                 }
             }
+
+            this.textBoxFromNeato.Text = this.robot.ToString();
         }
 
         #endregion
@@ -286,31 +288,37 @@
         private void buttonMoveLeftRotate_Click(object sender, EventArgs e)
         {
             this.robot.Command.Movement.LeftRotation(int.Parse(this.textBoxMoveSpeed.Text));
+            this.textBoxFromNeato.Text = this.robot.ToString();
         }
 
         private void buttonMoveRightRotate_Click(object sender, EventArgs e)
         {
             this.robot.Command.Movement.RightRotation(int.Parse(this.textBoxMoveSpeed.Text));
+            this.textBoxFromNeato.Text = this.robot.ToString();
         }
 
         private void buttonMoveForward_Click(object sender, EventArgs e)
         {
             this.robot.Command.Movement.BothWheels(int.Parse(this.textBoxMoveDistance.Text), int.Parse(this.textBoxMoveSpeed.Text), this.checkBoxMoveReverse.Checked);
+            this.textBoxFromNeato.Text = this.robot.ToString();
         }
 
         private void buttonMoveLeft_Click(object sender, EventArgs e)
         {
             this.robot.Command.Movement.LeftWheel(int.Parse(this.textBoxMoveDistance.Text), int.Parse(this.textBoxMoveSpeed.Text), this.checkBoxMoveReverse.Checked);
+            this.textBoxFromNeato.Text = this.robot.ToString();
         }
 
         private void buttonMoveRight_Click(object sender, EventArgs e)
         {
             this.robot.Command.Movement.RightWheel(int.Parse(this.textBoxMoveDistance.Text), int.Parse(this.textBoxMoveSpeed.Text), this.checkBoxMoveReverse.Checked);
+            this.textBoxFromNeato.Text = this.robot.ToString();
         }
 
         private void buttonMove180_Click(object sender, EventArgs e)
         {
             this.robot.Command.Movement.TurnAround(int.Parse(this.textBoxMoveSpeed.Text), this.checkBoxMoveReverse.Checked);
+            this.textBoxFromNeato.Text = this.robot.ToString();
         }
 
         private void buttonMoveStop_Click(object sender, EventArgs e)

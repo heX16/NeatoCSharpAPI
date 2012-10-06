@@ -98,6 +98,9 @@
             // A somewhat ugly solution. TODO: Investigate if there is a better way.
             this.neato.Command.Test.TestMode(TestModeFlag.Off);
             this.neato.Command.Test.TestMode(TestModeFlag.On);
+            
+            // This will fuck up any spatial calculations :(
+            this.neato.PositionalDataIntegrity = false;
         }
 
         /// <summary>
