@@ -143,6 +143,50 @@
 
         #endregion
 
+        #region Digital Sensors
+
+        /// <summary>
+        /// Gets a value indicating whether DC jack is connected.
+        /// </summary>
+        public bool IsDCJackConnected { get; private set; }
+        
+        /// <summary>
+        /// Gets a value indicating whether is dustbin present.
+        /// </summary>
+        public bool IsDustbinPresent { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether is left wheel extended.
+        /// </summary>
+        public bool IsLeftWheelExtended { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether is right wheel extended.
+        /// </summary>
+        public bool IsRightWheelExtended { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether is front left bumper blocked.
+        /// </summary>
+        public bool IsFrontLeftBumperBlocked { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether is front right bumper blocked.
+        /// </summary>
+        public bool IsFrontRightBumperBlocked { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether is left side blocked.
+        /// </summary>
+        public bool IsLeftSideBlocked { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether is right side blocked.
+        /// </summary>
+        public bool IsRightSideBlocked { get; private set; }
+
+        #endregion
+
         #endregion
 
         /// <summary>
@@ -198,6 +242,7 @@
             }
 
             this.UpdateChargerInfo();
+            this.UpdateDigitalSensor();
         }
 
         /// <summary>
@@ -208,23 +253,40 @@
         {
             var res = new StringBuilder();
 
-            res.AppendLine("Neato State - Connected on \"" + Connection.Port + "\".");
-            res.AppendLine();
-            res.AppendLine("* Motors *");
-            res.AppendLine("Motor - Brush: " + this.MotorBrush);
-            res.AppendLine("Motor - Vacuum: " + this.MotorVacuum);
-            res.AppendLine("Motor - Left Wheel: " + this.MotorLWheel);
-            res.AppendLine("Motor - Right Wheel: " + this.MotorRWheel);
-            res.AppendLine();
-            res.AppendLine("* Modes *");
-            res.AppendLine("Test Mode: " + this.TestMode);
-            res.AppendLine("LDS rotation: " + this.LDSRotation);
-            res.AppendLine();
-            res.AppendLine("* Positional data *");
-            res.AppendLine("Positional data integrity: " + this.PositionalDataIntegrity);
-            res.AppendLine("Position: (" + this.Position.X + "," + this.Position.Y + ")");
-            res.AppendLine("Angle: " + this.angle + "°");
-            
+            if (!this.IsConnected)
+            {
+                res.AppendLine("Neato State - Not connected.");
+            }
+            else
+            {
+                res.AppendLine("Neato State - Connected on \"" + Connection.Port + "\".");
+                res.AppendLine();
+                res.AppendLine("* Motors *");
+                res.AppendLine("Motor - Brush: " + this.MotorBrush);
+                res.AppendLine("Motor - Vacuum: " + this.MotorVacuum);
+                res.AppendLine("Motor - Left Wheel: " + this.MotorLWheel);
+                res.AppendLine("Motor - Right Wheel: " + this.MotorRWheel);
+                res.AppendLine();
+                res.AppendLine("* Modes *");
+                res.AppendLine("Test Mode: " + this.TestMode);
+                res.AppendLine("LDS rotation: " + this.LDSRotation);
+                res.AppendLine();
+                res.AppendLine("* Positional data *");
+                res.AppendLine("Positional data integrity: " + this.PositionalDataIntegrity);
+                res.AppendLine("Position: (" + this.Position.X + "," + this.Position.Y + ")");
+                res.AppendLine("Angle: " + this.angle + "°");
+                res.AppendLine();
+                res.AppendLine("* Digital Sensors *");
+                res.AppendLine("DC Jack connected: " + this.IsDCJackConnected);
+                res.AppendLine("Dustbin present: " + this.IsDustbinPresent);
+                res.AppendLine("Left wheel extended: " + this.IsLeftWheelExtended);
+                res.AppendLine("Right wheel extended: " + this.IsRightWheelExtended);
+                res.AppendLine("Blocked: Left front bumper: " + this.IsFrontLeftBumperBlocked);
+                res.AppendLine("Blocked: Right front bumper: " + this.IsFrontRightBumperBlocked);
+                res.AppendLine("Blocked: Left side: " + this.IsLeftSideBlocked);
+                res.AppendLine("Blocked: Right side: " + this.IsRightSideBlocked);
+            }
+
             // TODO: Implement a proper ToString() for this class.
             return res.ToString();
         }
@@ -253,6 +315,17 @@
             this.BatteryCharge = -1;
             this.IsCharging = false;
             this.ExternalPowerPresent = false;
+
+            // Digital sensors:
+            this.IsDCJackConnected = false;
+            this.IsDustbinPresent = true;
+            this.IsLeftWheelExtended = false;
+            this.IsRightWheelExtended = false;
+            this.IsLeftSideBlocked = false;
+            this.IsRightSideBlocked = false;
+            this.IsFrontLeftBumperBlocked = false;
+            this.IsFrontRightBumperBlocked = false;
+
         }
 
         /// <summary>
@@ -273,6 +346,25 @@
             this.BatteryCharge = int.Parse(info.GetLine("FuelPercent")[0]);
             this.IsCharging = info.GetLine("ChargingActive")[0] == "1";
             this.ExternalPowerPresent = info.GetLine("ExtPwrPresent")[0] == "1";
+        }
+
+        private void UpdateDigitalSensor()
+        {
+            if (!this.IsConnected)
+            {
+                throw new IOException("Not connected to a Neato!");
+            }
+
+            var info = this.Command.GetInfo.GetDigitalSensors();
+
+            this.IsDCJackConnected = info.GetLine("SNSR_DC_JACK_CONNECT")[0] == "1";
+            this.IsDustbinPresent = info.GetLine("SNSR_DUSTBIN_IS_IN")[0] == "1";
+            this.IsLeftWheelExtended = info.GetLine("SNSR_LEFT_WHEEL_EXTENDED")[0] == "1";
+            this.IsRightWheelExtended = info.GetLine("SNSR_RIGHT_WHEEL_EXTENDED")[0] == "1";
+            this.IsLeftSideBlocked = info.GetLine("LSIDEBIT")[0] == "1";
+            this.IsRightSideBlocked = info.GetLine("RSIDEBIT")[0] == "1";
+            this.IsFrontLeftBumperBlocked = info.GetLine("LFRONTBIT")[0] == "1";
+            this.IsFrontRightBumperBlocked = info.GetLine("RFRONTBIT")[0] == "1";
         }
     }
 }

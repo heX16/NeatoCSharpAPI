@@ -76,7 +76,7 @@
         /// </returns>
         public List<string> GetLine(string identifier)
         {
-            return data[identifier];
+            return this.data[identifier];
         }
 
         /// <summary>
