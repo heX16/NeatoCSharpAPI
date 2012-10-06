@@ -1,4 +1,4 @@
-﻿namespace NeatoAPI.Commands
+﻿namespace NeatoAPI
 {
     using System;
 
@@ -86,7 +86,10 @@
                 throw new NotInTestModeException("SetLDSRotation");
             }
 
-            this.neato.Connection.SendCommand("SETLDSROTATION " + flag);
+            this.neato.Connection.SendCommand("SetLDSRotation " + flag);
+            
+            // Update Neato status!
+            this.neato.LDSRotation = flag == LDSRotationFlag.On;
         }
 
         /// <summary>
@@ -151,12 +154,15 @@
             {
                 case Motors.Brush:
                     parameters = enable ? "BrushEnable" : "BrushDisable";
+                    this.neato.MotorBrush = enable;
                     break;
                 case Motors.LeftWheel:
                     parameters = enable ? "LWheelEnable" : "LWheelDisable";
+                    this.neato.MotorLWheel = enable;
                     break;
                 case Motors.RightWheel:
                     parameters = enable ? "RWheelEnable" : "RWheelDisable";
+                    this.neato.MotorRWheel = enable;
                     break;
             }
 
@@ -173,10 +179,12 @@
             if (enable)
             {
                 this.neato.Connection.SendCommand("SetMotor VacuumOn VacuumSpeed " + powerlevel, true);
+                this.neato.MotorVacuum = true;
             }
             else
             {
                 this.neato.Connection.SendCommand("SetMotor VacuumOff", true);
+                this.neato.MotorVacuum = false;
             }
         }
 

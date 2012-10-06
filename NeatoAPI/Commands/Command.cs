@@ -1,4 +1,4 @@
-﻿namespace NeatoAPI.Commands
+﻿namespace NeatoAPI
 {
     /// <summary>
     /// This object simply provides access to Neato commands via Properties.

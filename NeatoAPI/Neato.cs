@@ -1,9 +1,8 @@
 ﻿namespace NeatoAPI
 {
+    using System.Drawing;
     using System.IO;
     using System.Text;
-
-    using global::NeatoAPI.Commands;
 
     /// <summary>
     /// This object holds the current state of the connected Neato.
@@ -30,37 +29,38 @@
         }
 
         #region Defining variables
+
         /// <summary>
         /// Gets the Connection object for this Neato.
         /// </summary>
         public Connection Connection { get; private set; }
 
         /// <summary>
-        /// Gets the Command object, which allows access to Neato commands.
+        /// Gets or sets the Command object, which allows access to Neato commands.
         /// </summary>
-        public Command Command { get; private set; }
+        public Command Command { get; set; }
         
         #region Motors
 
         /// <summary>
-        /// Gets a value indicating whether or not this Neato's brush motor is enabled or not.
+        /// Gets or sets a value indicating whether or not this Neato's brush motor is enabled or not.
         /// </summary>
-        public bool MotorBrush { get; private set; }
+        public bool MotorBrush { get; set; }
         
         /// <summary>
-        /// Gets a value indicating whether or not this Neato's vacuum motor is enabled or not.
+        /// Gets or sets a value indicating whether or not this Neato's vacuum motor is enabled or not.
         /// </summary>
-        public bool MotorVacuum { get; private set; }
+        public bool MotorVacuum { get; set; }
         
         /// <summary>
-        /// Gets a value indicating whether or not this Neato's left wheel motor is enabled or not.
+        /// Gets or sets a value indicating whether or not this Neato's left wheel motor is enabled or not.
         /// </summary>
-        public bool MotorLWheel { get; private set; }
+        public bool MotorLWheel { get; set; }
         
         /// <summary>
-        /// Gets a value indicating whether or not this Neato's right wheel motor is enabled or not.
+        /// Gets or sets a value indicating whether or not this Neato's right wheel motor is enabled or not.
         /// </summary>
-        public bool MotorRWheel { get; private set; }
+        public bool MotorRWheel { get; set; }
         #endregion
 
         #region Misc
@@ -81,7 +81,37 @@
                 return Connection.IsConnected();
             }
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether LDS is rotating or not.
+        /// </summary>
+        public bool LDSRotation { get; set; }
         
+        #endregion
+
+        #region Spatial information
+
+        /// <summary>
+        /// Gets or sets the angle (measured in degrees).
+        /// </summary>
+        public int Angle
+        {
+            get
+            {
+                return this.angle;
+            }
+
+            set
+            {
+                this.angle = value % 360;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the position.
+        /// </summary>
+        public Point Position { get; set; }
+
         #endregion
 
         #endregion
@@ -135,7 +165,22 @@
         public override string ToString()
         {
             var res = new StringBuilder("Neato State - Connected on \"" + Connection.Port + "\".");
-            //// TODO: Implement a proper ToString() for this class.
+
+            res.AppendLine("* Motors *");
+            res.AppendLine("Motor - Brush: " + this.MotorBrush);
+            res.AppendLine("Motor - Vacuum: " + this.MotorVacuum);
+            res.AppendLine("Motor - LWheel: " + this.MotorLWheel);
+            res.AppendLine("Motor - RWheel: " + this.MotorRWheel);
+            res.AppendLine();
+            res.AppendLine("* Modes *");
+            res.AppendLine("Test Mode: " + this.TestMode);
+            res.AppendLine("LDS Rotation: " + this.LDSRotation);
+            res.AppendLine();
+            res.AppendLine("* Positional data *");
+            res.AppendLine("Position: (" + this.Position.X + "," + this.Position.Y + ")");
+            res.AppendLine("Angle: " + this.angle + "°");
+            
+            // TODO: Implement a proper ToString() for this class.
             return res.ToString();
         }
 
@@ -144,12 +189,23 @@
         /// </summary>
         private void SetDefaults()
         {
-            this.MotorBrush = false;
-            this.MotorVacuum = false;
-            this.MotorLWheel = false;
-            this.MotorRWheel = false;
+            // Default values for motors:
+            this.MotorBrush = true;
+            this.MotorVacuum = true;
+            this.MotorLWheel = true;
+            this.MotorRWheel = true;
 
+            // Default values for modes:
             this.TestMode = false;
+
+            // Default values for spatial info:
+            this.Angle = 0;
+            this.Position = Point.Empty;
         }
+
+        /// <summary>
+        /// Internal variable for the angle of this Neato.
+        /// </summary>
+        private int angle;
     }
 }

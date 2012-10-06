@@ -1,4 +1,4 @@
-﻿namespace NeatoAPI.Commands
+﻿namespace NeatoAPI
 {
     /// <summary>
     /// TODO: Update summary.

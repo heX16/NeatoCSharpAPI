@@ -1,4 +1,4 @@
-﻿namespace NeatoAPI.Commands
+﻿namespace NeatoAPI
 {
     using System;
 
@@ -68,13 +68,26 @@
         /// </param>
         public void TurnAround(int speed, bool reverse)
         {
-            int distance = HalfTurn;
+            var distance = HalfTurn;
             if (reverse)
             {
                 distance *= -1;
             }
 
             this.neato.Connection.SendCommand("SetMotor RWheelDist " + distance + " LWheelDist " + -distance + " Speed " + speed, true);
+
+            // Update Neato's angle.
+            int factor;
+            if (reverse)
+            {
+                factor = 1;
+            }
+            else
+            {
+                factor = -1;
+            }
+
+            this.neato.Angle += 180 * factor;
         }
 
         /// <summary>
@@ -89,6 +102,7 @@
 
         /// <summary>
         /// Moves the Neato using both wheels at the same time.
+        /// Note: Updates Neato.Position.
         /// </summary>
         /// <param name="distance">Distance to rotate the wheels (mm).</param>
         /// <param name="speed">Speed of the wheel rotation (mm/s).</param>
@@ -101,6 +115,15 @@
             }
 
             this.neato.Connection.SendCommand("SetMotor LWheelDist " + distance + " RWheelDist " + distance + " Speed " + speed, true);
+
+            // Update position (angle should be unchanged)
+            var movement = new System.Drawing.Point(0, 0)
+                { 
+                    X = (int)Math.Round(Math.Cos(this.neato.Angle) * distance), 
+                    Y = (int)Math.Round(Math.Sin(this.neato.Angle) * distance)
+                };
+            var current = this.neato.Position;
+            this.neato.Position = new System.Drawing.Point(movement.X + current.X, movement.Y + current.Y);
         }
 
         /// <summary>
@@ -123,6 +146,9 @@
             }
 
             this.neato.Connection.SendCommand("SetMotor LWheelDist " + distance + " Speed " + speed, true);
+
+            // Update angle (and position..?)
+            // TODO: Do the math :(
         }
 
         /// <summary>
@@ -145,6 +171,9 @@
             }
 
             this.neato.Connection.SendCommand("SetMotor RWheelDist " + distance + " Speed " + speed, true);
+
+            // Update angle (and position..?)
+            // TODO: Do the math :(
         }
 
         #endregion
@@ -162,13 +191,27 @@
         /// </param>
         private void QuarterRotation(int speed, bool reverse)
         {
-            int distance = QuarterTurn;
+            var distance = QuarterTurn;
+
             if (reverse)
             {
                 distance *= -1;
             }
 
             this.neato.Connection.SendCommand("SetMotor RWheelDist " + distance + " LWheelDist " + -distance + " Speed " + speed, true);
+
+            // Update angle (TODO: Figure out if position changes noticeable...)
+            int factor;
+            if (reverse)
+            {
+                factor = 1;
+            }
+            else
+            {
+                factor = -1;
+            }
+
+            this.neato.Angle += factor * 90;
         }
 
         #endregion
