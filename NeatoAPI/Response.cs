@@ -45,7 +45,10 @@
 
                 var cut = line.Trim().Split(',');
 
-                this.data.Add(cut[0], new List<string>());
+                if (!this.data.ContainsKey(cut[0]))
+                {
+                    this.data.Add(cut[0], new List<string>());
+                }
 
                 for (var i = 1; i < cut.Length; i++)
                 {

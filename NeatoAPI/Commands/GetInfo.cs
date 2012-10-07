@@ -1,5 +1,7 @@
 ﻿namespace NeatoAPI
 {
+    using System;
+
     /// <summary>
     /// TODO: Update summary.
     /// </summary>
@@ -177,15 +179,18 @@
         }
 
         /// <summary>
-        /// Get All Life Stat Logs.
+        /// Get All Life Stat Logs. Note: This function is not enabled in the API, since it writes hundreds of lines of output and messes up everything.
         /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#GetLifeStatLog for more info.
         /// </summary>
         /// <returns>
         /// Multiple LifeStat logs are output, from the oldest to the newest. Note that only the non-zero entries are printed. (Format: runID,statID,count,Min,Max,Sum,SumV*2)
         /// </returns>
+        [Obsolete]
         public Response GetLifeStatLog()
         {
-            return this.neato.Connection.SendCommand("GetLifeStatLog");
+            throw new NotImplementedException("Disabled because of odd behaviour...");
+            
+            // return this.neato.Connection.SendCommand("GetLifeStatLog");
         }
 
         /// <summary>
