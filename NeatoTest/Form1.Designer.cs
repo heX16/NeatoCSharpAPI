@@ -59,6 +59,8 @@
             this.button15 = new System.Windows.Forms.Button();
             this.groupBoxGetFunctions = new System.Windows.Forms.GroupBox();
             this.groupBoxTestFunctions = new System.Windows.Forms.GroupBox();
+            this.comboBoxSysMode = new System.Windows.Forms.ComboBox();
+            this.buttonSysMode = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.labelVacuumState = new System.Windows.Forms.Label();
             this.buttonVacuum = new System.Windows.Forms.Button();
@@ -95,8 +97,6 @@
             this.buttonRefresh = new System.Windows.Forms.Button();
             this.progressBarBatteryBar = new System.Windows.Forms.ProgressBar();
             this.label4 = new System.Windows.Forms.Label();
-            this.comboBoxSysMode = new System.Windows.Forms.ComboBox();
-            this.buttonSysMode = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBoxPlaySound.SuspendLayout();
             this.groupBoxTestMode.SuspendLayout();
@@ -444,6 +444,24 @@
             this.groupBoxTestFunctions.TabIndex = 30;
             this.groupBoxTestFunctions.TabStop = false;
             this.groupBoxTestFunctions.Text = "Test functions";
+            // 
+            // comboBoxSysMode
+            // 
+            this.comboBoxSysMode.FormattingEnabled = true;
+            this.comboBoxSysMode.Location = new System.Drawing.Point(105, 106);
+            this.comboBoxSysMode.Name = "comboBoxSysMode";
+            this.comboBoxSysMode.Size = new System.Drawing.Size(102, 21);
+            this.comboBoxSysMode.TabIndex = 14;
+            // 
+            // buttonSysMode
+            // 
+            this.buttonSysMode.Location = new System.Drawing.Point(6, 106);
+            this.buttonSysMode.Name = "buttonSysMode";
+            this.buttonSysMode.Size = new System.Drawing.Size(93, 23);
+            this.buttonSysMode.TabIndex = 13;
+            this.buttonSysMode.Text = "SystemMode";
+            this.buttonSysMode.UseVisualStyleBackColor = true;
+            this.buttonSysMode.Click += new System.EventHandler(this.buttonSysMode_Click);
             // 
             // groupBox3
             // 
@@ -824,24 +842,6 @@
             this.label4.Size = new System.Drawing.Size(68, 13);
             this.label4.TabIndex = 0;
             this.label4.Text = "Battery level:";
-            // 
-            // comboBoxSysMode
-            // 
-            this.comboBoxSysMode.FormattingEnabled = true;
-            this.comboBoxSysMode.Location = new System.Drawing.Point(105, 106);
-            this.comboBoxSysMode.Name = "comboBoxSysMode";
-            this.comboBoxSysMode.Size = new System.Drawing.Size(102, 21);
-            this.comboBoxSysMode.TabIndex = 14;
-            // 
-            // buttonSysMode
-            // 
-            this.buttonSysMode.Location = new System.Drawing.Point(6, 106);
-            this.buttonSysMode.Name = "buttonSysMode";
-            this.buttonSysMode.Size = new System.Drawing.Size(93, 23);
-            this.buttonSysMode.TabIndex = 13;
-            this.buttonSysMode.Text = "SystemMode";
-            this.buttonSysMode.UseVisualStyleBackColor = true;
-            this.buttonSysMode.Click += new System.EventHandler(this.buttonSysMode_Click);
             // 
             // Form1
             // 

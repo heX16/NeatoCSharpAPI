@@ -154,15 +154,15 @@
             {
                 case Motors.Brush:
                     parameters = enable ? "BrushEnable" : "BrushDisable";
-                    this.neato.MotorBrush = enable;
+                    this.neato.MotorBrushEnabled = enable;
                     break;
                 case Motors.LeftWheel:
                     parameters = enable ? "LWheelEnable" : "LWheelDisable";
-                    this.neato.MotorLWheel = enable;
+                    this.neato.MotorLWheelEnabled = enable;
                     break;
                 case Motors.RightWheel:
                     parameters = enable ? "RWheelEnable" : "RWheelDisable";
-                    this.neato.MotorRWheel = enable;
+                    this.neato.MotorRWheelEnabled = enable;
                     break;
             }
 
@@ -179,12 +179,12 @@
             if (enable)
             {
                 this.neato.Connection.SendCommand("SetMotor VacuumOn VacuumSpeed " + powerlevel, true);
-                this.neato.MotorVacuum = true;
+                this.neato.MotorVacuumEnabled = true;
             }
             else
             {
                 this.neato.Connection.SendCommand("SetMotor VacuumOff", true);
-                this.neato.MotorVacuum = false;
+                this.neato.MotorVacuumEnabled = false;
             }
         }
 

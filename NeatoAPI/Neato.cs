@@ -52,25 +52,208 @@
         
         #region Motors
 
+        #region Motors enabled/disabled
+
         /// <summary>
         /// Gets or sets a value indicating whether or not this Neato's brush motor is enabled or not.
         /// </summary>
-        public bool MotorBrush { get; set; }
+        public bool MotorBrushEnabled { get; set; }
         
         /// <summary>
         /// Gets or sets a value indicating whether or not this Neato's vacuum motor is enabled or not.
         /// </summary>
-        public bool MotorVacuum { get; set; }
+        public bool MotorVacuumEnabled { get; set; }
         
         /// <summary>
         /// Gets or sets a value indicating whether or not this Neato's left wheel motor is enabled or not.
         /// </summary>
-        public bool MotorLWheel { get; set; }
+        public bool MotorLWheelEnabled { get; set; }
         
         /// <summary>
         /// Gets or sets a value indicating whether or not this Neato's right wheel motor is enabled or not.
         /// </summary>
-        public bool MotorRWheel { get; set; }
+        public bool MotorRWheelEnabled { get; set; }
+
+        #endregion
+
+        #region GetMotor values
+
+        #region Brush
+
+        /// <summary>
+        /// Gets the brush max pwm.
+        /// </summary>
+        public int BrushMaxPWM { get; private set; }
+
+        /// <summary>
+        /// Gets the brush pwm.
+        /// </summary>
+        public int BrushPWM { get; private set; }
+
+        /// <summary>
+        /// Gets the brush milli volts.
+        /// </summary>
+        public int BrushMilliVolts { get; private set; }
+
+        /// <summary>
+        /// Gets the brush encoder.
+        /// </summary>
+        public int BrushEncoder { get; private set; }
+
+        /// <summary>
+        /// Gets the brush rpm.
+        /// </summary>
+        public int BrushRPM { get; private set; }
+
+        #endregion
+
+        #region Vacuum
+
+        /// <summary>
+        /// Gets the vacuum max pwm.
+        /// </summary>
+        public int VacuumMaxPWM { get; private set; }
+
+        /// <summary>
+        /// Gets the vacuum pwm.
+        /// </summary>
+        public int VacuumPWM { get; private set; }
+
+        /// <summary>
+        /// Gets the vacuum current in milli ampere.
+        /// </summary>
+        public int VacuumCurrentInMilliAmpere { get; private set; }
+
+        /// <summary>
+        /// Gets the vacuum encoder.
+        /// </summary>
+        public int VacuumEncoder { get; private set; }
+
+        /// <summary>
+        /// Gets the vacuum rpm.
+        /// </summary>
+        public int VacuumRPM { get; private set; }
+
+        #endregion
+
+        #region Left Wheel
+
+        /// <summary>
+        /// Gets the left wheel max pwm.
+        /// </summary>
+        public int LeftWheelMaxPWM { get; private set; }
+
+        /// <summary>
+        /// Gets the left wheel pwm.
+        /// </summary>
+        public int LeftWheelPWM { get; private set; }
+
+        /// <summary>
+        /// Gets the left wheel milli volts.
+        /// </summary>
+        public int LeftWheelMilliVolts { get; private set; }
+
+        /// <summary>
+        /// Gets the left wheel encoder.
+        /// </summary>
+        public int LeftWheelEncoder { get; private set; }
+
+        /// <summary>
+        /// Gets the left wheel position in mm.
+        /// </summary>
+        public int LeftWheelPositionInMM { get; private set; }
+
+        /// <summary>
+        /// Gets the left wheel rpm.
+        /// </summary>
+        public int LeftWheelRPM { get; private set; }
+
+        #endregion
+
+        #region Right Wheel
+
+        /// <summary>
+        /// Gets the right wheel max pwm.
+        /// </summary>
+        public int RightWheelMaxPWM { get; private set; }
+
+        /// <summary>
+        /// Gets the right wheel pwm.
+        /// </summary>
+        public int RightWheelPWM { get; private set; }
+
+        /// <summary>
+        /// Gets the right wheel milli volts.
+        /// </summary>
+        public int RightWheelMilliVolts { get; private set; }
+
+        /// <summary>
+        /// Gets the right wheel encoder.
+        /// </summary>
+        public int RightWheelEncoder { get; private set; }
+
+        /// <summary>
+        /// Gets the right wheel position in mm.
+        /// </summary>
+        public int RightWheelPositionInMM { get; private set; }
+
+        /// <summary>
+        /// Gets the right wheel rpm.
+        /// </summary>
+        public int RightWheelRPM { get; private set; }
+        
+        #endregion
+
+        #region Laser
+
+        /// <summary>
+        /// Gets the laser max PWM.
+        /// </summary>
+        public int LaserMaxPWM { get; private set; }
+
+        /// <summary>
+        /// Gets the laser pwm.
+        /// </summary>
+        public int LaserPWM { get; private set; }
+
+        /// <summary>
+        /// Gets the laser milli volts.
+        /// </summary>
+        public int LaserMilliVolts { get; private set; }
+
+        /// <summary>
+        /// Gets the laser encoder.
+        /// </summary>
+        public int LaserEncoder { get; private set; }
+
+        /// <summary>
+        /// Gets the laser rpm.
+        /// </summary>
+        public int LaserRPM { get; private set; }
+
+        #endregion
+
+        #region Charger
+
+        /// <summary>
+        /// Gets the charger max pwm.
+        /// </summary>
+        public int ChargerMaxPWM { get; private set; }
+
+        /// <summary>
+        /// Gets the charger pwm.
+        /// </summary>
+        public int ChargerPWM { get; private set; }
+
+        /// <summary>
+        /// Gets the charger milli ampere hours.
+        /// </summary>
+        public int ChargerMilliAmpereHours { get; private set; }
+
+        #endregion
+
+        #endregion
+
         #endregion
 
         #region Misc
@@ -397,6 +580,7 @@
             this.UpdateDigitalSensor();
             this.UpdateVersionInfo();
             this.UpdateAccelerometer();
+            this.UpdateGetMotors();
         }
 
         /// <summary>
@@ -416,10 +600,10 @@
                 res.AppendLine("Neato State - Connected on \"" + Connection.Port + "\".");
                 res.AppendLine();
                 res.AppendLine("* Motors *");
-                res.AppendLine("Motor - Brush: " + this.MotorBrush);
-                res.AppendLine("Motor - Vacuum: " + this.MotorVacuum);
-                res.AppendLine("Motor - Left Wheel: " + this.MotorLWheel);
-                res.AppendLine("Motor - Right Wheel: " + this.MotorRWheel);
+                res.AppendLine("Motor - Brush: " + this.MotorBrushEnabled);
+                res.AppendLine("Motor - Vacuum: " + this.MotorVacuumEnabled);
+                res.AppendLine("Motor - Left Wheel: " + this.MotorLWheelEnabled);
+                res.AppendLine("Motor - Right Wheel: " + this.MotorRWheelEnabled);
                 res.AppendLine();
                 res.AppendLine("* Modes *");
                 res.AppendLine("Test Mode: " + this.TestMode);
@@ -451,10 +635,10 @@
         private void SetDefaults()
         {
             // Default values for motors:
-            this.MotorBrush = false;
-            this.MotorVacuum = false;
-            this.MotorLWheel = true;
-            this.MotorRWheel = true;
+            this.MotorBrushEnabled = false;
+            this.MotorVacuumEnabled = false;
+            this.MotorLWheelEnabled = true;
+            this.MotorRWheelEnabled = true;
 
             // Default values for modes:
             this.TestMode = false;
@@ -588,6 +772,52 @@
             this.YInG = float.Parse(info.GetLine("YInG")[0], CultureInfo.GetCultureInfo(0x0409));
             this.ZInG = float.Parse(info.GetLine("ZInG")[0], CultureInfo.GetCultureInfo(0x0409));
             this.SumInG = float.Parse(info.GetLine("SumInG")[0], CultureInfo.GetCultureInfo(0x0409));
+        }
+
+        private void UpdateGetMotors()
+        {
+            if (!this.IsConnected)
+            {
+                throw new IOException("Not connected to a Neato!");
+            }
+
+            var info = this.Command.GetInfo.GetMotors();
+
+            this.BrushMaxPWM = int.Parse(info.GetLine("Brush_MaxPWM")[0]);
+            this.BrushPWM = int.Parse(info.GetLine("Brush_PWM")[0]);
+            this.BrushMilliVolts = int.Parse(info.GetLine("Brush_mVolts")[0]);
+            this.BrushEncoder = int.Parse(info.GetLine("Brush_Encoder")[0]);
+            this.BrushRPM = int.Parse(info.GetLine("Brush_RPM")[0]);
+
+            this.VacuumMaxPWM = int.Parse(info.GetLine("Vacuum_MaxPWM")[0]);
+            this.VacuumPWM = int.Parse(info.GetLine("Vacuum_PWM")[0]);
+            this.VacuumCurrentInMilliAmpere = int.Parse(info.GetLine("Vacuum_CurrentInMA")[0]);
+            this.VacuumEncoder = int.Parse(info.GetLine("Vacuum_Encoder")[0]);
+            this.VacuumRPM = int.Parse(info.GetLine("Vacuum_RPM")[0]);
+
+            this.LeftWheelMaxPWM = int.Parse(info.GetLine("LeftWheel_MaxPWM")[0]);
+            this.LeftWheelPWM = int.Parse(info.GetLine("LeftWheel_PWM")[0]);
+            this.LeftWheelMilliVolts = int.Parse(info.GetLine("LeftWheel_mVolts")[0]);
+            this.LeftWheelEncoder = int.Parse(info.GetLine("LeftWheel_Encoder")[0]);
+            this.LeftWheelPositionInMM = int.Parse(info.GetLine("LeftWheel_PositionInMM")[0]);
+            this.LeftWheelRPM = int.Parse(info.GetLine("LeftWheel_RPM")[0]);
+
+            this.RightWheelMaxPWM = int.Parse(info.GetLine("RightWheel_MaxPWM")[0]);
+            this.RightWheelPWM = int.Parse(info.GetLine("RightWheel_PWM")[0]);
+            this.RightWheelMilliVolts = int.Parse(info.GetLine("RightWheel_mVolts")[0]);
+            this.RightWheelEncoder = int.Parse(info.GetLine("RightWheel_Encoder")[0]);
+            this.RightWheelPositionInMM = int.Parse(info.GetLine("RightWheel_PositionInMM")[0]);
+            this.RightWheelRPM = int.Parse(info.GetLine("RightWheel_RPM")[0]);
+
+            this.LaserMaxPWM = int.Parse(info.GetLine("Laser_MaxPWM")[0]);
+            this.LaserPWM = int.Parse(info.GetLine("Laser_PWM")[0]);
+            this.LaserMilliVolts = int.Parse(info.GetLine("Laser_mVolts")[0]);
+            this.LaserEncoder = int.Parse(info.GetLine("Laser_Encoder")[0]);
+            this.LaserRPM = int.Parse(info.GetLine("Laser_RPM")[0]);
+
+            this.ChargerMaxPWM = int.Parse(info.GetLine("Charger_MaxPWM")[0]);
+            this.ChargerPWM = int.Parse(info.GetLine("Charger_PWM")[0]);
+            this.ChargerMilliAmpereHours = int.Parse(info.GetLine("Charger_mAH")[0]);
         }
 
         #endregion
