@@ -47,11 +47,11 @@
         /// Get the A2D readings for the analog sensors.
         /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#GetAnalogSensors for more info.
         /// </summary>
-        /// <param name="flag">TODO: Write flag description.</param>
+        /// <param name="flag">TODO: Write state description.</param>
         /// <returns>
         /// Raw: "SensorName,SignalVoltageInmV"; Stats: "SensorName,Mean,Max,Min,Cnt,Dev".
         /// </returns>
-        public Response GetAnalogSensors(AnalogSensorFlag flag)
+        public Response GetAnalogSensors(AnalogSensorValues flag)
         {
             return this.neato.Connection.SendCommand("GetAnalogSensors " + flag);
         }
@@ -120,7 +120,7 @@
         /// Clear reported error(s).
         /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#GetErr for more info.
         /// </summary>
-        /// <param name="flag">Use Clear flag dismiss the reported error.</param>
+        /// <param name="flag">Use Clear state dismiss the reported error.</param>
         public void GetErr(ErrorFlag flag)
         {
             // TODO: Review and decide if useful or need to rewrite.
@@ -159,7 +159,7 @@
         /// <returns>
         /// Reports data for specified motor. (Format: Parameter,Value)
         /// </returns>
-        public Response GetMotors(GetMotorFlag flag)
+        public Response GetMotors(GetMotorMotor flag)
         {
             return this.neato.Connection.SendCommand("GetMotors " + flag);
         }
@@ -196,7 +196,7 @@
         /// <returns>
         /// Cleaning schedule for specified day.
         /// </returns>
-        public Response GetSchedule(ScheduleDayFlag flag)
+        public Response GetSchedule(ScheduleDay flag)
         {
             // TODO: Implement. "GetSchedule Day 0" or "GetSchedule 0" ?
             return this.neato.Connection.SendCommand("GetSchedule " + (int)flag);

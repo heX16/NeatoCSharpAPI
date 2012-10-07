@@ -3,7 +3,7 @@
     /// <summary>
     /// Parameters available together with the GetAnalogSensors command.
     /// </summary>
-    public enum AnalogSensorFlag
+    public enum AnalogSensorValues
     {
         /// <summary>
         /// Retrieves raw data values from the analog sensors.
@@ -19,7 +19,7 @@
     /// <summary>
     /// Parameters available together with the Clean command.
     /// </summary>
-    public enum CleanFlag
+    public enum CleaningMode
     {
         /// <summary>
         /// A full house cleaning.
@@ -51,7 +51,7 @@
     /// <summary>
     /// Parameters available together with the GetMotor command.
     /// </summary>
-    public enum GetMotorFlag
+    public enum GetMotorMotor
     {
         /// <summary>
         /// The brush motor.
@@ -87,7 +87,7 @@
     /// <summary>
     /// Parameters available with the SetLDSRotation command.
     /// </summary>
-    public enum LDSRotationFlag
+    public enum LDSRotation
     {
         /// <summary>
         /// Turns LDS rotation on.
@@ -124,7 +124,7 @@
     /// <summary>
     /// Parameters available when using PlaySound command. 
     /// </summary>
-    public enum PlaySoundFlag
+    public enum Sounds
     {
         /// <summary>
         /// The sound played when Neato power button is first pressed.
@@ -240,7 +240,7 @@
     /// <summary>
     /// The day values available when using Neato's scheduling functions.
     /// </summary>
-    public enum ScheduleDayFlag
+    public enum ScheduleDay
     {
         /// <summary>
         /// The sunday.
@@ -300,9 +300,9 @@
     }
 
     /// <summary>
-    /// The test mode flag.
+    /// The test mode state.
     /// </summary>
-    public enum TestModeFlag
+    public enum TestModeState
     {
         /// <summary>
         /// The on.
@@ -318,7 +318,7 @@
     /// <summary>
     /// Parameters available for the SetWallFollower command.
     /// </summary>
-    public enum WallFollowerFlag
+    public enum WallFollowerState
     {
         /// <summary>
         /// Enables the Wall Follower mode.

@@ -57,7 +57,7 @@
         /// <param name="hour">Hour value 0..23</param>
         /// <param name="minute">Minutes value 0..59</param>
         /// <param name="sec">Seconds value 0..59</param>
-        public void SetTime(ScheduleDayFlag day, int hour, int minute, int sec)
+        public void SetTime(ScheduleDay day, int hour, int minute, int sec)
         {
             if (hour < 0 || hour > 23)
             {
@@ -84,7 +84,7 @@
         {
             var now = DateTime.Now;
 
-            var day = (ScheduleDayFlag)now.DayOfWeek;
+            var day = (ScheduleDay)now.DayOfWeek;
             this.SetTime(day, now.Hour, now.Minute, now.Second);
         }
 
@@ -92,12 +92,12 @@
         /// Enables/Disables wall follower.
         /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#SetWallFollower for more info.
         /// </summary>
-        /// <param name="flag">
+        /// <param name="state">
         /// TODO: Flag description.
         /// </param>
-        public void SetWallFollower(WallFollowerFlag flag)
+        public void SetWallFollower(WallFollowerState state)
         {
-            this.neato.Connection.SendCommand("SetWallFollower " + flag, true);
+            this.neato.Connection.SendCommand("SetWallFollower " + state, true);
         }
 
         #endregion

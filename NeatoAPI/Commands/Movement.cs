@@ -96,8 +96,8 @@
         public void Stop()
         {
             // A somewhat ugly solution. TODO: Investigate if there is a better way.
-            this.neato.Command.Test.TestMode(TestModeFlag.Off);
-            this.neato.Command.Test.TestMode(TestModeFlag.On);
+            this.neato.Command.Test.TestMode(TestModeState.Off);
+            this.neato.Command.Test.TestMode(TestModeState.On);
             
             // This will fuck up any spatial calculations :(
             this.neato.PositionalDataIntegrity = false;

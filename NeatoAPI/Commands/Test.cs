@@ -30,9 +30,9 @@
         /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#TestMode for more info.
         /// </summary>
         /// <param name="flag">Turns test mode on/off.</param>
-        public void TestMode(TestModeFlag flag)
+        public void TestMode(TestModeState flag)
         {
-            if (flag == TestModeFlag.On)
+            if (flag == TestModeState.On)
             {
                 this.neato.TestMode = true;
             }
@@ -78,8 +78,8 @@
         /// Sets LDS rotation on or off. (TestMode Only)
         /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#SetLDSRotation for more info.
         /// </summary>
-        /// <param name="flag">TODO: describe flag</param>
-        public void SetLDSRotation(LDSRotationFlag flag)
+        /// <param name="flag">TODO: describe state</param>
+        public void SetLDSRotation(LDSRotation flag)
         {
             if (!this.neato.TestMode)
             {
@@ -89,7 +89,7 @@
             this.neato.Connection.SendCommand("SetLDSRotation " + flag);
             
             // Update Neato status!
-            this.neato.LDSRotation = flag == LDSRotationFlag.On;
+            this.neato.LDSRotation = flag == LDSRotation.On;
         }
 
         /// <summary>
@@ -126,15 +126,15 @@
         /// Set the operation mode of the robot. (TestMode Only)
         /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#SetSystemMode for more info.
         /// </summary>
-        /// <param name="flag">TODO: Describe parameter.</param>
-        public void SetSystemMode(SystemMode flag)
+        /// <param name="mode">TODO: Describe parameter.</param>
+        public void SetSystemMode(SystemMode mode)
         {
             if (!this.neato.TestMode)
             {
                 throw new NotInTestModeException("SetSystemMode");
             }
 
-            this.neato.Connection.SendCommand("SetSystemMode " + flag);
+            this.neato.Connection.SendCommand("SetSystemMode " + mode);
         }
 
         /// <summary>

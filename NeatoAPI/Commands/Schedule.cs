@@ -38,7 +38,7 @@
         /// Clears the scheduled clean for the specified day.
         /// </summary>
         /// <param name="day">Day to clear cleaning from.</param>
-        public void RemoveCleanSchedule(ScheduleDayFlag day)
+        public void RemoveCleanSchedule(ScheduleDay day)
         {
             this.neato.Connection.SendCommand("SetSchedule " + day + " 0 0 NONE");
         }
@@ -53,7 +53,7 @@
         /// <returns>
         /// TODO: Find out what it returns.
         /// </returns>
-        public Response SetSchedule(ScheduleDayFlag day, int hour, int minute)
+        public Response SetSchedule(ScheduleDay day, int hour, int minute)
         {
             if (hour < 0 || hour > 23)
             {

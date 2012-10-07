@@ -27,7 +27,7 @@
         [Test]
         public void GetLDSScanTest()
         {
-            this.Robot.Command.Test.TestMode(TestModeFlag.On);
+            this.Robot.Command.Test.TestMode(TestModeState.On);
             var response = this.Robot.Command.GetInfo.GetLDSScan();
         }
     }

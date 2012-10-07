@@ -37,7 +37,7 @@
         /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#Clean for more info.
         /// </summary>
         /// <param name="flag">Clean action to be activated.</param>
-        public void Clean(CleanFlag flag)
+        public void Clean(CleaningMode flag)
         {
             this.neato.Connection.SendCommand("Clean " + flag, true);
         }
@@ -47,11 +47,11 @@
         /// See http://www.neatorobotics.com/programmers-manual/table-of-robot-application-commands/detailed-command-descriptions/#PlaySound for more info.
         /// </summary>
         /// <param name="flag">
-        /// TODO: Sound flag.
+        /// TODO: Sound state.
         /// </param>
-        public void PlaySound(PlaySoundFlag flag)
+        public void PlaySound(Sounds flag)
         {
-            if (flag.Equals(PlaySoundFlag.Stop))
+            if (flag.Equals(Sounds.Stop))
             {
                 this.neato.Connection.SendCommand("PlaySound STOP", true);
             }
