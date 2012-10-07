@@ -15,7 +15,7 @@
         [SetUp]
         public void SetUp()
         {
-            this.Robot = null;
+            this.Robot = new Neato(new NeatoMockPort());
         }
         
         [TearDown]
@@ -25,10 +25,10 @@
         }
 
         [Test]
-        public void GetLDSScanTest()
+        public void BatteryChargeLevelTest()
         {
-            this.Robot.Command.Test.TestMode(TestModeState.On);
-            var response = this.Robot.Command.GetInfo.GetLDSScan();
+            this.Robot.RefreshInformation();
+            var response = this.Robot.Command.GetInfo.GetTime();
         }
     }
 }

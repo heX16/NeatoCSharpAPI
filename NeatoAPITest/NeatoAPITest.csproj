@@ -46,6 +46,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NeatoMockPort.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="NeatoTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

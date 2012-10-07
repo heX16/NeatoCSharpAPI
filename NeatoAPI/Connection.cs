@@ -11,6 +11,11 @@
     public class Connection
     {
         /// <summary>
+        /// Milliseconds to wait between sending a command and reading the response.
+        /// </summary>
+        private const int ResponseWait = 100;
+
+        /// <summary>
         /// The SerialPort object used to communicate with the Neato.
         /// </summary>
         private readonly SerialPort neatoPort;
@@ -27,6 +32,27 @@
             this.neatoPort = new SerialPort(comPort, 4711, Parity.None, 7, StopBits.One) { ReadTimeout = 500, WriteTimeout = 500 };
             this.Port = comPort;
 
+            // Connect to the COM-port.
+            this.neatoPort.Open();
+
+            // Let's find out if we're connected to a Neato...
+            if (!this.SendCommand("GetVersion").GetRaw().Contains("Component,Major,Minor,Build"))
+            {
+                throw new NotANeatoException("Response to GetVersion does not contain headers \"Component,Major,Minor,Build\".");
+            }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Connection"/> class.
+        /// </summary>
+        /// <param name="comPort">
+        /// COM port to use when connecting to Neato.
+        /// </param>
+        /// <exception cref="NotANeatoException">If device does not respond to the GetVersion command, it's probably not a Neato.</exception>
+        public Connection(SerialPort comPort)
+        {
+            this.neatoPort = comPort;
+            
             // Connect to the COM-port.
             this.neatoPort.Open();
 
@@ -109,8 +135,15 @@
             }
 
             // Wait a little bit for Neato's response.
-            Thread.Sleep(150);
+            Thread.Sleep(ResponseWait);
             string tmp = this.neatoPort.ReadExisting();
+
+            // TODO: REMOVE THIS
+
+            File.AppendAllText("output.txt", tmp);
+            File.AppendAllText("output.txt", "|*|");
+
+            // TODO: REMOVE THIS
             
             if (tmp.Length == 0)
             {

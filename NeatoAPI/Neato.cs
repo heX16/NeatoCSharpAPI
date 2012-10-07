@@ -36,6 +36,17 @@
             this.SetDefaults();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Neato"/> class. 
+        /// </summary>
+        /// <param name="neatoPort">Port to use when connecting to Neato.</param>
+        public Neato(System.IO.Ports.SerialPort neatoPort)
+        {
+            this.Connection = new Connection(neatoPort);
+            this.Command = new Command(this);
+            this.SetDefaults();
+        }
+
         #endregion
 
         #region Defining variables
@@ -774,6 +785,12 @@
             this.SumInG = float.Parse(info.GetLine("SumInG")[0], CultureInfo.GetCultureInfo(0x0409));
         }
 
+        /// <summary>
+        /// Updates the GetMotors values.
+        /// </summary>
+        /// <exception cref="IOException">
+        /// Thrown if not connected to a Neato.
+        /// </exception>
         private void UpdateGetMotors()
         {
             if (!this.IsConnected)
