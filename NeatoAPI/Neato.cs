@@ -1,6 +1,7 @@
 ﻿namespace NeatoAPI
 {
     using System.Drawing;
+    using System.Globalization;
     using System.IO;
     using System.Text;
 
@@ -304,13 +305,47 @@
 
         #endregion
 
+        #region Accelerometer information
+
+        /// <summary>
+        /// Gets the pitch in degrees.
+        /// </summary>
+        public float PitchInDegrees { get; private set; }
+
+        /// <summary>
+        /// Gets the roll in degrees.
+        /// </summary>
+        public float RollInDegrees { get; private set; }
+
+        /// <summary>
+        /// Gets the x in g.
+        /// </summary>
+        public float XInG { get; private set; }
+
+        /// <summary>
+        /// Gets the y in g.
+        /// </summary>
+        public float YInG { get; private set; }
+
+        /// <summary>
+        /// Gets the z in g.
+        /// </summary>
+        public float ZInG { get; private set; }
+
+        /// <summary>
+        /// Gets the sum in g.
+        /// </summary>
+        public float SumInG { get; private set; }
+
+        #endregion
+
         #endregion
 
         /// <summary>
-        /// The connect to neato.
+        /// Attempts to connect to a Neato on any serial port.
         /// </summary>
         /// <returns>
-        /// The <see cref="Connection"/>.
+        /// Returns true if connection was made, false if no Neato was found.
         /// </returns>
         public bool ConnectToNeato()
         {
@@ -361,6 +396,7 @@
             this.UpdateChargerInfo();
             this.UpdateDigitalSensor();
             this.UpdateVersionInfo();
+            this.UpdateAccelerometer();
         }
 
         /// <summary>
@@ -495,6 +531,9 @@
         /// <summary>
         /// Updates the version information. Shouldn't change, so only needs to be run once.
         /// </summary>
+        /// <exception cref="IOException">
+        /// Thrown if not connected to a Neato.
+        /// </exception>
         private void UpdateVersionInfo()
         {
             if (!this.IsConnected)
@@ -526,6 +565,29 @@
             this.MainboardVersion = info.GetLine("MainBoard Version")[0] + '.' + info.GetLine("MainBoard Version")[1];
             this.ChassisRevision = info.GetLine("ChassisRev")[0];
             this.UIPanelRevision = info.GetLine("UIPanelRev")[0];
+        }
+
+        /// <summary>
+        /// Updates the accelerometer readings.
+        /// </summary>
+        /// <exception cref="IOException">
+        /// Thrown if not connected to a Neato.
+        /// </exception>
+        private void UpdateAccelerometer()
+        {
+            if (!this.IsConnected)
+            {
+                throw new IOException("Not connected to a Neato!");
+            }
+
+            var info = this.Command.GetInfo.GetAccel();
+
+            this.PitchInDegrees = float.Parse(info.GetLine("PitchInDegrees")[0], CultureInfo.GetCultureInfo(0x0409));
+            this.RollInDegrees = float.Parse(info.GetLine("RollInDegrees")[0], CultureInfo.GetCultureInfo(0x0409));
+            this.XInG = float.Parse(info.GetLine("XInG")[0], CultureInfo.GetCultureInfo(0x0409));
+            this.YInG = float.Parse(info.GetLine("YInG")[0], CultureInfo.GetCultureInfo(0x0409));
+            this.ZInG = float.Parse(info.GetLine("ZInG")[0], CultureInfo.GetCultureInfo(0x0409));
+            this.SumInG = float.Parse(info.GetLine("SumInG")[0], CultureInfo.GetCultureInfo(0x0409));
         }
 
         #endregion
