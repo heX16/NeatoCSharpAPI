@@ -12,8 +12,9 @@
         public Form1()
         {
             this.InitializeComponent();
-            this.comboBoxSound.DataSource = Enum.GetValues(typeof(PlaySoundFlag));
-            this.comboBoxLDSRotationFlag.DataSource = Enum.GetValues(typeof(LDSRotationFlag));
+            this.comboBoxSound.DataSource = Enum.GetValues(typeof(Sounds));
+            this.comboBoxLDSRotationFlag.DataSource = Enum.GetValues(typeof(LDSRotation));
+            this.comboBoxSysMode.DataSource = Enum.GetValues(typeof(SystemMode));
             this.robot = new Neato();
             this.CheckIfConnected();
         }
@@ -36,7 +37,7 @@
 
         private void Button2Click(object sender, EventArgs e)
         {
-            var flag = (PlaySoundFlag)this.comboBoxSound.SelectedValue;
+            var flag = (Sounds)this.comboBoxSound.SelectedValue;
 
             this.robot.Command.Misc.PlaySound(flag);
         }
@@ -51,11 +52,11 @@
         {
             if (this.robot.TestMode)
             {
-                this.robot.Command.Test.TestMode(TestModeFlag.Off);
+                this.robot.Command.Test.TestMode(TestModeState.Off);
             }
             else
             {
-                this.robot.Command.Test.TestMode(TestModeFlag.On);
+                this.robot.Command.Test.TestMode(TestModeState.On);
             }
 
             this.CheckTestModeGUI();
@@ -208,7 +209,7 @@
 
         private void Button18Click(object sender, EventArgs e)
         {
-            var flag = (LDSRotationFlag)this.comboBoxLDSRotationFlag.SelectedValue;
+            var flag = (LDSRotation)this.comboBoxLDSRotationFlag.SelectedValue;
             this.robot.Command.Test.SetLDSRotation(flag);
         }
 
@@ -338,6 +339,13 @@
                 this.robot.Command.Test.ToggleVacuum(false, 0);
                 this.labelVacuumState.Text = "Off";
             }
+        }
+
+        private void buttonSysMode_Click(object sender, EventArgs e)
+        {
+            var flag = (SystemMode)this.comboBoxSysMode.SelectedValue;
+
+            this.robot.Command.Test.SetSystemMode(flag);
         }
     }
 }
