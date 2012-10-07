@@ -2,7 +2,6 @@
 {
     using System.Drawing;
     using System.IO;
-    using System.Net.NetworkInformation;
     using System.Text;
 
     /// <summary>
@@ -14,6 +13,8 @@
         /// Internal variable for the angle of this Neato.
         /// </summary>
         private int angle;
+
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Neato"/> class.
@@ -33,6 +34,8 @@
             this.Command = new Command(this);
             this.SetDefaults();
         }
+
+        #endregion
 
         #region Defining variables
 
@@ -187,6 +190,120 @@
 
         #endregion
 
+        #region Version info
+
+        /// <summary>
+        /// Gets the model ID designation.
+        /// </summary>
+        public string ModelID { get; private set; }
+
+        /// <summary>
+        /// Gets the config id.
+        /// </summary>
+        public string ConfigID { get; private set; }
+
+        /// <summary>
+        /// Gets the serial number.
+        /// </summary>
+        public string SerialNumber { get; private set; }
+
+        /// <summary>
+        /// Gets the software version.
+        /// </summary>
+        public string SoftwareVersion { get; private set; }
+
+        /// <summary>
+        /// Gets the battery type.
+        /// </summary>
+        public string BatteryType { get; private set; }
+
+        /// <summary>
+        /// Gets the blower type.
+        /// </summary>
+        public string BlowerType { get; private set; }
+
+        /// <summary>
+        /// Gets the brush speed.
+        /// </summary>
+        public int BrushSpeed { get; private set; }
+
+        /// <summary>
+        /// Gets the brush motor type.
+        /// </summary>
+        public string BrushMotorType { get; private set; }
+
+        /// <summary>
+        /// Gets the side brush type.
+        /// </summary>
+        public string SideBrushType { get; private set; }
+
+        /// <summary>
+        /// Gets the wheel pod type.
+        /// </summary>
+        public string WheelPodType { get; private set; }
+
+        /// <summary>
+        /// Gets the drop sensor type.
+        /// </summary>
+        public string DropSensorType { get; private set; }
+
+        /// <summary>
+        /// Gets the magnetic sensor type.
+        /// </summary>
+        public string MagSensorType { get; private set; }
+
+        /// <summary>
+        /// Gets the wall sensor type.
+        /// </summary>
+        public string WallSensorType { get; private set; }
+
+        /// <summary>
+        /// Gets the locale.
+        /// </summary>
+        public string Locale { get; private set; }
+
+        /// <summary>
+        /// Gets the LDS software version.
+        /// </summary>
+        public string LDSSoftwareVersion { get; private set; }
+
+        /// <summary>
+        /// Gets the serial of the LDS unit.
+        /// </summary>
+        public string LDSSerial { get; private set; }
+
+        /// <summary>
+        /// Gets information about the LDS CPU.
+        /// </summary>
+        public string LDSCPU { get; private set; }
+
+        /// <summary>
+        /// Gets the mainboard vendor ID.
+        /// </summary>
+        public string MainboardVendorID { get; private set; }
+
+        /// <summary>
+        /// Gets the mainboard serial number.
+        /// </summary>
+        public string MainboardSerialNumber { get; private set; }
+
+        /// <summary>
+        /// Gets the mainboard version.
+        /// </summary>
+        public string MainboardVersion { get; private set; }
+
+        /// <summary>
+        /// Gets the chassis revision.
+        /// </summary>
+        public string ChassisRevision { get; private set; }
+
+        /// <summary>
+        /// Gets the UI panel revision.
+        /// </summary>
+        public string UIPanelRevision { get; private set; }
+
+        #endregion
+
         #endregion
 
         /// <summary>
@@ -243,6 +360,7 @@
 
             this.UpdateChargerInfo();
             this.UpdateDigitalSensor();
+            this.UpdateVersionInfo();
         }
 
         /// <summary>
@@ -325,8 +443,9 @@
             this.IsRightSideBlocked = false;
             this.IsFrontLeftBumperBlocked = false;
             this.IsFrontRightBumperBlocked = false;
-
         }
+
+        #region Internal refresh functions
 
         /// <summary>
         /// Updates the power information.
@@ -348,6 +467,12 @@
             this.ExternalPowerPresent = info.GetLine("ExtPwrPresent")[0] == "1";
         }
 
+        /// <summary>
+        /// Updates the state of the digital sensors.
+        /// </summary>
+        /// <exception cref="IOException">
+        /// Thrown if not connected to a Neato.
+        /// </exception>
         private void UpdateDigitalSensor()
         {
             if (!this.IsConnected)
@@ -366,5 +491,43 @@
             this.IsFrontLeftBumperBlocked = info.GetLine("LFRONTBIT")[0] == "1";
             this.IsFrontRightBumperBlocked = info.GetLine("RFRONTBIT")[0] == "1";
         }
+
+        /// <summary>
+        /// Updates the version information. Shouldn't change, so only needs to be run once.
+        /// </summary>
+        private void UpdateVersionInfo()
+        {
+            if (!this.IsConnected)
+            {
+                throw new IOException("Not connected to a Neato!");
+            }
+
+            var info = this.Command.GetInfo.GetVersion();
+
+            this.ModelID = info.GetLine("ModelID")[1];
+            this.ConfigID = info.GetLine("ConfigID")[0];
+            this.SerialNumber = info.GetLine("Serial Number")[0] + '-' + info.GetLine("Serial Number")[1] + '-' + info.GetLine("Serial Number")[2];
+            this.SoftwareVersion = info.GetLine("Software")[0] + '.' + info.GetLine("Software")[1] + '.' + info.GetLine("Software")[2];
+            this.BatteryType = info.GetLine("BatteryType")[1];
+            this.BlowerType = info.GetLine("BlowerType")[1];
+            this.BrushSpeed = int.Parse(info.GetLine("BrushSpeed")[0]);
+            this.BrushMotorType = info.GetLine("BrushMotorType")[1];
+            this.SideBrushType = info.GetLine("SideBrushType")[1];
+            this.WheelPodType = info.GetLine("WheelPodType")[1];
+            this.DropSensorType = info.GetLine("DropSensorType")[1];
+            this.MagSensorType = info.GetLine("MagSensorType")[1];
+            this.WallSensorType = info.GetLine("WallSensorType")[1];
+            this.Locale = info.GetLine("Locale")[1];
+            this.LDSSoftwareVersion = info.GetLine("LDS Software")[0];
+            this.LDSSerial = info.GetLine("LDS Serial")[0];
+            this.LDSCPU = info.GetLine("LDS CPU")[0];
+            this.MainboardVendorID = info.GetLine("MainBoard Vendor ID")[0];
+            this.MainboardSerialNumber = info.GetLine("MainBoard Serial Number")[0];
+            this.MainboardVersion = info.GetLine("MainBoard Version")[0] + '.' + info.GetLine("MainBoard Version")[1];
+            this.ChassisRevision = info.GetLine("ChassisRev")[0];
+            this.UIPanelRevision = info.GetLine("UIPanelRev")[0];
+        }
+
+        #endregion
     }
 }
