@@ -5,7 +5,7 @@
     using System.Text;
 
     /// <summary>
-    /// Represents a response from the Neato. 
+    /// Represents a response from the Neato.
     /// </summary>
     public class Response
     {
@@ -77,9 +77,26 @@
         /// <returns>
         /// The <see cref="List"/>.
         /// </returns>
-        public List<string> GetLine(string identifier)
+        private List<string> GetLine(string identifier)
         {
+            if (!data.ContainsKey(identifier))
+            {
+                return new List<string>
+                {
+                    string.Empty
+                };
+            }
             return this.data[identifier];
+        }
+
+        public string GetValueAt(string identifier, int pos)
+        {
+            var value = GetLine(identifier);
+            if (value.Count >= (pos + 1))
+            {
+                return value[pos];
+            }
+            return string.Empty;
         }
 
         /// <summary>

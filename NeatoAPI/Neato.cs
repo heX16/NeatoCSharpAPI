@@ -26,7 +26,7 @@
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Neato"/> class. 
+        /// Initializes a new instance of the <see cref="Neato"/> class.
         /// </summary>
         /// <param name="neatoPort">COM port used to connect to Neato.</param>
         public Neato(string neatoPort)
@@ -37,7 +37,7 @@
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Neato"/> class. 
+        /// Initializes a new instance of the <see cref="Neato"/> class.
         /// </summary>
         /// <param name="neatoPort">Port to use when connecting to Neato.</param>
         public Neato(System.IO.Ports.SerialPort neatoPort)
@@ -60,7 +60,7 @@
         /// Gets or sets the Command object, which allows access to Neato commands.
         /// </summary>
         public Command Command { get; set; }
-        
+
         #region Motors
 
         #region Motors enabled/disabled
@@ -69,17 +69,17 @@
         /// Gets or sets a value indicating whether or not this Neato's brush motor is enabled or not.
         /// </summary>
         public bool MotorBrushEnabled { get; set; }
-        
+
         /// <summary>
         /// Gets or sets a value indicating whether or not this Neato's vacuum motor is enabled or not.
         /// </summary>
         public bool MotorVacuumEnabled { get; set; }
-        
+
         /// <summary>
         /// Gets or sets a value indicating whether or not this Neato's left wheel motor is enabled or not.
         /// </summary>
         public bool MotorLWheelEnabled { get; set; }
-        
+
         /// <summary>
         /// Gets or sets a value indicating whether or not this Neato's right wheel motor is enabled or not.
         /// </summary>
@@ -212,7 +212,7 @@
         /// Gets the right wheel rpm.
         /// </summary>
         public int RightWheelRPM { get; private set; }
-        
+
         #endregion
 
         #region Laser
@@ -289,7 +289,7 @@
         /// Gets or sets a value indicating whether LDS is rotating or not.
         /// </summary>
         public bool LDSRotation { get; set; }
-        
+
         #endregion
 
         #region Spatial information
@@ -347,7 +347,7 @@
         /// Gets a value indicating whether DC jack is connected.
         /// </summary>
         public bool IsDCJackConnected { get; private set; }
-        
+
         /// <summary>
         /// Gets a value indicating whether is dustbin present.
         /// </summary>
@@ -693,9 +693,9 @@
 
             var info = this.Command.GetInfo.GetCharger();
 
-            this.BatteryCharge = int.Parse(info.GetLine("FuelPercent")[0]);
-            this.IsCharging = info.GetLine("ChargingActive")[0] == "1";
-            this.ExternalPowerPresent = info.GetLine("ExtPwrPresent")[0] == "1";
+            this.BatteryCharge = int.TryParse(info.GetValueAt("FuelPercent", 0), out int intOutParameter) ? intOutParameter : 0;
+            this.IsCharging = info.GetValueAt("ChargingActive", 0) == "1";
+            this.ExternalPowerPresent = info.GetValueAt("ExtPwrPresent", 0) == "1";
         }
 
         /// <summary>
@@ -713,14 +713,14 @@
 
             var info = this.Command.GetInfo.GetDigitalSensors();
 
-            this.IsDCJackConnected = info.GetLine("SNSR_DC_JACK_CONNECT")[0] == "1";
-            this.IsDustbinPresent = info.GetLine("SNSR_DUSTBIN_IS_IN")[0] == "1";
-            this.IsLeftWheelExtended = info.GetLine("SNSR_LEFT_WHEEL_EXTENDED")[0] == "1";
-            this.IsRightWheelExtended = info.GetLine("SNSR_RIGHT_WHEEL_EXTENDED")[0] == "1";
-            this.IsLeftSideBlocked = info.GetLine("LSIDEBIT")[0] == "1";
-            this.IsRightSideBlocked = info.GetLine("RSIDEBIT")[0] == "1";
-            this.IsFrontLeftBumperBlocked = info.GetLine("LFRONTBIT")[0] == "1";
-            this.IsFrontRightBumperBlocked = info.GetLine("RFRONTBIT")[0] == "1";
+            this.IsDCJackConnected = info.GetValueAt("SNSR_DC_JACK_CONNECT", 0) == "1";
+            this.IsDustbinPresent = info.GetValueAt("SNSR_DUSTBIN_IS_IN", 0) == "1";
+            this.IsLeftWheelExtended = info.GetValueAt("SNSR_LEFT_WHEEL_EXTENDED", 0) == "1";
+            this.IsRightWheelExtended = info.GetValueAt("SNSR_RIGHT_WHEEL_EXTENDED", 0) == "1";
+            this.IsLeftSideBlocked = info.GetValueAt("LSIDEBIT", 0) == "1";
+            this.IsRightSideBlocked = info.GetValueAt("RSIDEBIT", 0) == "1";
+            this.IsFrontLeftBumperBlocked = info.GetValueAt("LFRONTBIT", 0) == "1";
+            this.IsFrontRightBumperBlocked = info.GetValueAt("RFRONTBIT", 0) == "1";
         }
 
         /// <summary>
@@ -738,28 +738,28 @@
 
             var info = this.Command.GetInfo.GetVersion();
 
-            this.ModelID = info.GetLine("ModelID")[1];
-            this.ConfigID = info.GetLine("ConfigID")[0];
-            this.SerialNumber = info.GetLine("Serial Number")[0] + '-' + info.GetLine("Serial Number")[1] + '-' + info.GetLine("Serial Number")[2];
-            this.SoftwareVersion = info.GetLine("Software")[0] + '.' + info.GetLine("Software")[1] + '.' + info.GetLine("Software")[2];
-            this.BatteryType = info.GetLine("BatteryType")[1];
-            this.BlowerType = info.GetLine("BlowerType")[1];
-            this.BrushSpeed = int.Parse(info.GetLine("BrushSpeed")[0]);
-            this.BrushMotorType = info.GetLine("BrushMotorType")[1];
-            this.SideBrushType = info.GetLine("SideBrushType")[1];
-            this.WheelPodType = info.GetLine("WheelPodType")[1];
-            this.DropSensorType = info.GetLine("DropSensorType")[1];
-            this.MagSensorType = info.GetLine("MagSensorType")[1];
-            this.WallSensorType = info.GetLine("WallSensorType")[1];
-            this.Locale = info.GetLine("Locale")[1];
-            this.LDSSoftwareVersion = info.GetLine("LDS Software")[0];
-            this.LDSSerial = info.GetLine("LDS Serial")[0];
-            this.LDSCPU = info.GetLine("LDS CPU")[0];
-            this.MainboardVendorID = info.GetLine("MainBoard Vendor ID")[0];
-            this.MainboardSerialNumber = info.GetLine("MainBoard Serial Number")[0];
-            this.MainboardVersion = info.GetLine("MainBoard Version")[0] + '.' + info.GetLine("MainBoard Version")[1];
-            this.ChassisRevision = info.GetLine("ChassisRev")[0];
-            this.UIPanelRevision = info.GetLine("UIPanelRev")[0];
+            this.ModelID = info.GetValueAt("ModelID", 1);
+            this.ConfigID = info.GetValueAt("ConfigID", 0);
+            this.SerialNumber = info.GetValueAt("Serial Number", 0) + '-' + info.GetValueAt("Serial Number", 1) + '-' + info.GetValueAt("Serial Number", 2);
+            this.SoftwareVersion = info.GetValueAt("Software", 0) + '.' + info.GetValueAt("Software", 1) + '.' + info.GetValueAt("Software", 2);
+            this.BatteryType = info.GetValueAt("BatteryType", 1);
+            this.BlowerType = info.GetValueAt("BlowerType", 1);
+            this.BrushSpeed = int.TryParse(info.GetValueAt("BrushSpeed", 0), out int intOutParameter) ? intOutParameter : 0;
+            this.BrushMotorType = info.GetValueAt("BrushMotorType", 1);
+            this.SideBrushType = info.GetValueAt("SideBrushType", 1);
+            this.WheelPodType = info.GetValueAt("WheelPodType", 1);
+            this.DropSensorType = info.GetValueAt("DropSensorType", 1);
+            this.MagSensorType = info.GetValueAt("MagSensorType", 1);
+            this.WallSensorType = info.GetValueAt("WallSensorType", 1);
+            this.Locale = info.GetValueAt("Locale", 1);
+            this.LDSSoftwareVersion = info.GetValueAt("LDS Software", 0);
+            this.LDSSerial = info.GetValueAt("LDS Serial", 0);
+            this.LDSCPU = info.GetValueAt("LDS CPU", 0);
+            this.MainboardVendorID = info.GetValueAt("MainBoard Vendor ID", 0);
+            this.MainboardSerialNumber = info.GetValueAt("MainBoard Serial Number", 0);
+            this.MainboardVersion = info.GetValueAt("MainBoard Version", 0) + '.' + info.GetValueAt("MainBoard Version", 1);
+            this.ChassisRevision = info.GetValueAt("ChassisRev", 0);
+            this.UIPanelRevision = info.GetValueAt("UIPanelRev", 0);
         }
 
         /// <summary>
@@ -777,12 +777,12 @@
 
             var info = this.Command.GetInfo.GetAccel();
 
-            this.PitchInDegrees = float.Parse(info.GetLine("PitchInDegrees")[0], CultureInfo.GetCultureInfo(0x0409));
-            this.RollInDegrees = float.Parse(info.GetLine("RollInDegrees")[0], CultureInfo.GetCultureInfo(0x0409));
-            this.XInG = float.Parse(info.GetLine("XInG")[0], CultureInfo.GetCultureInfo(0x0409));
-            this.YInG = float.Parse(info.GetLine("YInG")[0], CultureInfo.GetCultureInfo(0x0409));
-            this.ZInG = float.Parse(info.GetLine("ZInG")[0], CultureInfo.GetCultureInfo(0x0409));
-            this.SumInG = float.Parse(info.GetLine("SumInG")[0], CultureInfo.GetCultureInfo(0x0409));
+            this.PitchInDegrees = float.TryParse(info.GetValueAt("PitchInDegrees", 0), out float PitchInDegrees) ? PitchInDegrees : 0;
+            this.RollInDegrees = float.TryParse(info.GetValueAt("RollInDegrees", 0), out float RollInDegrees) ? RollInDegrees : 0;
+            this.XInG = float.TryParse(info.GetValueAt("XInG", 0), out float XInG) ? XInG : 0;
+            this.YInG = float.TryParse(info.GetValueAt("YInG", 0), out float YInG) ? YInG : 0;
+            this.ZInG = float.TryParse(info.GetValueAt("ZInG", 0), out float ZInG) ? ZInG : 0;
+            this.SumInG = float.TryParse(info.GetValueAt("SumInG", 0), out float SumInG) ? SumInG : 0;
         }
 
         /// <summary>
@@ -800,41 +800,41 @@
 
             var info = this.Command.GetInfo.GetMotors();
 
-            this.BrushMaxPWM = int.Parse(info.GetLine("Brush_MaxPWM")[0]);
-            this.BrushPWM = int.Parse(info.GetLine("Brush_PWM")[0]);
-            this.BrushMilliVolts = int.Parse(info.GetLine("Brush_mVolts")[0]);
-            this.BrushEncoder = int.Parse(info.GetLine("Brush_Encoder")[0]);
-            this.BrushRPM = int.Parse(info.GetLine("Brush_RPM")[0]);
+            this.BrushMaxPWM = int.TryParse(info.GetValueAt("Brush_MaxPWM", 0), out int BrushMaxPWM) ? BrushMaxPWM : 0;
+            this.BrushPWM = int.TryParse(info.GetValueAt("Brush_PWM", 0), out int BrushPWM) ? BrushPWM : 0;
+            this.BrushMilliVolts = int.TryParse(info.GetValueAt("Brush_mVolts", 0), out int BrushMilliVolts) ? BrushMilliVolts : 0;
+            this.BrushEncoder = int.TryParse(info.GetValueAt("Brush_Encoder", 0), out int BrushEncoder) ? BrushEncoder : 0;
+            this.BrushRPM = int.TryParse(info.GetValueAt("Brush_RPM", 0), out int BrushRPM) ? BrushRPM : 0;
 
-            this.VacuumMaxPWM = int.Parse(info.GetLine("Vacuum_MaxPWM")[0]);
-            this.VacuumPWM = int.Parse(info.GetLine("Vacuum_PWM")[0]);
-            this.VacuumCurrentInMilliAmpere = int.Parse(info.GetLine("Vacuum_CurrentInMA")[0]);
-            this.VacuumEncoder = int.Parse(info.GetLine("Vacuum_Encoder")[0]);
-            this.VacuumRPM = int.Parse(info.GetLine("Vacuum_RPM")[0]);
+            this.VacuumMaxPWM = int.TryParse(info.GetValueAt("Vacuum_MaxPWM", 0), out int VacuumMaxPWM) ? VacuumMaxPWM : 0;
+            this.VacuumPWM = int.TryParse(info.GetValueAt("Vacuum_PWM", 0), out int VacuumPWM) ? VacuumPWM : 0;
+            this.VacuumCurrentInMilliAmpere = int.TryParse(info.GetValueAt("Vacuum_CurrentInMA", 0), out int VacuumCurrentInMilliAmpere) ? VacuumCurrentInMilliAmpere : 0;
+            this.VacuumEncoder = int.TryParse(info.GetValueAt("Vacuum_Encoder", 0), out int VacuumEncoder) ? VacuumEncoder : 0;
+            this.VacuumRPM = int.TryParse(info.GetValueAt("Vacuum_RPM", 0), out int VacuumRPM) ? VacuumRPM : 0;
 
-            this.LeftWheelMaxPWM = int.Parse(info.GetLine("LeftWheel_MaxPWM")[0]);
-            this.LeftWheelPWM = int.Parse(info.GetLine("LeftWheel_PWM")[0]);
-            this.LeftWheelMilliVolts = int.Parse(info.GetLine("LeftWheel_mVolts")[0]);
-            this.LeftWheelEncoder = int.Parse(info.GetLine("LeftWheel_Encoder")[0]);
-            this.LeftWheelPositionInMM = int.Parse(info.GetLine("LeftWheel_PositionInMM")[0]);
-            this.LeftWheelRPM = int.Parse(info.GetLine("LeftWheel_RPM")[0]);
+            this.LeftWheelMaxPWM = int.TryParse(info.GetValueAt("LeftWheel_MaxPWM", 0), out int LeftWheelMaxPWM) ? LeftWheelMaxPWM : 0;
+            this.LeftWheelPWM = int.TryParse(info.GetValueAt("LeftWheel_PWM", 0), out int intOutParameter) ? intOutParameter : 0;
+            this.LeftWheelMilliVolts = int.TryParse(info.GetValueAt("LeftWheel_mVolts", 0), out int LeftWheelPWM) ? LeftWheelPWM : 0;
+            this.LeftWheelEncoder = int.TryParse(info.GetValueAt("LeftWheel_Encoder", 0), out int LeftWheelEncoder) ? LeftWheelEncoder : 0;
+            this.LeftWheelPositionInMM = int.TryParse(info.GetValueAt("LeftWheel_PositionInMM", 0), out int LeftWheelPositionInMM) ? LeftWheelPositionInMM : 0;
+            this.LeftWheelRPM = int.TryParse(info.GetValueAt("LeftWheel_RPM", 0), out int LeftWheelRPM) ? LeftWheelRPM : 0;
 
-            this.RightWheelMaxPWM = int.Parse(info.GetLine("RightWheel_MaxPWM")[0]);
-            this.RightWheelPWM = int.Parse(info.GetLine("RightWheel_PWM")[0]);
-            this.RightWheelMilliVolts = int.Parse(info.GetLine("RightWheel_mVolts")[0]);
-            this.RightWheelEncoder = int.Parse(info.GetLine("RightWheel_Encoder")[0]);
-            this.RightWheelPositionInMM = int.Parse(info.GetLine("RightWheel_PositionInMM")[0]);
-            this.RightWheelRPM = int.Parse(info.GetLine("RightWheel_RPM")[0]);
+            this.RightWheelMaxPWM = int.TryParse(info.GetValueAt("RightWheel_MaxPWM", 0), out int RightWheelMaxPWM) ? RightWheelMaxPWM : 0;
+            this.RightWheelPWM = int.TryParse(info.GetValueAt("RightWheel_PWM", 0), out int RightWheelPWM) ? RightWheelPWM : 0;
+            this.RightWheelMilliVolts = int.TryParse(info.GetValueAt("RightWheel_mVolts", 0), out int RightWheelMilliVolts) ? RightWheelMilliVolts : 0;
+            this.RightWheelEncoder = int.TryParse(info.GetValueAt("RightWheel_Encoder", 0), out int RightWheelEncoder) ? RightWheelEncoder : 0;
+            this.RightWheelPositionInMM = int.TryParse(info.GetValueAt("RightWheel_PositionInMM", 0), out int RightWheelPositionInMM) ? RightWheelPositionInMM : 0;
+            this.RightWheelRPM = int.TryParse(info.GetValueAt("RightWheel_RPM", 0), out int RightWheelRPM) ? RightWheelRPM : 0;
 
-            this.LaserMaxPWM = int.Parse(info.GetLine("Laser_MaxPWM")[0]);
-            this.LaserPWM = int.Parse(info.GetLine("Laser_PWM")[0]);
-            this.LaserMilliVolts = int.Parse(info.GetLine("Laser_mVolts")[0]);
-            this.LaserEncoder = int.Parse(info.GetLine("Laser_Encoder")[0]);
-            this.LaserRPM = int.Parse(info.GetLine("Laser_RPM")[0]);
+            this.LaserMaxPWM = int.TryParse(info.GetValueAt("Laser_MaxPWM", 0), out int LaserMaxPWM) ? LaserMaxPWM : 0;
+            this.LaserPWM = int.TryParse(info.GetValueAt("Laser_PWM", 0), out int LaserPWM) ? LaserPWM : 0;
+            this.LaserMilliVolts = int.TryParse(info.GetValueAt("Laser_mVolts", 0), out int LaserMilliVolts) ? LaserMilliVolts : 0;
+            this.LaserEncoder = int.TryParse(info.GetValueAt("Laser_Encoder", 0), out int LaserEncoder) ? LaserEncoder : 0;
+            this.LaserRPM = int.TryParse(info.GetValueAt("Laser_RPM", 0), out int LaserRPM) ? LaserRPM : 0;
 
-            this.ChargerMaxPWM = int.Parse(info.GetLine("Charger_MaxPWM")[0]);
-            this.ChargerPWM = int.Parse(info.GetLine("Charger_PWM")[0]);
-            this.ChargerMilliAmpereHours = int.Parse(info.GetLine("Charger_mAH")[0]);
+            this.ChargerMaxPWM = int.TryParse(info.GetValueAt("Charger_MaxPWM", 0), out int ChargerMaxPWM) ? ChargerMaxPWM : 0;
+            this.ChargerPWM = int.TryParse(info.GetValueAt("Charger_PWM", 0), out int ChargerPWM) ? ChargerPWM : 0;
+            this.ChargerMilliAmpereHours = int.TryParse(info.GetValueAt("Charger_mAH", 0), out int ChargerMilliAmpereHours) ? ChargerMilliAmpereHours : 0;
         }
 
         #endregion

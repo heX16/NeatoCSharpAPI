@@ -1,15 +1,22 @@
 ﻿namespace NeatoTest
 {
     using System;
+    using System.ComponentModel;
     using System.Drawing;
+    using System.Threading;
     using System.Windows.Forms;
     using NeatoAPI;
 
-    public partial class Form1 : Form
+    public partial class MainWindow : Form
     {
         private Neato robot;
 
-        public Form1()
+        private bool sensorReadStarted = false;
+
+        private const string Analog = "Analog";
+        private const string Digital = "Digital";
+
+        public MainWindow()
         {
             this.InitializeComponent();
             this.comboBoxSound.DataSource = Enum.GetValues(typeof(Sounds));
@@ -17,6 +24,7 @@
             this.comboBoxSysMode.DataSource = Enum.GetValues(typeof(SystemMode));
             this.robot = new Neato();
             this.CheckIfConnected();
+            backgroundReader.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundReader_DoWork);
         }
 
         private void Button1Click(object sender, EventArgs e)
@@ -133,7 +141,42 @@
 
         private void ButtonGetAnalogClick(object sender, EventArgs e)
         {
-            this.textBoxFromNeato.Text = this.robot.Command.GetInfo.GetAnalogSensors().GetRaw();
+            if (sensorReadStarted)
+            {
+                this.backgroundReader.CancelAsync();
+                this.buttonGetAnalog.Text = "GetAnalogSensors()";
+            }
+            else
+            {
+                if (this.backgroundReader.IsBusy)
+                {
+                    this.backgroundReader.CancelAsync();
+                }
+                this.backgroundReader.RunWorkerAsync(Analog);
+                this.buttonGetAnalog.Text = "Stop!";
+            }
+            sensorReadStarted = !sensorReadStarted;
+        }
+
+        private void backgroundReader_DoWork(object sender, DoWorkEventArgs e)
+        {
+            while (!backgroundReader.CancellationPending)
+            {
+                switch (e.Argument)
+                {
+                    case Analog:
+                        this.textBoxFromNeato.Invoke((MethodInvoker)delegate {
+                            this.textBoxFromNeato.Text = this.robot.Command.GetInfo.GetAnalogSensors().GetRaw();
+                        });
+                        break;
+                    case Digital:
+                        this.textBoxFromNeato.Invoke((MethodInvoker)delegate {
+                            this.textBoxFromNeato.Text = this.robot.Command.GetInfo.GetDigitalSensors().GetRaw();
+                        });
+                        break;
+                }
+                Thread.Sleep(500);
+            }
         }
 
         private void ButtonGetButtonsClick(object sender, EventArgs e)
@@ -153,7 +196,21 @@
 
         private void Button6Click(object sender, EventArgs e)
         {
-            this.textBoxFromNeato.Text = this.robot.Command.GetInfo.GetDigitalSensors().GetRaw();
+            if (sensorReadStarted)
+            {
+                this.backgroundReader.CancelAsync();
+                this.button6.Text = "GetDigitalSensors()";
+            }
+            else
+            {
+                if (this.backgroundReader.IsBusy)
+                {
+                    this.backgroundReader.CancelAsync();
+                }
+                this.backgroundReader.RunWorkerAsync(Digital);
+                this.button6.Text = "Stop!";
+            }
+            sensorReadStarted = !sensorReadStarted;
         }
 
         private void Button7Click(object sender, EventArgs e)
@@ -218,7 +275,7 @@
         private void buttonRefresh_Click(object sender, EventArgs e)
         {
             this.robot.RefreshInformation();
-            
+
             this.progressBarBatteryBar.Value = this.robot.BatteryCharge;
             this.labelBatteryCharge.Text = this.progressBarBatteryBar.Value + "%";
 
