@@ -54,7 +54,7 @@
             {
                 throw new NotInTestModeException("DiagTest");
             }
-            
+
             // TODO: Implement. NOTE: Has a million flags in funny combinations, read up!
             throw new NotImplementedException();
         }
@@ -69,7 +69,7 @@
             {
                 throw new NotInTestModeException("SetLCD");
             }
-            
+
             // TODO: Implement. Note: Has a million flags, read up!
             throw new NotImplementedException();
         }
@@ -87,7 +87,7 @@
             }
 
             this.neato.Connection.SendCommand("SetLDSRotation " + flag);
-            
+
             // Update Neato status!
             this.neato.LDSRotation = flag == LDSRotation.On;
         }
@@ -168,6 +168,7 @@
 
             this.neato.Connection.SendCommand("SetMotor " + parameters, true);
         }
+
 
         /// <summary>
         /// TODO: Summary

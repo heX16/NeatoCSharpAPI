@@ -30,7 +30,6 @@
         {
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.labelNeatoConnected = new System.Windows.Forms.Label();
             this.comboBoxSound = new System.Windows.Forms.ComboBox();
@@ -81,14 +80,10 @@
             this.buttonMoveForward = new System.Windows.Forms.Button();
             this.buttonMoveLeftRotate = new System.Windows.Forms.Button();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.checkBoxMotorRWheel = new System.Windows.Forms.CheckBox();
-            this.checkBoxMotorLWheel = new System.Windows.Forms.CheckBox();
-            this.checkBoxMotorBrush = new System.Windows.Forms.CheckBox();
+            this.button19 = new System.Windows.Forms.Button();
             this.buttonMotorRWheel = new System.Windows.Forms.Button();
             this.buttonMotorLWheel = new System.Windows.Forms.Button();
             this.buttonMotorBrush = new System.Windows.Forms.Button();
-            this.comboBoxLDSRotationFlag = new System.Windows.Forms.ComboBox();
-            this.button18 = new System.Windows.Forms.Button();
             this.button17 = new System.Windows.Forms.Button();
             this.button16 = new System.Windows.Forms.Button();
             this.groupBoxStatus = new System.Windows.Forms.GroupBox();
@@ -112,7 +107,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(7, 48);
+            this.button1.Location = new System.Drawing.Point(8, 23);
             this.button1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(113, 27);
@@ -132,28 +127,15 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.Button2Click);
             // 
-            // button3
-            // 
-            this.button3.Enabled = false;
-            this.button3.Location = new System.Drawing.Point(7, 82);
-            this.button3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(113, 27);
-            this.button3.TabIndex = 2;
-            this.button3.Text = "Disconnect";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.Button3Click);
-            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.labelNeatoConnected);
             this.groupBox1.Controls.Add(this.button1);
-            this.groupBox1.Controls.Add(this.button3);
-            this.groupBox1.Location = new System.Drawing.Point(14, 14);
+            this.groupBox1.Location = new System.Drawing.Point(346, 17);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.groupBox1.Size = new System.Drawing.Size(127, 115);
+            this.groupBox1.Size = new System.Drawing.Size(242, 72);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Neato Connection";
@@ -163,7 +145,7 @@
             this.labelNeatoConnected.AutoSize = true;
             this.labelNeatoConnected.BackColor = System.Drawing.Color.LightCoral;
             this.labelNeatoConnected.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.labelNeatoConnected.Location = new System.Drawing.Point(9, 21);
+            this.labelNeatoConnected.Location = new System.Drawing.Point(129, 29);
             this.labelNeatoConnected.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelNeatoConnected.Name = "labelNeatoConnected";
             this.labelNeatoConnected.Size = new System.Drawing.Size(81, 17);
@@ -184,11 +166,11 @@
             this.groupBoxPlaySound.Controls.Add(this.label2);
             this.groupBoxPlaySound.Controls.Add(this.comboBoxSound);
             this.groupBoxPlaySound.Controls.Add(this.button2);
-            this.groupBoxPlaySound.Location = new System.Drawing.Point(148, 14);
+            this.groupBoxPlaySound.Location = new System.Drawing.Point(8, 285);
             this.groupBoxPlaySound.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.groupBoxPlaySound.Name = "groupBoxPlaySound";
             this.groupBoxPlaySound.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.groupBoxPlaySound.Size = new System.Drawing.Size(190, 115);
+            this.groupBoxPlaySound.Size = new System.Drawing.Size(233, 118);
             this.groupBoxPlaySound.TabIndex = 7;
             this.groupBoxPlaySound.TabStop = false;
             this.groupBoxPlaySound.Text = "Play Sound";
@@ -208,7 +190,7 @@
             this.groupBoxTestMode.Controls.Add(this.labelTestStatus);
             this.groupBoxTestMode.Controls.Add(this.label3);
             this.groupBoxTestMode.Controls.Add(this.buttonTestToggle);
-            this.groupBoxTestMode.Location = new System.Drawing.Point(345, 14);
+            this.groupBoxTestMode.Location = new System.Drawing.Point(596, 17);
             this.groupBoxTestMode.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.groupBoxTestMode.Name = "groupBoxTestMode";
             this.groupBoxTestMode.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
@@ -253,18 +235,18 @@
             // textBoxFromNeato
             // 
             this.textBoxFromNeato.HideSelection = false;
-            this.textBoxFromNeato.Location = new System.Drawing.Point(14, 151);
+            this.textBoxFromNeato.Location = new System.Drawing.Point(14, 32);
             this.textBoxFromNeato.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.textBoxFromNeato.Multiline = true;
             this.textBoxFromNeato.Name = "textBoxFromNeato";
             this.textBoxFromNeato.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxFromNeato.Size = new System.Drawing.Size(324, 371);
+            this.textBoxFromNeato.Size = new System.Drawing.Size(324, 490);
             this.textBoxFromNeato.TabIndex = 10;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(14, 133);
+            this.label5.Location = new System.Drawing.Point(13, 14);
             this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(92, 15);
@@ -469,8 +451,7 @@
             this.groupBoxTestFunctions.Controls.Add(this.groupBox3);
             this.groupBoxTestFunctions.Controls.Add(this.groupBox2);
             this.groupBoxTestFunctions.Controls.Add(this.groupBox6);
-            this.groupBoxTestFunctions.Controls.Add(this.comboBoxLDSRotationFlag);
-            this.groupBoxTestFunctions.Controls.Add(this.button18);
+            this.groupBoxTestFunctions.Controls.Add(this.groupBoxPlaySound);
             this.groupBoxTestFunctions.Controls.Add(this.button17);
             this.groupBoxTestFunctions.Controls.Add(this.button16);
             this.groupBoxTestFunctions.Enabled = false;
@@ -486,7 +467,7 @@
             // comboBoxSysMode
             // 
             this.comboBoxSysMode.FormattingEnabled = true;
-            this.comboBoxSysMode.Location = new System.Drawing.Point(122, 122);
+            this.comboBoxSysMode.Location = new System.Drawing.Point(123, 100);
             this.comboBoxSysMode.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.comboBoxSysMode.Name = "comboBoxSysMode";
             this.comboBoxSysMode.Size = new System.Drawing.Size(118, 23);
@@ -494,7 +475,7 @@
             // 
             // buttonSysMode
             // 
-            this.buttonSysMode.Location = new System.Drawing.Point(7, 122);
+            this.buttonSysMode.Location = new System.Drawing.Point(7, 96);
             this.buttonSysMode.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonSysMode.Name = "buttonSysMode";
             this.buttonSysMode.Size = new System.Drawing.Size(108, 27);
@@ -510,7 +491,7 @@
             this.groupBox3.Controls.Add(this.label9);
             this.groupBox3.Controls.Add(this.labelVacuumPower);
             this.groupBox3.Controls.Add(this.trackBarVacuum);
-            this.groupBox3.Location = new System.Drawing.Point(8, 178);
+            this.groupBox3.Location = new System.Drawing.Point(8, 141);
             this.groupBox3.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
@@ -727,9 +708,7 @@
             // 
             // groupBox6
             // 
-            this.groupBox6.Controls.Add(this.checkBoxMotorRWheel);
-            this.groupBox6.Controls.Add(this.checkBoxMotorLWheel);
-            this.groupBox6.Controls.Add(this.checkBoxMotorBrush);
+            this.groupBox6.Controls.Add(this.button19);
             this.groupBox6.Controls.Add(this.buttonMotorRWheel);
             this.groupBox6.Controls.Add(this.buttonMotorLWheel);
             this.groupBox6.Controls.Add(this.buttonMotorBrush);
@@ -737,53 +716,25 @@
             this.groupBox6.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.groupBox6.Size = new System.Drawing.Size(132, 123);
+            this.groupBox6.Size = new System.Drawing.Size(234, 147);
             this.groupBox6.TabIndex = 10;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Toggle Motors";
             // 
-            // checkBoxMotorRWheel
+            // button19
             // 
-            this.checkBoxMotorRWheel.AutoSize = true;
-            this.checkBoxMotorRWheel.Checked = true;
-            this.checkBoxMotorRWheel.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxMotorRWheel.Enabled = false;
-            this.checkBoxMotorRWheel.Location = new System.Drawing.Point(102, 95);
-            this.checkBoxMotorRWheel.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.checkBoxMotorRWheel.Name = "checkBoxMotorRWheel";
-            this.checkBoxMotorRWheel.Size = new System.Drawing.Size(15, 14);
-            this.checkBoxMotorRWheel.TabIndex = 7;
-            this.checkBoxMotorRWheel.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxMotorLWheel
-            // 
-            this.checkBoxMotorLWheel.AutoSize = true;
-            this.checkBoxMotorLWheel.Checked = true;
-            this.checkBoxMotorLWheel.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxMotorLWheel.Enabled = false;
-            this.checkBoxMotorLWheel.Location = new System.Drawing.Point(102, 61);
-            this.checkBoxMotorLWheel.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.checkBoxMotorLWheel.Name = "checkBoxMotorLWheel";
-            this.checkBoxMotorLWheel.Size = new System.Drawing.Size(15, 14);
-            this.checkBoxMotorLWheel.TabIndex = 6;
-            this.checkBoxMotorLWheel.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxMotorBrush
-            // 
-            this.checkBoxMotorBrush.AutoSize = true;
-            this.checkBoxMotorBrush.Checked = true;
-            this.checkBoxMotorBrush.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxMotorBrush.Enabled = false;
-            this.checkBoxMotorBrush.Location = new System.Drawing.Point(103, 28);
-            this.checkBoxMotorBrush.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.checkBoxMotorBrush.Name = "checkBoxMotorBrush";
-            this.checkBoxMotorBrush.Size = new System.Drawing.Size(15, 14);
-            this.checkBoxMotorBrush.TabIndex = 4;
-            this.checkBoxMotorBrush.UseVisualStyleBackColor = true;
+            this.button19.Location = new System.Drawing.Point(73, 99);
+            this.button19.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.button19.Name = "button19";
+            this.button19.Size = new System.Drawing.Size(88, 27);
+            this.button19.TabIndex = 4;
+            this.button19.Text = "Lidar";
+            this.button19.UseVisualStyleBackColor = true;
+            this.button19.Click += new System.EventHandler(this.button19_Click);
             // 
             // buttonMotorRWheel
             // 
-            this.buttonMotorRWheel.Location = new System.Drawing.Point(7, 89);
+            this.buttonMotorRWheel.Location = new System.Drawing.Point(136, 58);
             this.buttonMotorRWheel.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonMotorRWheel.Name = "buttonMotorRWheel";
             this.buttonMotorRWheel.Size = new System.Drawing.Size(88, 27);
@@ -794,7 +745,7 @@
             // 
             // buttonMotorLWheel
             // 
-            this.buttonMotorLWheel.Location = new System.Drawing.Point(7, 55);
+            this.buttonMotorLWheel.Location = new System.Drawing.Point(7, 58);
             this.buttonMotorLWheel.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonMotorLWheel.Name = "buttonMotorLWheel";
             this.buttonMotorLWheel.Size = new System.Drawing.Size(88, 27);
@@ -805,7 +756,7 @@
             // 
             // buttonMotorBrush
             // 
-            this.buttonMotorBrush.Location = new System.Drawing.Point(8, 22);
+            this.buttonMotorBrush.Location = new System.Drawing.Point(73, 22);
             this.buttonMotorBrush.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonMotorBrush.Name = "buttonMotorBrush";
             this.buttonMotorBrush.Size = new System.Drawing.Size(88, 27);
@@ -813,26 +764,6 @@
             this.buttonMotorBrush.Text = "Brush";
             this.buttonMotorBrush.UseVisualStyleBackColor = true;
             this.buttonMotorBrush.Click += new System.EventHandler(this.buttonMotorBrush_Click);
-            // 
-            // comboBoxLDSRotationFlag
-            // 
-            this.comboBoxLDSRotationFlag.FormattingEnabled = true;
-            this.comboBoxLDSRotationFlag.Location = new System.Drawing.Point(122, 89);
-            this.comboBoxLDSRotationFlag.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.comboBoxLDSRotationFlag.Name = "comboBoxLDSRotationFlag";
-            this.comboBoxLDSRotationFlag.Size = new System.Drawing.Size(118, 23);
-            this.comboBoxLDSRotationFlag.TabIndex = 9;
-            // 
-            // button18
-            // 
-            this.button18.Location = new System.Drawing.Point(7, 89);
-            this.button18.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.button18.Name = "button18";
-            this.button18.Size = new System.Drawing.Size(108, 27);
-            this.button18.TabIndex = 3;
-            this.button18.Text = "SetLDSRotation";
-            this.button18.UseVisualStyleBackColor = true;
-            this.button18.Click += new System.EventHandler(this.Button18Click);
             // 
             // button17
             // 
@@ -931,14 +862,13 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1145, 534);
+            this.ClientSize = new System.Drawing.Size(1145, 531);
             this.Controls.Add(this.groupBoxStatus);
             this.Controls.Add(this.groupBoxTestFunctions);
             this.Controls.Add(this.groupBoxGetFunctions);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.textBoxFromNeato);
             this.Controls.Add(this.groupBoxTestMode);
-            this.Controls.Add(this.groupBoxPlaySound);
             this.Controls.Add(this.groupBox1);
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.Name = "MainWindow";
@@ -957,7 +887,6 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox6.ResumeLayout(false);
-            this.groupBox6.PerformLayout();
             this.groupBoxStatus.ResumeLayout(false);
             this.groupBoxStatus.PerformLayout();
             this.ResumeLayout(false);
@@ -969,7 +898,6 @@
 
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.ComboBox comboBoxSound;
         private System.Windows.Forms.GroupBox groupBoxPlaySound;
@@ -1000,8 +928,6 @@
         private System.Windows.Forms.GroupBox groupBoxTestFunctions;
         private System.Windows.Forms.Button button16;
         private System.Windows.Forms.Button button17;
-        private System.Windows.Forms.ComboBox comboBoxLDSRotationFlag;
-        private System.Windows.Forms.Button button18;
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.Button buttonMotorBrush;
         private System.Windows.Forms.GroupBox groupBoxStatus;
@@ -1010,9 +936,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label labelBatteryCharge;
         private System.Windows.Forms.Button buttonSyncTime;
-        private System.Windows.Forms.CheckBox checkBoxMotorRWheel;
-        private System.Windows.Forms.CheckBox checkBoxMotorLWheel;
-        private System.Windows.Forms.CheckBox checkBoxMotorBrush;
         private System.Windows.Forms.Button buttonMotorRWheel;
         private System.Windows.Forms.Button buttonMotorLWheel;
         private System.Windows.Forms.GroupBox groupBox2;
@@ -1037,6 +960,7 @@
         private System.Windows.Forms.ComboBox comboBoxSysMode;
         private System.Windows.Forms.Button buttonSysMode;
         private System.ComponentModel.BackgroundWorker backgroundReader;
+        private System.Windows.Forms.Button button19;
     }
 }
 

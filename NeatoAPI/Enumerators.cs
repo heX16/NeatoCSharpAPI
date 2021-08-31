@@ -122,7 +122,7 @@
     }
 
     /// <summary>
-    /// Parameters available when using PlaySound command. 
+    /// Parameters available when using PlaySound command.
     /// </summary>
     public enum Sounds
     {

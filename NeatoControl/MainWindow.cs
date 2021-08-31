@@ -13,147 +13,135 @@
 
         private bool sensorReadStarted = false;
 
+        private bool leftMotorStart = false;
+        private bool rigthMotorStart = false;
+        private bool brushMotorStart = false;
+        private bool lidarMotorStart = false;
+        private bool connectedToRobot = false;
+
         private const string Analog = "Analog";
         private const string Digital = "Digital";
 
         public MainWindow()
         {
-            this.InitializeComponent();
-            this.comboBoxSound.DataSource = Enum.GetValues(typeof(Sounds));
-            this.comboBoxLDSRotationFlag.DataSource = Enum.GetValues(typeof(LDSRotation));
-            this.comboBoxSysMode.DataSource = Enum.GetValues(typeof(SystemMode));
-            this.robot = new Neato();
-            this.CheckIfConnected();
-            backgroundReader.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundReader_DoWork);
+            InitializeComponent();
+            comboBoxSound.DataSource = Enum.GetValues(typeof(Sounds));
+            comboBoxSysMode.DataSource = Enum.GetValues(typeof(SystemMode));
+            robot = new Neato();
+            CheckIfConnected();
+            backgroundReader.DoWork += new System.ComponentModel.DoWorkEventHandler(backgroundReader_DoWork);
         }
 
         private void Button1Click(object sender, EventArgs e)
         {
-            if (!this.robot.ConnectToNeato())
+            if (connectedToRobot)
             {
-                MessageBox.Show(
-                    this,
-                    "Could not find any COM ports connected to a Neato.",
-                    "Connection failed",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                robot.Connection.Disconnect();
+                button1.Text = "Connect";
             }
-
-            this.CheckIfConnected();
-            this.CheckTestModeGUI();
+            else
+            {
+                if (!robot.ConnectToNeato())
+                {
+                    MessageBox.Show(
+                        this,
+                        "Could not find any COM ports connected to a Neato.",
+                        "Connection failed",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+                else
+                {
+                    CheckTestModeGUI();
+                    button1.Text = "Disconnect";
+                }
+            }
+            CheckIfConnected();
+            connectedToRobot = !connectedToRobot;
         }
 
         private void Button2Click(object sender, EventArgs e)
         {
-            var flag = (Sounds)this.comboBoxSound.SelectedValue;
+            var flag = (Sounds)comboBoxSound.SelectedValue;
 
-            this.robot.Command.Misc.PlaySound(flag);
+            robot.Command.Misc.PlaySound(flag);
         }
 
-        private void Button3Click(object sender, EventArgs e)
-        {
-            this.robot.Connection.Disconnect();
-            this.CheckIfConnected();
-        }
 
         private void ButtonTestToggleClick(object sender, EventArgs e)
         {
-            if (this.robot.TestMode)
+            if (robot.TestMode)
             {
-                this.robot.Command.Test.TestMode(TestModeState.Off);
+                robot.Command.Test.TestMode(TestModeState.Off);
             }
             else
             {
-                this.robot.Command.Test.TestMode(TestModeState.On);
+                robot.Command.Test.TestMode(TestModeState.On);
             }
 
-            this.CheckTestModeGUI();
+            CheckTestModeGUI();
         }
 
         private void CheckTestModeGUI()
         {
-            if (!this.robot.TestMode)
+            if (!robot.TestMode)
             {
-                this.labelTestStatus.Text = "Inactive";
-                this.labelTestStatus.BackColor = Color.LightCoral;
-                this.groupBoxTestFunctions.Enabled = false;
+                labelTestStatus.Text = "Inactive";
+                labelTestStatus.BackColor = Color.LightCoral;
+                groupBoxTestFunctions.Enabled = false;
             }
             else
             {
-                this.labelTestStatus.Text = "Active";
-                this.labelTestStatus.BackColor = Color.LawnGreen;
-                this.groupBoxTestFunctions.Enabled = true;
+                labelTestStatus.Text = "Active";
+                labelTestStatus.BackColor = Color.LawnGreen;
+                groupBoxTestFunctions.Enabled = true;
             }
         }
 
         void ButtonGetAccelClick(object sender, EventArgs e)
         {
-            this.textBoxFromNeato.Text = this.robot.Command.GetInfo.GetAccel().GetRaw();
+            textBoxFromNeato.Text = robot.Command.GetInfo.GetAccel().GetRaw();
         }
 
         private void CheckIfConnected()
         {
-            if (this.robot == null)
+            if (robot?.Connection == null || !robot.IsConnected)
             {
-                this.IsNotConnected();
+                groupBoxGetFunctions.Enabled = false;
+                groupBoxPlaySound.Enabled = false;
+                groupBoxTestMode.Enabled = false;
+                groupBoxStatus.Enabled = false;
+                if (robot?.Connection != null)
+                {
+                    labelNeatoConnected.Text = "Disconnected";
+                    labelNeatoConnected.BackColor = Color.LightCoral;
+                }
                 return;
             }
-
-            if (this.robot.Connection == null)
-            {
-                this.IsNotConnected();
-                return;
-            }
-
-            if (this.robot.IsConnected)
-            {
-                labelNeatoConnected.Text = "Connected";
-                labelNeatoConnected.BackColor = Color.LawnGreen;
-                IsConnected();
-                buttonRefresh.PerformClick();
-            }
-            else
-            {
-                labelNeatoConnected.Text = "Disonnected";
-                labelNeatoConnected.BackColor = Color.LightCoral;
-                IsNotConnected();
-            }
-        }
-
-        private void IsConnected()
-        {
-            this.button1.Enabled = false;
-            this.button3.Enabled = true;
-            this.groupBoxGetFunctions.Enabled = true;
-            this.groupBoxPlaySound.Enabled = true;
-            this.groupBoxTestMode.Enabled = true;
-            this.groupBoxStatus.Enabled = true;
-        }
-        private void IsNotConnected()
-        {
-            this.button1.Enabled = true;
-            this.button3.Enabled = false;
-            this.groupBoxGetFunctions.Enabled = false;
-            this.groupBoxPlaySound.Enabled = false;
-            this.groupBoxTestMode.Enabled = false;
-            this.groupBoxStatus.Enabled = false;
+            labelNeatoConnected.Text = "Connected";
+            labelNeatoConnected.BackColor = Color.LawnGreen;
+            groupBoxGetFunctions.Enabled = true;
+            groupBoxPlaySound.Enabled = true;
+            groupBoxTestMode.Enabled = true;
+            groupBoxStatus.Enabled = true;
+            buttonRefresh.PerformClick();
         }
 
         private void ButtonGetAnalogClick(object sender, EventArgs e)
         {
             if (sensorReadStarted)
             {
-                this.backgroundReader.CancelAsync();
-                this.buttonGetAnalog.Text = "GetAnalogSensors()";
+                backgroundReader.CancelAsync();
+                buttonGetAnalog.Text = "GetAnalogSensors()";
             }
             else
             {
-                if (this.backgroundReader.IsBusy)
+                if (backgroundReader.IsBusy)
                 {
-                    this.backgroundReader.CancelAsync();
+                    backgroundReader.CancelAsync();
                 }
-                this.backgroundReader.RunWorkerAsync(Analog);
-                this.buttonGetAnalog.Text = "Stop!";
+                backgroundReader.RunWorkerAsync(Analog);
+                buttonGetAnalog.Text = "Stop!";
             }
             sensorReadStarted = !sensorReadStarted;
         }
@@ -165,13 +153,15 @@
                 switch (e.Argument)
                 {
                     case Analog:
-                        this.textBoxFromNeato.Invoke((MethodInvoker)delegate {
-                            this.textBoxFromNeato.Text = this.robot.Command.GetInfo.GetAnalogSensors().GetRaw();
+                        textBoxFromNeato.Invoke((MethodInvoker)delegate
+                        {
+                            textBoxFromNeato.Text = robot.Command.GetInfo.GetAnalogSensors().GetRaw();
                         });
                         break;
                     case Digital:
-                        this.textBoxFromNeato.Invoke((MethodInvoker)delegate {
-                            this.textBoxFromNeato.Text = this.robot.Command.GetInfo.GetDigitalSensors().GetRaw();
+                        textBoxFromNeato.Invoke((MethodInvoker)delegate
+                        {
+                            textBoxFromNeato.Text = robot.Command.GetInfo.GetDigitalSensors().GetRaw();
                         });
                         break;
                 }
@@ -181,156 +171,127 @@
 
         private void ButtonGetButtonsClick(object sender, EventArgs e)
         {
-            this.textBoxFromNeato.Text = this.robot.Command.GetInfo.GetButtons().GetRaw();
+            textBoxFromNeato.Text = robot.Command.GetInfo.GetButtons().GetRaw();
         }
 
         private void Button4Click(object sender, EventArgs e)
         {
-            this.textBoxFromNeato.Text = this.robot.Command.GetInfo.GetCalInfo().GetRaw();
+            textBoxFromNeato.Text = robot.Command.GetInfo.GetCalInfo().GetRaw();
         }
 
         private void Button5Click(object sender, EventArgs e)
         {
-            this.textBoxFromNeato.Text = this.robot.Command.GetInfo.GetCharger().GetRaw();
+            textBoxFromNeato.Text = robot.Command.GetInfo.GetCharger().GetRaw();
         }
 
         private void Button6Click(object sender, EventArgs e)
         {
             if (sensorReadStarted)
             {
-                this.backgroundReader.CancelAsync();
-                this.button6.Text = "GetDigitalSensors()";
+                backgroundReader.CancelAsync();
+                button6.Text = "GetDigitalSensors()";
             }
             else
             {
-                if (this.backgroundReader.IsBusy)
+                if (backgroundReader.IsBusy)
                 {
-                    this.backgroundReader.CancelAsync();
+                    backgroundReader.CancelAsync();
                 }
-                this.backgroundReader.RunWorkerAsync(Digital);
-                this.button6.Text = "Stop!";
+                backgroundReader.RunWorkerAsync(Digital);
+                button6.Text = "Stop!";
             }
             sensorReadStarted = !sensorReadStarted;
         }
 
         private void Button7Click(object sender, EventArgs e)
         {
-            this.textBoxFromNeato.Text = this.robot.Command.GetInfo.GetErr().GetRaw();
+            textBoxFromNeato.Text = robot.Command.GetInfo.GetErr().GetRaw();
         }
 
         private void Button8Click(object sender, EventArgs e)
         {
-            Response res = this.robot.Command.GetInfo.GetLDSScan();
-            this.textBoxFromNeato.Text = res.GetRaw();
+            Response res = robot.Command.GetInfo.GetLDSScan();
+            textBoxFromNeato.Text = res.GetRaw();
         }
 
         private void Button9Click(object sender, EventArgs e)
         {
-            this.textBoxFromNeato.Text = this.robot.Command.GetInfo.GetLifeStatLog().GetRaw();
+            //textBoxFromNeato.Text = robot.Command.GetInfo.GetLifeStatLog().GetRaw();
         }
 
         private void Button10Click(object sender, EventArgs e)
         {
-            this.textBoxFromNeato.Text = this.robot.Command.GetInfo.GetMotors().GetRaw();
+            textBoxFromNeato.Text = robot.Command.GetInfo.GetMotors().GetRaw();
         }
 
         private void Button11Click(object sender, EventArgs e)
         {
-            this.textBoxFromNeato.Text = this.robot.Command.GetInfo.GetSchedule().GetRaw();
+            textBoxFromNeato.Text = robot.Command.GetInfo.GetSchedule().GetRaw();
         }
 
         private void Button12Click(object sender, EventArgs e)
         {
-            this.textBoxFromNeato.Text = this.robot.Command.GetInfo.GetSysLog().GetRaw();
+            textBoxFromNeato.Text = robot.Command.GetInfo.GetSysLog().GetRaw();
         }
 
         private void Button13Click(object sender, EventArgs e)
         {
-            this.textBoxFromNeato.Text = this.robot.Command.GetInfo.GetTime().GetRaw();
+            textBoxFromNeato.Text = robot.Command.GetInfo.GetTime().GetRaw();
         }
 
         private void Button14Click(object sender, EventArgs e)
         {
-            this.textBoxFromNeato.Text = this.robot.Command.GetInfo.GetVersion().GetRaw();
+            textBoxFromNeato.Text = robot.Command.GetInfo.GetVersion().GetRaw();
         }
 
         private void Button15Click(object sender, EventArgs e)
         {
-            this.textBoxFromNeato.Text = this.robot.Command.GetInfo.GetWarranty().GetRaw();
+            textBoxFromNeato.Text = robot.Command.GetInfo.GetWarranty().GetRaw();
         }
 
         private void Button16Click(object sender, EventArgs e)
         {
-            this.robot.Command.Test.DiagTest();
+            robot.Command.Test.DiagTest();
         }
 
-        private void Button18Click(object sender, EventArgs e)
-        {
-            var flag = (LDSRotation)this.comboBoxLDSRotationFlag.SelectedValue;
-            this.robot.Command.Test.SetLDSRotation(flag);
-        }
 
         #region Neato Status
 
         private void buttonRefresh_Click(object sender, EventArgs e)
         {
-            this.robot.RefreshInformation();
+            robot.RefreshInformation();
 
-            this.progressBarBatteryBar.Value = this.robot.BatteryCharge;
-            this.labelBatteryCharge.Text = this.progressBarBatteryBar.Value + "%";
+            progressBarBatteryBar.Value = robot.BatteryCharge;
+            labelBatteryCharge.Text = progressBarBatteryBar.Value + "%";
 
-            this.textBoxFromNeato.Text = this.robot.ToString();
+            textBoxFromNeato.Text = robot.ToString();
         }
 
         #endregion
 
         private void buttonSyncTime_Click(object sender, EventArgs e)
         {
-            this.robot.Command.System.SyncTime();
+            robot.Command.System.SyncTime();
         }
 
         #region Motors
 
         private void buttonMotorBrush_Click(object sender, EventArgs e)
         {
-            if (this.checkBoxMotorBrush.Checked)
-            {
-                this.robot.Command.Test.ToggleMotor(Motors.Brush, false);
-                this.checkBoxMotorBrush.Checked = false;
-            }
-            else
-            {
-                this.robot.Command.Test.ToggleMotor(Motors.Brush, true);
-                this.checkBoxMotorBrush.Checked = true;
-            }
+            brushMotorStart = !brushMotorStart;
+            robot.Command.Test.ToggleMotor(Motors.Brush, brushMotorStart);
         }
 
         private void buttonMotorLWheel_Click(object sender, EventArgs e)
         {
-            if (this.checkBoxMotorLWheel.Checked)
-            {
-                this.robot.Command.Test.ToggleMotor(Motors.LeftWheel, false);
-                this.checkBoxMotorLWheel.Checked = false;
-            }
-            else
-            {
-                this.robot.Command.Test.ToggleMotor(Motors.LeftWheel, true);
-                checkBoxMotorLWheel.Checked = true;
-            }
+            leftMotorStart = !leftMotorStart;
+            robot.Command.Test.ToggleMotor(Motors.LeftWheel, leftMotorStart);
         }
 
         private void buttonMotorRWheel_Click(object sender, EventArgs e)
         {
-            if (this.checkBoxMotorRWheel.Checked)
-            {
-                this.robot.Command.Test.ToggleMotor(Motors.RightWheel, false);
-                this.checkBoxMotorRWheel.Checked = false;
-            }
-            else
-            {
-                this.robot.Command.Test.ToggleMotor(Motors.RightWheel, true);
-                this.checkBoxMotorRWheel.Checked = true;
-            }
+            rigthMotorStart = !rigthMotorStart;
+            robot.Command.Test.ToggleMotor(Motors.RightWheel, rigthMotorStart);
         }
 
         #endregion
@@ -338,71 +299,78 @@
         #region Movement
         private void buttonMoveLeftRotate_Click(object sender, EventArgs e)
         {
-            this.robot.Command.Movement.LeftRotation(int.Parse(this.textBoxMoveSpeed.Text));
-            this.textBoxFromNeato.Text = this.robot.ToString();
+            robot.Command.Movement.LeftRotation(int.Parse(textBoxMoveSpeed.Text));
+            textBoxFromNeato.Text = robot.ToString();
         }
 
         private void buttonMoveRightRotate_Click(object sender, EventArgs e)
         {
-            this.robot.Command.Movement.RightRotation(int.Parse(this.textBoxMoveSpeed.Text));
-            this.textBoxFromNeato.Text = this.robot.ToString();
+            robot.Command.Movement.RightRotation(int.Parse(textBoxMoveSpeed.Text));
+            textBoxFromNeato.Text = robot.ToString();
         }
 
         private void buttonMoveForward_Click(object sender, EventArgs e)
         {
-            this.robot.Command.Movement.BothWheels(int.Parse(this.textBoxMoveDistance.Text), int.Parse(this.textBoxMoveSpeed.Text), this.checkBoxMoveReverse.Checked);
-            this.textBoxFromNeato.Text = this.robot.ToString();
+            robot.Command.Movement.BothWheels(int.Parse(textBoxMoveDistance.Text), int.Parse(textBoxMoveSpeed.Text), checkBoxMoveReverse.Checked);
+            textBoxFromNeato.Text = robot.ToString();
         }
 
         private void buttonMoveLeft_Click(object sender, EventArgs e)
         {
-            this.robot.Command.Movement.LeftWheel(int.Parse(this.textBoxMoveDistance.Text), int.Parse(this.textBoxMoveSpeed.Text), this.checkBoxMoveReverse.Checked);
-            this.textBoxFromNeato.Text = this.robot.ToString();
+            robot.Command.Movement.LeftWheel(int.Parse(textBoxMoveDistance.Text), int.Parse(textBoxMoveSpeed.Text), checkBoxMoveReverse.Checked);
+            textBoxFromNeato.Text = robot.ToString();
         }
 
         private void buttonMoveRight_Click(object sender, EventArgs e)
         {
-            this.robot.Command.Movement.RightWheel(int.Parse(this.textBoxMoveDistance.Text), int.Parse(this.textBoxMoveSpeed.Text), this.checkBoxMoveReverse.Checked);
-            this.textBoxFromNeato.Text = this.robot.ToString();
+            robot.Command.Movement.RightWheel(int.Parse(textBoxMoveDistance.Text), int.Parse(textBoxMoveSpeed.Text), checkBoxMoveReverse.Checked);
+            textBoxFromNeato.Text = robot.ToString();
         }
 
         private void buttonMove180_Click(object sender, EventArgs e)
         {
-            this.robot.Command.Movement.TurnAround(int.Parse(this.textBoxMoveSpeed.Text), this.checkBoxMoveReverse.Checked);
-            this.textBoxFromNeato.Text = this.robot.ToString();
+            robot.Command.Movement.TurnAround(int.Parse(textBoxMoveSpeed.Text), checkBoxMoveReverse.Checked);
+            textBoxFromNeato.Text = robot.ToString();
         }
 
         private void buttonMoveStop_Click(object sender, EventArgs e)
         {
-            this.robot.Command.Movement.Stop();
+            robot.Command.Movement.Stop();
         }
 
         #endregion
 
         private void trackBarVacuum_ValueChanged(object sender, EventArgs e)
         {
-            this.labelVacuumPower.Text = this.trackBarVacuum.Value + "%";
+            labelVacuumPower.Text = trackBarVacuum.Value + "%";
         }
 
         private void buttonVacuum_Click(object sender, EventArgs e)
         {
-            if (this.labelVacuumState.Text == "Off")
+            if (labelVacuumState.Text == "Off")
             {
-                this.robot.Command.Test.ToggleVacuum(true, trackBarVacuum.Value);
-                this.labelVacuumState.Text = "On";
+                robot.Command.Test.ToggleVacuum(true, trackBarVacuum.Value);
+                labelVacuumState.Text = "On";
             }
             else
             {
-                this.robot.Command.Test.ToggleVacuum(false, 0);
-                this.labelVacuumState.Text = "Off";
+                robot.Command.Test.ToggleVacuum(false, 0);
+                labelVacuumState.Text = "Off";
             }
         }
 
         private void buttonSysMode_Click(object sender, EventArgs e)
         {
-            var flag = (SystemMode)this.comboBoxSysMode.SelectedValue;
+            var flag = (SystemMode)comboBoxSysMode.SelectedValue;
 
-            this.robot.Command.Test.SetSystemMode(flag);
+            robot.Command.Test.SetSystemMode(flag);
         }
+
+        private void button19_Click(object sender, EventArgs e)
+        {
+            lidarMotorStart = !lidarMotorStart;
+            robot.Command.Test.SetLDSRotation(lidarMotorStart ? LDSRotation.On : LDSRotation.Off);
+        }
+
     }
 }
