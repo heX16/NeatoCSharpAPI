@@ -156,10 +156,12 @@
                     parameters = enable ? "BrushEnable" : "BrushDisable";
                     neato.MotorBrushEnabled = enable;
                     break;
+
                 case Motors.LeftWheel:
                     parameters = enable ? "LWheelEnable" : "LWheelDisable";
                     neato.MotorLWheelEnabled = enable;
                     break;
+
                 case Motors.RightWheel:
                     parameters = enable ? "RWheelEnable" : "RWheelDisable";
                     neato.MotorRWheelEnabled = enable;
@@ -168,7 +170,6 @@
 
             neato.Connection.SendCommand("SetMotor " + parameters, true);
         }
-
 
         /// <summary>
         /// TODO: Summary
@@ -189,6 +190,6 @@
             }
         }
 
-        #endregion
+        #endregion Commands
     }
 }

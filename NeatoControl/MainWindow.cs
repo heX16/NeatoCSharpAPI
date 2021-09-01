@@ -1,11 +1,11 @@
 ﻿namespace NeatoTest
 {
+    using NeatoAPI;
     using System;
     using System.ComponentModel;
     using System.Drawing;
     using System.Threading;
     using System.Windows.Forms;
-    using NeatoAPI;
 
     public partial class MainWindow : Form
     {
@@ -67,7 +67,6 @@
             robot.Command.Misc.PlaySound(flag);
         }
 
-
         private void ButtonTestToggleClick(object sender, EventArgs e)
         {
             if (robot.TestMode)
@@ -98,7 +97,7 @@
             }
         }
 
-        void ButtonGetAccelClick(object sender, EventArgs e)
+        private void ButtonGetAccelClick(object sender, EventArgs e)
         {
             textBoxFromNeato.Text = robot.Command.GetInfo.GetAccel().GetRaw();
         }
@@ -158,6 +157,7 @@
                             textBoxFromNeato.Text = robot.Command.GetInfo.GetAnalogSensors().GetRaw();
                         });
                         break;
+
                     case Digital:
                         textBoxFromNeato.Invoke((MethodInvoker)delegate
                         {
@@ -254,7 +254,6 @@
             robot.Command.Test.DiagTest();
         }
 
-
         #region Neato Status
 
         private void buttonRefresh_Click(object sender, EventArgs e)
@@ -267,7 +266,7 @@
             textBoxFromNeato.Text = robot.ToString();
         }
 
-        #endregion
+        #endregion Neato Status
 
         private void buttonSyncTime_Click(object sender, EventArgs e)
         {
@@ -294,9 +293,10 @@
             robot.Command.Test.ToggleMotor(Motors.RightWheel, rigthMotorStart);
         }
 
-        #endregion
+        #endregion Motors
 
         #region Movement
+
         private void buttonMoveLeftRotate_Click(object sender, EventArgs e)
         {
             robot.Command.Movement.LeftRotation(int.Parse(textBoxMoveSpeed.Text));
@@ -338,7 +338,7 @@
             robot.Command.Movement.Stop();
         }
 
-        #endregion
+        #endregion Movement
 
         private void trackBarVacuum_ValueChanged(object sender, EventArgs e)
         {
@@ -371,6 +371,5 @@
             lidarMotorStart = !lidarMotorStart;
             robot.Command.Test.SetLDSRotation(lidarMotorStart ? LDSRotation.On : LDSRotation.Off);
         }
-
     }
 }

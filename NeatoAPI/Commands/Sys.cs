@@ -13,7 +13,7 @@
         private readonly Neato neato;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Sys"/> class. 
+        /// Initializes a new instance of the <see cref="Sys"/> class.
         /// </summary>
         /// <param name="parent">
         /// TODO: Add description.
@@ -73,7 +73,7 @@
             {
                 throw new ArgumentOutOfRangeException("sec", sec, "Seconds set must be within range 0..59.");
             }
-            
+
             neato.Connection.SendCommand("SetTime " + (int)day + " " + hour + " " + minute + " " + sec, true);
         }
 
@@ -100,7 +100,7 @@
             neato.Connection.SendCommand("SetWallFollower " + state, true);
         }
 
-        #endregion
+        #endregion Commands
 
         #region Unimplemented commands
 
@@ -128,6 +128,6 @@
             throw new NotImplementedException("Won't implement until I know what it does, could break stuff?");
         }
 
-        #endregion
+        #endregion Unimplemented commands
     }
 }

@@ -11,7 +11,7 @@
         /// Connection to the Neato.
         /// </summary>
         private readonly Neato neato;
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref="GetInfo"/> class.
         /// </summary>
@@ -189,7 +189,7 @@
         public Response GetLifeStatLog()
         {
             throw new NotImplementedException("Disabled because of odd behaviour...");
-            
+
             // return neato.Connection.SendCommand("GetLifeStatLog");
         }
 

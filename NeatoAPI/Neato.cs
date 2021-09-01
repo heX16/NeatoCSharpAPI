@@ -1,7 +1,6 @@
 ﻿namespace NeatoAPI
 {
     using System.Drawing;
-    using System.Globalization;
     using System.IO;
     using System.Text;
 
@@ -47,7 +46,7 @@
             SetDefaults();
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Defining variables
 
@@ -85,7 +84,7 @@
         /// </summary>
         public bool MotorRWheelEnabled { get; set; }
 
-        #endregion
+        #endregion Motors enabled/disabled
 
         #region GetMotor values
 
@@ -116,7 +115,7 @@
         /// </summary>
         public int BrushRPM { get; private set; }
 
-        #endregion
+        #endregion Brush
 
         #region Vacuum
 
@@ -145,7 +144,7 @@
         /// </summary>
         public int VacuumRPM { get; private set; }
 
-        #endregion
+        #endregion Vacuum
 
         #region Left Wheel
 
@@ -179,7 +178,7 @@
         /// </summary>
         public int LeftWheelRPM { get; private set; }
 
-        #endregion
+        #endregion Left Wheel
 
         #region Right Wheel
 
@@ -213,7 +212,7 @@
         /// </summary>
         public int RightWheelRPM { get; private set; }
 
-        #endregion
+        #endregion Right Wheel
 
         #region Laser
 
@@ -242,7 +241,7 @@
         /// </summary>
         public int LaserRPM { get; private set; }
 
-        #endregion
+        #endregion Laser
 
         #region Charger
 
@@ -261,11 +260,11 @@
         /// </summary>
         public int ChargerMilliAmpereHours { get; private set; }
 
-        #endregion
+        #endregion Charger
 
-        #endregion
+        #endregion GetMotor values
 
-        #endregion
+        #endregion Motors
 
         #region Misc
 
@@ -290,7 +289,7 @@
         /// </summary>
         public bool LDSRotation { get; set; }
 
-        #endregion
+        #endregion Misc
 
         #region Spatial information
 
@@ -320,7 +319,7 @@
         /// </summary>
         public bool PositionalDataIntegrity { get; set; }
 
-        #endregion
+        #endregion Spatial information
 
         #region Battery & Power information
 
@@ -339,7 +338,7 @@
         /// </summary>
         public bool ExternalPowerPresent { get; private set; }
 
-        #endregion
+        #endregion Battery & Power information
 
         #region Digital Sensors
 
@@ -383,7 +382,7 @@
         /// </summary>
         public bool IsRightSideBlocked { get; private set; }
 
-        #endregion
+        #endregion Digital Sensors
 
         #region Version info
 
@@ -497,7 +496,7 @@
         /// </summary>
         public string UIPanelRevision { get; private set; }
 
-        #endregion
+        #endregion Version info
 
         #region Accelerometer information
 
@@ -531,9 +530,9 @@
         /// </summary>
         public float SumInG { get; private set; }
 
-        #endregion
+        #endregion Accelerometer information
 
-        #endregion
+        #endregion Defining variables
 
         /// <summary>
         /// Attempts to connect to a Neato on any serial port.
@@ -837,6 +836,6 @@
             this.ChargerMilliAmpereHours = int.TryParse(info.GetValueAt("Charger_mAH", 0), out int ChargerMilliAmpereHours) ? ChargerMilliAmpereHours : 0;
         }
 
-        #endregion
+        #endregion Internal refresh functions
     }
 }

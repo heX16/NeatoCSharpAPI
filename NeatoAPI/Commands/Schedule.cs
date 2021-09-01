@@ -13,7 +13,7 @@
         private readonly Neato neato;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Schedule"/> class. 
+        /// Initializes a new instance of the <see cref="Schedule"/> class.
         /// </summary>
         /// <param name="parent">
         /// TODO: Add description.
@@ -68,6 +68,6 @@
             return neato.Connection.SendCommand("SetSchedule " + day + " " + hour + " " + minute + "HOUSE");
         }
 
-        #endregion
+        #endregion Commands
     }
 }

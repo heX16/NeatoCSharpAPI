@@ -98,7 +98,7 @@
             // A somewhat ugly solution. TODO: Investigate if there is a better way.
             neato.Command.Test.TestMode(TestModeState.Off);
             neato.Command.Test.TestMode(TestModeState.On);
-            
+
             // This will fuck up any spatial calculations :(
             neato.PositionalDataIntegrity = false;
         }
@@ -121,10 +121,10 @@
 
             // Update position (angle should be unchanged)
             var movement = new System.Drawing.Point(0, 0)
-                { 
-                    X = (int)Math.Round(Math.Cos(neato.Angle) * distance), 
-                    Y = (int)Math.Round(Math.Sin(neato.Angle) * distance)
-                };
+            {
+                X = (int)Math.Round(Math.Cos(neato.Angle) * distance),
+                Y = (int)Math.Round(Math.Sin(neato.Angle) * distance)
+            };
             var current = neato.Position;
             neato.Position = new System.Drawing.Point(movement.X + current.X, movement.Y + current.Y);
         }
@@ -179,7 +179,7 @@
             // TODO: Do the math :(
         }
 
-        #endregion
+        #endregion Commands
 
         #region Private commands (~utility)
 
@@ -217,6 +217,6 @@
             neato.Angle += factor * 90;
         }
 
-        #endregion
+        #endregion Private commands (~utility)
     }
 }

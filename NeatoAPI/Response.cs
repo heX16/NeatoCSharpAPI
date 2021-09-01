@@ -27,7 +27,7 @@
         /// </param>
         public Response(string response)
         {
-            // Find data headers (Assumed to be first line. TODO: Verify 
+            // Find data headers (Assumed to be first line. TODO: Verify
             var headers = response.Split('\n')[0].Trim().Split(',');
 
             raw = response;

@@ -19,7 +19,7 @@
         /// The SerialPort object used to communicate with the Neato.
         /// </summary>
         private readonly SerialPort neatoPort;
-        
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Connection"/> class.
         /// </summary>
@@ -52,7 +52,7 @@
         public Connection(SerialPort comPort)
         {
             neatoPort = comPort;
-            
+
             // Connect to the COM-port.
             neatoPort.Open();
 
@@ -81,7 +81,7 @@
 
             return neatoPort.IsOpen;
         }
-        
+
         /// <summary>
         /// Disconnects from Neato.
         /// </summary>
@@ -92,7 +92,7 @@
                 // Don't have to close something that doesn't exist...
                 return;
             }
-            
+
             neatoPort.Close();
         }
 
@@ -106,7 +106,7 @@
         {
             return SendCommand(command, false);
         }
-        
+
         /// <summary>
         /// Sends a command to the Neato. Waiting for a response will delay this call by roughly 150 milliseconds.
         /// </summary>
@@ -144,13 +144,13 @@
             File.AppendAllText("output.txt", "|*|");
 
             // TODO: REMOVE THIS
-            
+
             if (tmp.Length == 0)
             {
                 // No response received from command.
                 return new Response(string.Empty);
             }
-            
+
             // Cut off first line, contains command sent.
             tmp = tmp.Substring(tmp.IndexOf('\n'));
 
@@ -166,7 +166,7 @@
             {
                 throw new ArgumentException(tmp);
             }
-            
+
             return new Response(tmp);
         }
     }

@@ -1,6 +1,5 @@
 ﻿namespace NeatoAPITest
 {
-    using Moq;
     using NeatoAPI;
     using NUnit.Framework;
 
@@ -17,7 +16,7 @@
         {
             Robot = new Neato(new NeatoMockPort());
         }
-        
+
         [TearDown]
         public void TearDown()
         {
