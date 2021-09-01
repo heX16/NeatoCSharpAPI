@@ -27,11 +27,11 @@
         /// </param>
         public Response(string response)
         {
-            // Find data headers (Assumed to be first line. TODO: Verify this.
+            // Find data headers (Assumed to be first line. TODO: Verify 
             var headers = response.Split('\n')[0].Trim().Split(',');
 
-            this.raw = response;
-            this.data = new Dictionary<string, List<string>>();
+            raw = response;
+            data = new Dictionary<string, List<string>>();
 
             bool first = true;
 
@@ -45,14 +45,14 @@
 
                 var cut = line.Trim().Split(',');
 
-                if (!this.data.ContainsKey(cut[0]))
+                if (!data.ContainsKey(cut[0]))
                 {
-                    this.data.Add(cut[0], new List<string>());
+                    data.Add(cut[0], new List<string>());
                 }
 
                 for (var i = 1; i < cut.Length; i++)
                 {
-                    this.data[cut[0]].Add(cut[i]);
+                    data[cut[0]].Add(cut[i]);
                 }
             }
         }
@@ -65,7 +65,7 @@
         /// </returns>
         public string GetRaw()
         {
-            return this.raw;
+            return raw;
         }
 
         /// <summary>
@@ -86,7 +86,7 @@
                     string.Empty
                 };
             }
-            return this.data[identifier];
+            return data[identifier];
         }
 
         public string GetValueAt(string identifier, int pos)

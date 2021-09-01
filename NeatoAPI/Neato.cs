@@ -31,9 +31,9 @@
         /// <param name="neatoPort">COM port used to connect to Neato.</param>
         public Neato(string neatoPort)
         {
-            this.Connection = new Connection(neatoPort);
-            this.Command = new Command(this);
-            this.SetDefaults();
+            Connection = new Connection(neatoPort);
+            Command = new Command(this);
+            SetDefaults();
         }
 
         /// <summary>
@@ -42,9 +42,9 @@
         /// <param name="neatoPort">Port to use when connecting to Neato.</param>
         public Neato(System.IO.Ports.SerialPort neatoPort)
         {
-            this.Connection = new Connection(neatoPort);
-            this.Command = new Command(this);
-            this.SetDefaults();
+            Connection = new Connection(neatoPort);
+            Command = new Command(this);
+            SetDefaults();
         }
 
         #endregion
@@ -301,12 +301,12 @@
         {
             get
             {
-                return this.angle;
+                return angle;
             }
 
             set
             {
-                this.angle = value % 360;
+                angle = value % 360;
             }
         }
 
@@ -566,9 +566,9 @@
 
                 if (result != null)
                 {
-                    this.Connection = result;
-                    this.SetDefaults();
-                    this.Command = new Command(this);
+                    Connection = result;
+                    SetDefaults();
+                    Command = new Command(this);
                     return true;
                 }
             }
@@ -582,16 +582,16 @@
         /// </summary>
         public void RefreshInformation()
         {
-            if (!this.IsConnected)
+            if (!IsConnected)
             {
                 throw new IOException("Not connected to a Neato!");
             }
 
-            this.UpdateChargerInfo();
-            this.UpdateDigitalSensor();
-            this.UpdateVersionInfo();
-            this.UpdateAccelerometer();
-            this.UpdateGetMotors();
+            UpdateChargerInfo();
+            UpdateDigitalSensor();
+            UpdateVersionInfo();
+            UpdateAccelerometer();
+            UpdateGetMotors();
         }
 
         /// <summary>
@@ -602,7 +602,7 @@
         {
             var res = new StringBuilder();
 
-            if (!this.IsConnected)
+            if (!IsConnected)
             {
                 res.AppendLine("Neato State - Not connected.");
             }
@@ -611,29 +611,29 @@
                 res.AppendLine("Neato State - Connected on \"" + Connection.Port + "\".");
                 res.AppendLine();
                 res.AppendLine("* Motors *");
-                res.AppendLine("Motor - Brush: " + this.MotorBrushEnabled);
-                res.AppendLine("Motor - Vacuum: " + this.MotorVacuumEnabled);
-                res.AppendLine("Motor - Left Wheel: " + this.MotorLWheelEnabled);
-                res.AppendLine("Motor - Right Wheel: " + this.MotorRWheelEnabled);
+                res.AppendLine("Motor - Brush: " + MotorBrushEnabled);
+                res.AppendLine("Motor - Vacuum: " + MotorVacuumEnabled);
+                res.AppendLine("Motor - Left Wheel: " + MotorLWheelEnabled);
+                res.AppendLine("Motor - Right Wheel: " + MotorRWheelEnabled);
                 res.AppendLine();
                 res.AppendLine("* Modes *");
-                res.AppendLine("Test Mode: " + this.TestMode);
-                res.AppendLine("LDS rotation: " + this.LDSRotation);
+                res.AppendLine("Test Mode: " + TestMode);
+                res.AppendLine("LDS rotation: " + LDSRotation);
                 res.AppendLine();
                 res.AppendLine("* Positional data *");
-                res.AppendLine("Positional data integrity: " + this.PositionalDataIntegrity);
-                res.AppendLine("Position: (" + this.Position.X + "," + this.Position.Y + ")");
-                res.AppendLine("Angle: " + this.angle + "°");
+                res.AppendLine("Positional data integrity: " + PositionalDataIntegrity);
+                res.AppendLine("Position: (" + Position.X + "," + Position.Y + ")");
+                res.AppendLine("Angle: " + angle + "°");
                 res.AppendLine();
                 res.AppendLine("* Digital Sensors *");
-                res.AppendLine("DC Jack connected: " + this.IsDCJackConnected);
-                res.AppendLine("Dustbin present: " + this.IsDustbinPresent);
-                res.AppendLine("Left wheel extended: " + this.IsLeftWheelExtended);
-                res.AppendLine("Right wheel extended: " + this.IsRightWheelExtended);
-                res.AppendLine("Blocked: Left front bumper: " + this.IsFrontLeftBumperBlocked);
-                res.AppendLine("Blocked: Right front bumper: " + this.IsFrontRightBumperBlocked);
-                res.AppendLine("Blocked: Left side: " + this.IsLeftSideBlocked);
-                res.AppendLine("Blocked: Right side: " + this.IsRightSideBlocked);
+                res.AppendLine("DC Jack connected: " + IsDCJackConnected);
+                res.AppendLine("Dustbin present: " + IsDustbinPresent);
+                res.AppendLine("Left wheel extended: " + IsLeftWheelExtended);
+                res.AppendLine("Right wheel extended: " + IsRightWheelExtended);
+                res.AppendLine("Blocked: Left front bumper: " + IsFrontLeftBumperBlocked);
+                res.AppendLine("Blocked: Right front bumper: " + IsFrontRightBumperBlocked);
+                res.AppendLine("Blocked: Left side: " + IsLeftSideBlocked);
+                res.AppendLine("Blocked: Right side: " + IsRightSideBlocked);
             }
 
             // TODO: Implement a proper ToString() for this class.
@@ -646,34 +646,34 @@
         private void SetDefaults()
         {
             // Default values for motors:
-            this.MotorBrushEnabled = false;
-            this.MotorVacuumEnabled = false;
-            this.MotorLWheelEnabled = true;
-            this.MotorRWheelEnabled = true;
+            MotorBrushEnabled = false;
+            MotorVacuumEnabled = false;
+            MotorLWheelEnabled = true;
+            MotorRWheelEnabled = true;
 
             // Default values for modes:
-            this.TestMode = false;
-            this.LDSRotation = false;
+            TestMode = false;
+            LDSRotation = false;
 
             // Default values for spatial info:
-            this.PositionalDataIntegrity = true;
-            this.Angle = 0;
-            this.Position = Point.Empty;
+            PositionalDataIntegrity = true;
+            Angle = 0;
+            Position = Point.Empty;
 
             // Default values for battery & power:
-            this.BatteryCharge = -1;
-            this.IsCharging = false;
-            this.ExternalPowerPresent = false;
+            BatteryCharge = -1;
+            IsCharging = false;
+            ExternalPowerPresent = false;
 
             // Digital sensors:
-            this.IsDCJackConnected = false;
-            this.IsDustbinPresent = true;
-            this.IsLeftWheelExtended = false;
-            this.IsRightWheelExtended = false;
-            this.IsLeftSideBlocked = false;
-            this.IsRightSideBlocked = false;
-            this.IsFrontLeftBumperBlocked = false;
-            this.IsFrontRightBumperBlocked = false;
+            IsDCJackConnected = false;
+            IsDustbinPresent = true;
+            IsLeftWheelExtended = false;
+            IsRightWheelExtended = false;
+            IsLeftSideBlocked = false;
+            IsRightSideBlocked = false;
+            IsFrontLeftBumperBlocked = false;
+            IsFrontRightBumperBlocked = false;
         }
 
         #region Internal refresh functions
@@ -686,16 +686,16 @@
         /// </exception>
         private void UpdateChargerInfo()
         {
-            if (!this.IsConnected)
+            if (!IsConnected)
             {
                 throw new IOException("Not connected to a Neato!");
             }
 
-            var info = this.Command.GetInfo.GetCharger();
+            var info = Command.GetInfo.GetCharger();
 
-            this.BatteryCharge = int.TryParse(info.GetValueAt("FuelPercent", 0), out int intOutParameter) ? intOutParameter : 0;
-            this.IsCharging = info.GetValueAt("ChargingActive", 0) == "1";
-            this.ExternalPowerPresent = info.GetValueAt("ExtPwrPresent", 0) == "1";
+            BatteryCharge = int.TryParse(info.GetValueAt("FuelPercent", 0), out int intOutParameter) ? intOutParameter : 0;
+            IsCharging = info.GetValueAt("ChargingActive", 0) == "1";
+            ExternalPowerPresent = info.GetValueAt("ExtPwrPresent", 0) == "1";
         }
 
         /// <summary>
@@ -706,21 +706,21 @@
         /// </exception>
         private void UpdateDigitalSensor()
         {
-            if (!this.IsConnected)
+            if (!IsConnected)
             {
                 throw new IOException("Not connected to a Neato!");
             }
 
-            var info = this.Command.GetInfo.GetDigitalSensors();
+            var info = Command.GetInfo.GetDigitalSensors();
 
-            this.IsDCJackConnected = info.GetValueAt("SNSR_DC_JACK_CONNECT", 0) == "1";
-            this.IsDustbinPresent = info.GetValueAt("SNSR_DUSTBIN_IS_IN", 0) == "1";
-            this.IsLeftWheelExtended = info.GetValueAt("SNSR_LEFT_WHEEL_EXTENDED", 0) == "1";
-            this.IsRightWheelExtended = info.GetValueAt("SNSR_RIGHT_WHEEL_EXTENDED", 0) == "1";
-            this.IsLeftSideBlocked = info.GetValueAt("LSIDEBIT", 0) == "1";
-            this.IsRightSideBlocked = info.GetValueAt("RSIDEBIT", 0) == "1";
-            this.IsFrontLeftBumperBlocked = info.GetValueAt("LFRONTBIT", 0) == "1";
-            this.IsFrontRightBumperBlocked = info.GetValueAt("RFRONTBIT", 0) == "1";
+            IsDCJackConnected = info.GetValueAt("SNSR_DC_JACK_CONNECT", 0) == "1";
+            IsDustbinPresent = info.GetValueAt("SNSR_DUSTBIN_IS_IN", 0) == "1";
+            IsLeftWheelExtended = info.GetValueAt("SNSR_LEFT_WHEEL_EXTENDED", 0) == "1";
+            IsRightWheelExtended = info.GetValueAt("SNSR_RIGHT_WHEEL_EXTENDED", 0) == "1";
+            IsLeftSideBlocked = info.GetValueAt("LSIDEBIT", 0) == "1";
+            IsRightSideBlocked = info.GetValueAt("RSIDEBIT", 0) == "1";
+            IsFrontLeftBumperBlocked = info.GetValueAt("LFRONTBIT", 0) == "1";
+            IsFrontRightBumperBlocked = info.GetValueAt("RFRONTBIT", 0) == "1";
         }
 
         /// <summary>
@@ -731,35 +731,35 @@
         /// </exception>
         private void UpdateVersionInfo()
         {
-            if (!this.IsConnected)
+            if (!IsConnected)
             {
                 throw new IOException("Not connected to a Neato!");
             }
 
-            var info = this.Command.GetInfo.GetVersion();
+            var info = Command.GetInfo.GetVersion();
 
-            this.ModelID = info.GetValueAt("ModelID", 1);
-            this.ConfigID = info.GetValueAt("ConfigID", 0);
-            this.SerialNumber = info.GetValueAt("Serial Number", 0) + '-' + info.GetValueAt("Serial Number", 1) + '-' + info.GetValueAt("Serial Number", 2);
-            this.SoftwareVersion = info.GetValueAt("Software", 0) + '.' + info.GetValueAt("Software", 1) + '.' + info.GetValueAt("Software", 2);
-            this.BatteryType = info.GetValueAt("BatteryType", 1);
-            this.BlowerType = info.GetValueAt("BlowerType", 1);
-            this.BrushSpeed = int.TryParse(info.GetValueAt("BrushSpeed", 0), out int intOutParameter) ? intOutParameter : 0;
-            this.BrushMotorType = info.GetValueAt("BrushMotorType", 1);
-            this.SideBrushType = info.GetValueAt("SideBrushType", 1);
-            this.WheelPodType = info.GetValueAt("WheelPodType", 1);
-            this.DropSensorType = info.GetValueAt("DropSensorType", 1);
-            this.MagSensorType = info.GetValueAt("MagSensorType", 1);
-            this.WallSensorType = info.GetValueAt("WallSensorType", 1);
-            this.Locale = info.GetValueAt("Locale", 1);
-            this.LDSSoftwareVersion = info.GetValueAt("LDS Software", 0);
-            this.LDSSerial = info.GetValueAt("LDS Serial", 0);
-            this.LDSCPU = info.GetValueAt("LDS CPU", 0);
-            this.MainboardVendorID = info.GetValueAt("MainBoard Vendor ID", 0);
-            this.MainboardSerialNumber = info.GetValueAt("MainBoard Serial Number", 0);
-            this.MainboardVersion = info.GetValueAt("MainBoard Version", 0) + '.' + info.GetValueAt("MainBoard Version", 1);
-            this.ChassisRevision = info.GetValueAt("ChassisRev", 0);
-            this.UIPanelRevision = info.GetValueAt("UIPanelRev", 0);
+            ModelID = info.GetValueAt("ModelID", 1);
+            ConfigID = info.GetValueAt("ConfigID", 0);
+            SerialNumber = info.GetValueAt("Serial Number", 0) + '-' + info.GetValueAt("Serial Number", 1) + '-' + info.GetValueAt("Serial Number", 2);
+            SoftwareVersion = info.GetValueAt("Software", 0) + '.' + info.GetValueAt("Software", 1) + '.' + info.GetValueAt("Software", 2);
+            BatteryType = info.GetValueAt("BatteryType", 1);
+            BlowerType = info.GetValueAt("BlowerType", 1);
+            BrushSpeed = int.TryParse(info.GetValueAt("BrushSpeed", 0), out int intOutParameter) ? intOutParameter : 0;
+            BrushMotorType = info.GetValueAt("BrushMotorType", 1);
+            SideBrushType = info.GetValueAt("SideBrushType", 1);
+            WheelPodType = info.GetValueAt("WheelPodType", 1);
+            DropSensorType = info.GetValueAt("DropSensorType", 1);
+            MagSensorType = info.GetValueAt("MagSensorType", 1);
+            WallSensorType = info.GetValueAt("WallSensorType", 1);
+            Locale = info.GetValueAt("Locale", 1);
+            LDSSoftwareVersion = info.GetValueAt("LDS Software", 0);
+            LDSSerial = info.GetValueAt("LDS Serial", 0);
+            LDSCPU = info.GetValueAt("LDS CPU", 0);
+            MainboardVendorID = info.GetValueAt("MainBoard Vendor ID", 0);
+            MainboardSerialNumber = info.GetValueAt("MainBoard Serial Number", 0);
+            MainboardVersion = info.GetValueAt("MainBoard Version", 0) + '.' + info.GetValueAt("MainBoard Version", 1);
+            ChassisRevision = info.GetValueAt("ChassisRev", 0);
+            UIPanelRevision = info.GetValueAt("UIPanelRev", 0);
         }
 
         /// <summary>
@@ -770,12 +770,12 @@
         /// </exception>
         private void UpdateAccelerometer()
         {
-            if (!this.IsConnected)
+            if (!IsConnected)
             {
                 throw new IOException("Not connected to a Neato!");
             }
 
-            var info = this.Command.GetInfo.GetAccel();
+            var info = Command.GetInfo.GetAccel();
 
             this.PitchInDegrees = float.TryParse(info.GetValueAt("PitchInDegrees", 0), out float PitchInDegrees) ? PitchInDegrees : 0;
             this.RollInDegrees = float.TryParse(info.GetValueAt("RollInDegrees", 0), out float RollInDegrees) ? RollInDegrees : 0;
@@ -793,12 +793,12 @@
         /// </exception>
         private void UpdateGetMotors()
         {
-            if (!this.IsConnected)
+            if (!IsConnected)
             {
                 throw new IOException("Not connected to a Neato!");
             }
 
-            var info = this.Command.GetInfo.GetMotors();
+            var info = Command.GetInfo.GetMotors();
 
             this.BrushMaxPWM = int.TryParse(info.GetValueAt("Brush_MaxPWM", 0), out int BrushMaxPWM) ? BrushMaxPWM : 0;
             this.BrushPWM = int.TryParse(info.GetValueAt("Brush_PWM", 0), out int BrushPWM) ? BrushPWM : 0;

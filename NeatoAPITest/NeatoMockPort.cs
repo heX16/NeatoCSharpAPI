@@ -24,10 +24,10 @@
         /// </summary>
         public NeatoMockPort()
         {
-            this.CanConnectToNeato = true;
-            this.isOpen = false;
-            this.buffer = string.Empty;
-            this.AddNoReplyCommands();
+            CanConnectToNeato = true;
+            isOpen = false;
+            buffer = string.Empty;
+            AddNoReplyCommands();
         }
 
         /// <summary>
@@ -40,19 +40,19 @@
         /// </summary>
         public new void Open()
         {
-            if (!this.CanConnectToNeato)
+            if (!CanConnectToNeato)
             {
                 throw new IOException();
             }
             else
             {
-                if (this.isOpen)
+                if (isOpen)
                 {
                     throw new InvalidOperationException("Port is already open!");
                 }
                 else
                 {
-                    this.isOpen = true;
+                    isOpen = true;
                 }
             }
         }
@@ -62,8 +62,8 @@
         /// </summary>
         public new void Close()
         {
-            this.isOpen = false;
-            this.buffer = string.Empty;
+            isOpen = false;
+            buffer = string.Empty;
         }
 
         /// <summary>
@@ -74,7 +74,7 @@
         /// </returns>
         public new bool IsOpen()
         {
-            return this.isOpen;
+            return isOpen;
         }
 
         /// <summary>
@@ -83,7 +83,7 @@
         public new void DiscardInBuffer()
         {
             // TODO: Find out if this needs to do anything else...
-            this.buffer = string.Empty;
+            buffer = string.Empty;
         }
 
         /// <summary>
@@ -94,13 +94,13 @@
         /// </returns>
         public new string ReadExisting()
         {
-            if (!this.isOpen)
+            if (!isOpen)
             {
                 throw new InvalidOperationException("Port is not open!");
             }
 
-            var result = this.buffer;
-            this.buffer = string.Empty;
+            var result = buffer;
+            buffer = string.Empty;
 
             return result;
         }
@@ -115,7 +115,7 @@
         /// <exception cref="ArgumentNullException">Thrown if <see cref="command"/> is null.</exception>
         public new void WriteLine(string command)
         {
-            if (!this.isOpen)
+            if (!isOpen)
             {
                 throw new InvalidOperationException("Port is not open!");
             }
@@ -133,22 +133,22 @@
             switch (command)
             {
                 case "GetVersion":
-                    this.buffer += this.replyGetVersion;
+                    buffer += replyGetVersion;
                     break;
                 case "GetAccel":
-                    this.buffer += this.replyGetAccel;
+                    buffer += replyGetAccel;
                     break;
                 case "GetMotors":
-                    this.buffer += this.replyGetMotors;
+                    buffer += replyGetMotors;
                     break;
                 case "GetDigitalSensors":
-                    this.buffer += this.replyGetDigitalSensors;
+                    buffer += replyGetDigitalSensors;
                     break;
                 case "GetCharger":
-                    this.buffer += this.replyGetCharger;
+                    buffer += replyGetCharger;
                     break;
                 default:
-                    this.buffer = "Unknown Cmd: '" + command + "'";
+                    buffer = "Unknown Cmd: '" + command + "'";
                     break;
             }
         }

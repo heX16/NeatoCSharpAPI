@@ -20,7 +20,7 @@
         /// </param>
         public GetInfo(Neato parent)
         {
-            this.neato = parent;
+            neato = parent;
         }
 
         /// <summary>
@@ -32,7 +32,7 @@
         /// </returns>
         public Response GetAccel()
         {
-            return this.neato.Connection.SendCommand("GetAccel");
+            return neato.Connection.SendCommand("GetAccel");
         }
 
         /// <summary>
@@ -42,7 +42,7 @@
         /// <returns>Format: SensorName,Value.</returns>
         public Response GetAnalogSensors()
         {
-            return this.neato.Connection.SendCommand("GetAnalogSensors");
+            return neato.Connection.SendCommand("GetAnalogSensors");
         }
 
         /// <summary>
@@ -55,7 +55,7 @@
         /// </returns>
         public Response GetAnalogSensors(AnalogSensorValues flag)
         {
-            return this.neato.Connection.SendCommand("GetAnalogSensors " + flag);
+            return neato.Connection.SendCommand("GetAnalogSensors " + flag);
         }
 
         /// <summary>
@@ -67,7 +67,7 @@
         /// </returns>
         public Response GetButtons()
         {
-            return this.neato.Connection.SendCommand("GetButtons");
+            return neato.Connection.SendCommand("GetButtons");
         }
 
         /// <summary>
@@ -79,7 +79,7 @@
         /// </returns>
         public Response GetCalInfo()
         {
-            return this.neato.Connection.SendCommand("GetCalInfo");
+            return neato.Connection.SendCommand("GetCalInfo");
         }
 
         /// <summary>
@@ -91,7 +91,7 @@
         /// </returns>
         public Response GetCharger()
         {
-            return this.neato.Connection.SendCommand("GetCharger");
+            return neato.Connection.SendCommand("GetCharger");
         }
 
         /// <summary>
@@ -103,7 +103,7 @@
         /// </returns>
         public Response GetDigitalSensors()
         {
-            return this.neato.Connection.SendCommand("GetDigitalSensors");
+            return neato.Connection.SendCommand("GetDigitalSensors");
         }
 
         /// <summary>
@@ -115,7 +115,7 @@
         /// </returns>
         public Response GetErr()
         {
-            return this.neato.Connection.SendCommand("GetErr");
+            return neato.Connection.SendCommand("GetErr");
         }
 
         /// <summary>
@@ -126,7 +126,7 @@
         public void GetErr(ErrorFlag flag)
         {
             // TODO: Review and decide if useful or need to rewrite.
-            this.neato.Connection.SendCommand("GetErr " + flag);
+            neato.Connection.SendCommand("GetErr " + flag);
         }
 
         /// <summary>
@@ -138,7 +138,7 @@
         /// </returns>
         public Response GetLDSScan()
         {
-            return this.neato.Connection.SendCommand("GETLDSSCAN");
+            return neato.Connection.SendCommand("GETLDSSCAN");
         }
 
         /// <summary>
@@ -150,7 +150,7 @@
         /// </returns>
         public Response GetMotors()
         {
-            return this.neato.Connection.SendCommand("GetMotors");
+            return neato.Connection.SendCommand("GetMotors");
         }
 
         /// <summary>
@@ -163,7 +163,7 @@
         /// </returns>
         public Response GetMotors(GetMotorMotor flag)
         {
-            return this.neato.Connection.SendCommand("GetMotors " + flag);
+            return neato.Connection.SendCommand("GetMotors " + flag);
         }
 
         /// <summary>
@@ -175,7 +175,7 @@
         /// </returns>
         public Response GetSchedule()
         {
-            return this.neato.Connection.SendCommand("GetSchedule");
+            return neato.Connection.SendCommand("GetSchedule");
         }
 
         /// <summary>
@@ -190,7 +190,7 @@
         {
             throw new NotImplementedException("Disabled because of odd behaviour...");
             
-            // return this.neato.Connection.SendCommand("GetLifeStatLog");
+            // return neato.Connection.SendCommand("GetLifeStatLog");
         }
 
         /// <summary>
@@ -204,7 +204,7 @@
         public Response GetSchedule(ScheduleDay flag)
         {
             // TODO: Implement. "GetSchedule Day 0" or "GetSchedule 0" ?
-            return this.neato.Connection.SendCommand("GetSchedule " + (int)flag);
+            return neato.Connection.SendCommand("GetSchedule " + (int)flag);
         }
 
         /// <summary>
@@ -216,7 +216,7 @@
         /// </returns>
         public Response GetSysLog()
         {
-            return this.neato.Connection.SendCommand("GetSysLog");
+            return neato.Connection.SendCommand("GetSysLog");
         }
 
         /// <summary>
@@ -228,7 +228,7 @@
         /// </returns>
         public Response GetTime()
         {
-            return this.neato.Connection.SendCommand("GetTime");
+            return neato.Connection.SendCommand("GetTime");
         }
 
         /// <summary>
@@ -240,7 +240,7 @@
         /// </returns>
         public Response GetVersion()
         {
-            return this.neato.Connection.SendCommand("GetVersion");
+            return neato.Connection.SendCommand("GetVersion");
         }
 
         /// <summary>
@@ -252,7 +252,7 @@
         /// </returns>
         public Response GetWarranty()
         {
-            return this.neato.Connection.SendCommand("GetWarranty");
+            return neato.Connection.SendCommand("GetWarranty");
         }
     }
 }

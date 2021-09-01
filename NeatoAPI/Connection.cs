@@ -29,14 +29,14 @@
         {
             // Values are irrelevant, quote from Programmers guide:
             // "The communication parameters (Baud, start/stop bits,parity, etc.) are unimportant. They apply only to a real com port."
-            this.neatoPort = new SerialPort(comPort, 4711, Parity.None, 7, StopBits.One) { ReadTimeout = 500, WriteTimeout = 500 };
-            this.Port = comPort;
+            neatoPort = new SerialPort(comPort, 4711, Parity.None, 7, StopBits.One) { ReadTimeout = 500, WriteTimeout = 500 };
+            Port = comPort;
 
             // Connect to the COM-port.
-            this.neatoPort.Open();
+            neatoPort.Open();
 
             // Let's find out if we're connected to a Neato...
-            if (!this.SendCommand("GetVersion").GetRaw().Contains("Component,Major,Minor,Build"))
+            if (!SendCommand("GetVersion").GetRaw().Contains("Component,Major,Minor,Build"))
             {
                 throw new NotANeatoException("Response to GetVersion does not contain headers \"Component,Major,Minor,Build\".");
             }
@@ -51,13 +51,13 @@
         /// <exception cref="NotANeatoException">If device does not respond to the GetVersion command, it's probably not a Neato.</exception>
         public Connection(SerialPort comPort)
         {
-            this.neatoPort = comPort;
+            neatoPort = comPort;
             
             // Connect to the COM-port.
-            this.neatoPort.Open();
+            neatoPort.Open();
 
             // Let's find out if we're connected to a Neato...
-            if (!this.SendCommand("GetVersion").GetRaw().Contains("Component,Major,Minor,Build"))
+            if (!SendCommand("GetVersion").GetRaw().Contains("Component,Major,Minor,Build"))
             {
                 throw new NotANeatoException("Response to GetVersion does not contain headers \"Component,Major,Minor,Build\".");
             }
@@ -74,12 +74,12 @@
         /// <returns>True if connected to the Neato, false if not.</returns>
         public bool IsConnected()
         {
-            if (this.neatoPort == null)
+            if (neatoPort == null)
             {
                 return false;
             }
 
-            return this.neatoPort.IsOpen;
+            return neatoPort.IsOpen;
         }
         
         /// <summary>
@@ -87,13 +87,13 @@
         /// </summary>
         public void Disconnect()
         {
-            if (this.neatoPort == null)
+            if (neatoPort == null)
             {
                 // Don't have to close something that doesn't exist...
                 return;
             }
             
-            this.neatoPort.Close();
+            neatoPort.Close();
         }
 
         /// <summary>
@@ -104,7 +104,7 @@
         /// <exception cref="IOException">Thrown if no connection to Neato has been established.</exception>
         public Response SendCommand(string command)
         {
-            return this.SendCommand(command, false);
+            return SendCommand(command, false);
         }
         
         /// <summary>
@@ -117,16 +117,16 @@
         /// <exception cref="ArgumentException">Thrown if command sent is unknown to Neato.</exception>
         public Response SendCommand(string command, bool quick)
         {
-            if (!this.IsConnected())
+            if (!IsConnected())
             {
                 throw new IOException("No connection to Neato established.");
             }
 
             // Empty anything lingering in the buffer.
-            this.neatoPort.DiscardInBuffer();
+            neatoPort.DiscardInBuffer();
 
             // Send command to Neato.
-            this.neatoPort.WriteLine(command);
+            neatoPort.WriteLine(command);
 
             if (quick)
             {
@@ -136,7 +136,7 @@
 
             // Wait a little bit for Neato's response.
             Thread.Sleep(ResponseWait);
-            string tmp = this.neatoPort.ReadExisting();
+            string tmp = neatoPort.ReadExisting();
 
             // TODO: REMOVE THIS
 

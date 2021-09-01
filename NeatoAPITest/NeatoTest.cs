@@ -15,20 +15,20 @@
         [SetUp]
         public void SetUp()
         {
-            this.Robot = new Neato(new NeatoMockPort());
+            Robot = new Neato(new NeatoMockPort());
         }
         
         [TearDown]
         public void TearDown()
         {
-            this.Robot = null;
+            Robot = null;
         }
 
         [Test]
         public void BatteryChargeLevelTest()
         {
-            this.Robot.RefreshInformation();
-            var response = this.Robot.Command.GetInfo.GetTime();
+            Robot.RefreshInformation();
+            var response = Robot.Command.GetInfo.GetTime();
         }
     }
 }

@@ -20,7 +20,7 @@
         /// </param>
         public Test(Neato parent)
         {
-            this.neato = parent;
+            neato = parent;
         }
 
         #region Commands
@@ -34,14 +34,14 @@
         {
             if (flag == TestModeState.On)
             {
-                this.neato.TestMode = true;
+                neato.TestMode = true;
             }
             else
             {
-                this.neato.TestMode = false;
+                neato.TestMode = false;
             }
 
-            this.neato.Connection.SendCommand("TESTMODE " + flag, true);
+            neato.Connection.SendCommand("TESTMODE " + flag, true);
         }
 
         /// <summary>
@@ -50,7 +50,7 @@
         /// </summary>
         public void DiagTest()
         {
-            if (!this.neato.TestMode)
+            if (!neato.TestMode)
             {
                 throw new NotInTestModeException("DiagTest");
             }
@@ -65,7 +65,7 @@
         /// </summary>
         public void SetLCD()
         {
-            if (!this.neato.TestMode)
+            if (!neato.TestMode)
             {
                 throw new NotInTestModeException("SetLCD");
             }
@@ -81,15 +81,15 @@
         /// <param name="flag">TODO: describe state</param>
         public void SetLDSRotation(LDSRotation flag)
         {
-            if (!this.neato.TestMode)
+            if (!neato.TestMode)
             {
                 throw new NotInTestModeException("SetLDSRotation");
             }
 
-            this.neato.Connection.SendCommand("SetLDSRotation " + flag);
+            neato.Connection.SendCommand("SetLDSRotation " + flag);
 
             // Update Neato status!
-            this.neato.LDSRotation = flag == LDSRotation.On;
+            neato.LDSRotation = flag == LDSRotation.On;
         }
 
         /// <summary>
@@ -98,7 +98,7 @@
         /// </summary>
         public void SetLED()
         {
-            if (!this.neato.TestMode)
+            if (!neato.TestMode)
             {
                 throw new NotInTestModeException("SetLED");
             }
@@ -113,7 +113,7 @@
         /// </summary>
         public void SetMotor()
         {
-            if (!this.neato.TestMode)
+            if (!neato.TestMode)
             {
                 throw new NotInTestModeException("SetMotor");
             }
@@ -129,12 +129,12 @@
         /// <param name="mode">TODO: Describe parameter.</param>
         public void SetSystemMode(SystemMode mode)
         {
-            if (!this.neato.TestMode)
+            if (!neato.TestMode)
             {
                 throw new NotInTestModeException("SetSystemMode");
             }
 
-            this.neato.Connection.SendCommand("SetSystemMode " + mode);
+            neato.Connection.SendCommand("SetSystemMode " + mode);
         }
 
         /// <summary>
@@ -144,7 +144,7 @@
         /// <param name="enable">True to enable, false to disable specified motor.</param>
         public void ToggleMotor(Motors motor, bool enable)
         {
-            if (!this.neato.TestMode)
+            if (!neato.TestMode)
             {
                 throw new NotInTestModeException("ToggleMotor : SetMotor");
             }
@@ -154,19 +154,19 @@
             {
                 case Motors.Brush:
                     parameters = enable ? "BrushEnable" : "BrushDisable";
-                    this.neato.MotorBrushEnabled = enable;
+                    neato.MotorBrushEnabled = enable;
                     break;
                 case Motors.LeftWheel:
                     parameters = enable ? "LWheelEnable" : "LWheelDisable";
-                    this.neato.MotorLWheelEnabled = enable;
+                    neato.MotorLWheelEnabled = enable;
                     break;
                 case Motors.RightWheel:
                     parameters = enable ? "RWheelEnable" : "RWheelDisable";
-                    this.neato.MotorRWheelEnabled = enable;
+                    neato.MotorRWheelEnabled = enable;
                     break;
             }
 
-            this.neato.Connection.SendCommand("SetMotor " + parameters, true);
+            neato.Connection.SendCommand("SetMotor " + parameters, true);
         }
 
 
@@ -179,13 +179,13 @@
         {
             if (enable)
             {
-                this.neato.Connection.SendCommand("SetMotor VacuumOn VacuumSpeed " + powerlevel, true);
-                this.neato.MotorVacuumEnabled = true;
+                neato.Connection.SendCommand("SetMotor VacuumOn VacuumSpeed " + powerlevel, true);
+                neato.MotorVacuumEnabled = true;
             }
             else
             {
-                this.neato.Connection.SendCommand("SetMotor VacuumOff", true);
-                this.neato.MotorVacuumEnabled = false;
+                neato.Connection.SendCommand("SetMotor VacuumOff", true);
+                neato.MotorVacuumEnabled = false;
             }
         }
 
