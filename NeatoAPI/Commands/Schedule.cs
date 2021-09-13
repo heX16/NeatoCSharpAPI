@@ -13,14 +13,14 @@
         private readonly Neato neato;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Schedule"/> class. 
+        /// Initializes a new instance of the <see cref="Schedule"/> class.
         /// </summary>
         /// <param name="parent">
         /// TODO: Add description.
         /// </param>
         public Schedule(Neato parent)
         {
-            this.neato = parent;
+            neato = parent;
         }
 
         #region Commands
@@ -31,7 +31,7 @@
         /// <param name="activated">True for enabled, false for disabled.</param>
         public void ToggleSchedule(bool activated)
         {
-            this.neato.Connection.SendCommand(activated ? "SetSchedule ON" : "SetSchedule OFF", true);
+            neato.Connection.SendCommand(activated ? "SetSchedule ON" : "SetSchedule OFF", true);
         }
 
         /// <summary>
@@ -40,7 +40,7 @@
         /// <param name="day">Day to clear cleaning from.</param>
         public void RemoveCleanSchedule(ScheduleDay day)
         {
-            this.neato.Connection.SendCommand("SetSchedule " + day + " 0 0 NONE");
+            neato.Connection.SendCommand("SetSchedule " + day + " 0 0 NONE");
         }
 
         /// <summary>
@@ -65,9 +65,9 @@
                 throw new ArgumentOutOfRangeException("minute", minute, "Minutes set must be within range 0..59.");
             }
 
-            return this.neato.Connection.SendCommand("SetSchedule " + day + " " + hour + " " + minute + "HOUSE");
+            return neato.Connection.SendCommand("SetSchedule " + day + " " + hour + " " + minute + "HOUSE");
         }
 
-        #endregion
+        #endregion Commands
     }
 }

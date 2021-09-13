@@ -13,14 +13,14 @@
         private readonly Neato neato;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Sys"/> class. 
+        /// Initializes a new instance of the <see cref="Sys"/> class.
         /// </summary>
         /// <param name="parent">
         /// TODO: Add description.
         /// </param>
         public Sys(Neato parent)
         {
-            this.neato = parent;
+            neato = parent;
         }
 
         #region Commands
@@ -31,7 +31,7 @@
         /// </summary>
         public void RestoreDefaults()
         {
-            this.neato.Connection.SendCommand("RestoreDefaults", true);
+            neato.Connection.SendCommand("RestoreDefaults", true);
         }
 
         /// <summary>
@@ -46,7 +46,7 @@
                 throw new ArgumentOutOfRangeException("percent", percent, "Fuel gauge percent must be within range 0..100.");
             }
 
-            this.neato.Connection.SendCommand("SetFuelGauge " + percent, true);
+            neato.Connection.SendCommand("SetFuelGauge " + percent, true);
         }
 
         /// <summary>
@@ -73,8 +73,8 @@
             {
                 throw new ArgumentOutOfRangeException("sec", sec, "Seconds set must be within range 0..59.");
             }
-            
-            this.neato.Connection.SendCommand("SetTime " + (int)day + " " + hour + " " + minute + " " + sec, true);
+
+            neato.Connection.SendCommand("SetTime " + (int)day + " " + hour + " " + minute + " " + sec, true);
         }
 
         /// <summary>
@@ -85,7 +85,7 @@
             var now = DateTime.Now;
 
             var day = (ScheduleDay)now.DayOfWeek;
-            this.SetTime(day, now.Hour, now.Minute, now.Second);
+            SetTime(day, now.Hour, now.Minute, now.Second);
         }
 
         /// <summary>
@@ -97,10 +97,10 @@
         /// </param>
         public void SetWallFollower(WallFollowerState state)
         {
-            this.neato.Connection.SendCommand("SetWallFollower " + state, true);
+            neato.Connection.SendCommand("SetWallFollower " + state, true);
         }
 
-        #endregion
+        #endregion Commands
 
         #region Unimplemented commands
 
@@ -128,6 +128,6 @@
             throw new NotImplementedException("Won't implement until I know what it does, could break stuff?");
         }
 
-        #endregion
+        #endregion Unimplemented commands
     }
 }

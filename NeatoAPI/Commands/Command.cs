@@ -13,12 +13,12 @@
         /// </param>
         public Command(Neato parent)
         {
-            this.Movement = new Movement(parent);
-            this.GetInfo = new GetInfo(parent);
-            this.Test = new Test(parent);
-            this.Schedule = new Schedule(parent);
-            this.System = new Sys(parent);
-            this.Misc = new Misc(parent);
+            Movement = new Movement(parent);
+            GetInfo = new GetInfo(parent);
+            Test = new Test(parent);
+            Schedule = new Schedule(parent);
+            System = new Sys(parent);
+            Misc = new Misc(parent);
         }
 
         /// <summary>

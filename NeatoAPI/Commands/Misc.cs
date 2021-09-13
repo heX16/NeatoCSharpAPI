@@ -11,16 +11,16 @@
         private readonly Neato neato;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Misc"/> class. 
+        /// Initializes a new instance of the <see cref="Misc"/> class.
         /// </summary>
         /// <param name="parent">
         /// TODO: Add description.
         /// </param>
         public Misc(Neato parent)
         {
-            this.neato = parent;
+            neato = parent;
         }
-        
+
         #region Commands
 
         /// <summary>
@@ -29,7 +29,7 @@
         /// </summary>
         public void Clean()
         {
-            this.neato.Connection.SendCommand("Clean", true);
+            neato.Connection.SendCommand("Clean", true);
         }
 
         /// <summary>
@@ -39,7 +39,7 @@
         /// <param name="flag">Clean action to be activated.</param>
         public void Clean(CleaningMode flag)
         {
-            this.neato.Connection.SendCommand("Clean " + flag, true);
+            neato.Connection.SendCommand("Clean " + flag, true);
         }
 
         /// <summary>
@@ -53,14 +53,14 @@
         {
             if (flag.Equals(Sounds.Stop))
             {
-                this.neato.Connection.SendCommand("PlaySound STOP", true);
+                neato.Connection.SendCommand("PlaySound STOP", true);
             }
             else
             {
-                this.neato.Connection.SendCommand("PlaySound " + (int)flag, true);
+                neato.Connection.SendCommand("PlaySound " + (int)flag, true);
             }
         }
 
-        #endregion
+        #endregion Commands
     }
 }

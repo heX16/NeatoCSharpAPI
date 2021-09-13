@@ -30,7 +30,7 @@
         /// </param>
         public Movement(Neato parent)
         {
-            this.neato = parent;
+            neato = parent;
         }
 
         #region Commands
@@ -43,7 +43,7 @@
         /// </param>
         public void LeftRotation(int speed)
         {
-            this.QuarterRotation(speed, true);
+            QuarterRotation(speed, true);
         }
 
         /// <summary>
@@ -54,7 +54,7 @@
         /// </param>
         public void RightRotation(int speed)
         {
-            this.QuarterRotation(speed, false);
+            QuarterRotation(speed, false);
         }
 
         /// <summary>
@@ -74,7 +74,7 @@
                 distance *= -1;
             }
 
-            this.neato.Connection.SendCommand("SetMotor RWheelDist " + distance + " LWheelDist " + -distance + " Speed " + speed, true);
+            neato.Connection.SendCommand("SetMotor RWheelDist " + distance + " LWheelDist " + -distance + " Speed " + speed, true);
 
             // Update Neato's angle.
             int factor;
@@ -87,7 +87,7 @@
                 factor = -1;
             }
 
-            this.neato.Angle += 180 * factor;
+            neato.Angle += 180 * factor;
         }
 
         /// <summary>
@@ -96,11 +96,11 @@
         public void Stop()
         {
             // A somewhat ugly solution. TODO: Investigate if there is a better way.
-            this.neato.Command.Test.TestMode(TestModeState.Off);
-            this.neato.Command.Test.TestMode(TestModeState.On);
-            
+            neato.Command.Test.TestMode(TestModeState.Off);
+            neato.Command.Test.TestMode(TestModeState.On);
+
             // This will fuck up any spatial calculations :(
-            this.neato.PositionalDataIntegrity = false;
+            neato.PositionalDataIntegrity = false;
         }
 
         /// <summary>
@@ -117,16 +117,16 @@
                 distance *= -1;
             }
 
-            this.neato.Connection.SendCommand("SetMotor LWheelDist " + distance + " RWheelDist " + distance + " Speed " + speed, true);
+            neato.Connection.SendCommand("SetMotor LWheelDist " + distance + " RWheelDist " + distance + " Speed " + speed, true);
 
             // Update position (angle should be unchanged)
             var movement = new System.Drawing.Point(0, 0)
-                { 
-                    X = (int)Math.Round(Math.Cos(this.neato.Angle) * distance), 
-                    Y = (int)Math.Round(Math.Sin(this.neato.Angle) * distance)
-                };
-            var current = this.neato.Position;
-            this.neato.Position = new System.Drawing.Point(movement.X + current.X, movement.Y + current.Y);
+            {
+                X = (int)Math.Round(Math.Cos(neato.Angle) * distance),
+                Y = (int)Math.Round(Math.Sin(neato.Angle) * distance)
+            };
+            var current = neato.Position;
+            neato.Position = new System.Drawing.Point(movement.X + current.X, movement.Y + current.Y);
         }
 
         /// <summary>
@@ -148,7 +148,7 @@
                 distance *= -1;
             }
 
-            this.neato.Connection.SendCommand("SetMotor LWheelDist " + distance + " Speed " + speed, true);
+            neato.Connection.SendCommand("SetMotor LWheelDist " + distance + " Speed " + speed, true);
 
             // Update angle (and position..?)
             // TODO: Do the math :(
@@ -173,13 +173,13 @@
                 distance *= -1;
             }
 
-            this.neato.Connection.SendCommand("SetMotor RWheelDist " + distance + " Speed " + speed, true);
+            neato.Connection.SendCommand("SetMotor RWheelDist " + distance + " Speed " + speed, true);
 
             // Update angle (and position..?)
             // TODO: Do the math :(
         }
 
-        #endregion
+        #endregion Commands
 
         #region Private commands (~utility)
 
@@ -201,7 +201,7 @@
                 distance *= -1;
             }
 
-            this.neato.Connection.SendCommand("SetMotor RWheelDist " + distance + " LWheelDist " + -distance + " Speed " + speed, true);
+            neato.Connection.SendCommand("SetMotor RWheelDist " + distance + " LWheelDist " + -distance + " Speed " + speed, true);
 
             // Update angle (TODO: Figure out if position changes noticeable...)
             int factor;
@@ -214,9 +214,9 @@
                 factor = -1;
             }
 
-            this.neato.Angle += factor * 90;
+            neato.Angle += factor * 90;
         }
 
-        #endregion
+        #endregion Private commands (~utility)
     }
 }
